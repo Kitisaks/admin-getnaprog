@@ -1,11 +1,22 @@
 <?php
     //== DATABASE CONFIGURATIONS ==//
-    define('DB_NAME', 'bansaingam');
-    define('DB_USER', 'bansaing');
-    define('DB_PASSWORD', 'D[9w.0a6NQF1el');
-    define('DB_SERVER', 'localhost');
-    define('__DIR__', '/view');
+
+    // ** FOR PRODUCTION ** //
+    // define("DB_NAME", "bansaingam_database");
+    // define("DB_USER", "bansaingam_database");
+    // define("DB_PASSWORD", "Ts02310799");
+    // define("DB_SERVER", "localhost");
+
+    // ** FOR DEVELOPEMENT ** //
+    define("DB_NAME", "school_dev");
+    define("DB_USER", "root");
+    define("DB_PASSWORD", "");
+    define("DB_SERVER", "localhost");
+
+    
+
     //== ROOT DIRECTORY FOR VIEW ==//
-    define('r', '../template');
+    define("r", "../template");
+    
     
 ?>
