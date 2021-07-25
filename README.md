@@ -7,6 +7,7 @@
 |= controller --> "logicals of web application (e.g, query, filter, statistics)"
 |= view  --> "views for all directories"
 |= priv  --> "keep all privacy data"
+|= config --> "e.g, router, config"
 |= assets --> "keep all static items (e.g, js, css)" 
 ```
 
