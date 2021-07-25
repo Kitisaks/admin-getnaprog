@@ -1,11 +1,9 @@
 <?php
-
-class Home extends Plug{
+class Notfound extends Plug{
 
   function __construct(){
     parent::__construct();
 
-    $this->view->render("home");
+    $this->view->render("error");
   }
-
 }

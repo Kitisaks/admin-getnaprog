@@ -9,9 +9,4 @@
     <script src="/assets/js/app.js"></script>
     <title>Document</title>
 </head>
-
 <body>
-    <div class="h-screen flex overflow-hidden bg-white">
-        <header>
-            <h1>--> This is HEADER <--< /h1>
-        </header>

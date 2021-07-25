@@ -9,7 +9,7 @@ switch (MODE) {
                 header("Location: /home");
                 break;
             default:
-                header("Location: error.php");
+                header("Location: /error");
                 break;
         }
         break;

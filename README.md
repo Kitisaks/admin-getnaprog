@@ -30,3 +30,17 @@
 - Docs for js. [jQuery](https://api.jquery.com/)
 - Docs for PHP. [PHP](https://www.php.net/docs.php)
 
+### ==== TEMPLATE ====
+#### *Controller*
+```php
+//== TEMPLATE CONTROLLER ==//
+class template{ 
+ 
+  function __construct(){
+    #- scope 'template/'
+  }
+  public function other(){
+    #- scope 'template/other/'
+  }
+}
+```
