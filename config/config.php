@@ -1,18 +1,28 @@
 <?php
+//== SELECT MODE ==//
+#- ["DEV", "PRO"]
+define("MODE", "DEV");
+
 //== DATABASE CONFIGURATIONS ==//
-
-// ** FOR PRODUCTION ** //
-// define("DB_NAME", "bansaingam_database");
-// define("DB_USER", "bansaingam_database");
-// define("DB_PASSWORD", "Ts02310799");
-// define("DB_SERVER", "localhost");
-
-// ** FOR DEVELOPEMENT ** //
-define("DB_NAME", "school_dev");
-define("DB_USER", "root");
-define("DB_PASSWORD", "");
-define("DB_SERVER", "localhost");
-
+switch (MODE) {
+  case "PRO":
+    define("DB", array(
+      "NAME" => "bansaingam_database",
+      "USER" => "bansaingam_database",
+      "PASSWORD" => "Ts02310799",
+      "HOST" => "localhost"
+    ));
+    break;
+  
+  case "DEV":
+    define("DB", array(
+      "NAME" => "school_dev",
+      "USER" => "root",
+      "PASSWORD" => "",
+      "HOST" => "localhost"
+    ));
+    break;
+}
 
 //== ROOT DIRECTORY FOR VIEW ==//
 define("v", "../template");

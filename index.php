@@ -1,10 +1,8 @@
 <?php
-//== SECLECT MODE ==//
-#- ["dev", "pro"]
-$mode = "dev" ;
-http_response_code(404);
-switch ($mode) {
-    case "pro":
+require_once "./config/config.php";
+
+switch (MODE) {
+    case "PRO":
         switch (isset($_SERVER["HTTPS"])) {
             case true:
                 //- set more secure please
@@ -15,7 +13,7 @@ switch ($mode) {
                 break;
         }
         break;
-    case "dev":
+    case "DEV":
         header("Location: /home");
         break;
 }

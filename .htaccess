@@ -4,4 +4,4 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-l
 
-RewriteRule ^(.*)$ /config/router.php?url=$1 [l]
+RewriteRule ^(.+)$ /config/router.php?url=$1 [L]
