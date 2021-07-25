@@ -30,7 +30,7 @@
 - Docs for js. [jQuery](https://api.jquery.com/)
 - Docs for PHP. [PHP](https://www.php.net/docs.php)
 
-### ==== TEMPLATE ====
+### ==== Template ====
 #### *Controller*
 ```php
 //== TEMPLATE CONTROLLER ==//
@@ -44,3 +44,15 @@ class template{
   }
 }
 ```
+<!-- ### ==== Deployment ====
+### 1. Setup for Database
+#### *On Windows*
+- create datebase and tables with this__ remind that "to use with *Super Privilege* role" ==> run with *Administrator*
+```bash
+bash -c "sh db_create.sh"
+```
+#### *On Linux*
+```bash
+sudo chmod +x db_create.sh
+./db_create.sh
+``` -->
