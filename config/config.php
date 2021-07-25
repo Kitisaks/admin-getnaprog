@@ -24,6 +24,18 @@ switch (MODE) {
     break;
 }
 
-//== ROOT DIRECTORY FOR VIEW ==//
-define("v", "../template");
+//== DEFINE PATH DIRECTORY ==//
+
+##-- r ==> root directory
+
+switch (MODE) {
+  case 'PRO':
+    define('r', 'https://'. $_SERVER['HTTP_HOST'] .'/');
+    break;
+  
+  case 'DEV':
+    define('r', 'http://'. $_SERVER['HTTP_HOST'] .'/');
+    break;
+}
+
 
