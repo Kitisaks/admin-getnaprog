@@ -1,5 +1,5 @@
 <?php
-require_once "../../../config.php";
+require_once "../../../config/config.php";
 
 try {
   $conn = new PDO("mysql:host=" . DB_SERVER . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
