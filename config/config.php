@@ -26,3 +26,4 @@ switch (MODE) {
 
 //== ROOT DIRECTORY FOR VIEW ==//
 define("v", "../template");
+

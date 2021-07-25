@@ -3,5 +3,5 @@ window.$ = $;
 window.jQuery = jQuery;
 
 $(function() {
-  alert("hi");
+  
 })

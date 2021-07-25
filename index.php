@@ -6,7 +6,7 @@ switch (MODE) {
         switch (isset($_SERVER["HTTPS"])) {
             case true:
                 //- set more secure please
-                header("Location: /home");
+                header("Location: /auth");
                 break;
             default:
                 header("Location: /error");
@@ -14,7 +14,7 @@ switch (MODE) {
         }
         break;
     case "DEV":
-        header("Location: /home");
+        header("Location: /auth");
         break;
 }
 
