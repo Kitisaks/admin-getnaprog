@@ -1,4 +1,4 @@
 
-$(function() {
-  console.log("baby");
-})
+$(function(){
+  alert("/");
+});

@@ -28,5 +28,6 @@ if(MODE == "PRO"){
   header("Accept-Encoding: *");
 }else{
   header("Accept-Encoding: *");
+  header("Cache-Control: no-cache");
 }
 
