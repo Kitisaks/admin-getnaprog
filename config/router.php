@@ -14,16 +14,26 @@ class Router
     }else{
       require "error_controller.php";
       $controller = new Notfound();
+      $controller->index();
       return false;
     }
 
     $controller = new $url[0];
 
-    if (isset($url[2])) {
+    if(isset($url[2])){
       $controller->{$url[1]}($url[2]);
-    } else {
-      if (isset($url[1])) {
-        $controller->{$url[1]}();
+    }else{
+      if(isset($url[1])){
+        if(method_exists($controller, $url[1]) == true){
+          $controller->{$url[1]}();
+        }else{
+          require "error_controller.php";
+          $controller = new Notfound();
+          $controller->index();
+          return false;
+        }
+      }else{
+        $controller->index();
       }
     }
   }

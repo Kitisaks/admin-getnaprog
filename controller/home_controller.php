@@ -2,12 +2,11 @@
 
 class Home extends Plug{
 
+  private $main;
+  
   function __construct(){
     parent::__construct();
-    
-    $this->view->render("error");
-
-    
+    $this->main = strtolower(get_class($this));
   }
 
 }
