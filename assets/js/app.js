@@ -1,4 +1,4 @@
 
 $(function() {
-  alert("HI");
+  console.log("baby");
 })

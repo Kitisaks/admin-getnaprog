@@ -17,4 +17,16 @@ if (empty($_SESSION['token'])) {
   $_SESSION['token'] = bin2hex(random_bytes(32));
 }
 
+//== SET SECURITY ACTIVE WHEN ON PRODUCTION MODE ==//
+if(MODE == "PRO"){
+  header("X-Frame-Options: SAMEORIGIN");
+  header("X-XSS-Protection: 1; mode=block");
+  header("X-Content-Type-Options: nosniff");
+  header("Content-Security-Policy: default-src https:");
+  header("Cache-Control: must-revalidate");
+  header("Vary: User-Agent");
+  header("Accept-Encoding: *");
+}else{
+  header("Accept-Encoding: *");
+}
 

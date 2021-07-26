@@ -1,5 +1,10 @@
 # **School Dev**
 
+### ==== **Deployment** ====
+#### 1. Change 'MODE' to 'PRO' in *``` config/config.php ```*
+#### 2. Also change some database configurations in that file. 
+#### 3. Enjoy :)
+
 ### ==== **Structure** ====
 ```c
 |= index.php  --> "1st plug to get _req from client browser"
@@ -30,7 +35,7 @@
 - Docs for js. [jQuery](https://api.jquery.com/)
 - Docs for PHP. [PHP](https://www.php.net/docs.php)
 
-### ==== Template ====
+### ==== Templates ====
 #### *Controller*
 ```php
 //== TEMPLATE CONTROLLER ==//
