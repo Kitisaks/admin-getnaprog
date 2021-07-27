@@ -1,8 +1,7 @@
 <?php
 class Router
 {
-  function __construct()
-  {
+  function __construct(){
     $url = isset($_GET["url"]) ? $_GET["url"] : null;
     $url = rtrim($url, "/");
     $url = explode("/", $url);
