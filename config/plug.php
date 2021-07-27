@@ -5,4 +5,6 @@ class Plug{
     $this->view = new View();
   }
 
+
+
 }

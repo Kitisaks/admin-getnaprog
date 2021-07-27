@@ -2,12 +2,14 @@
 define('c', '../config/');
 
 #- modules required
-require c."config.php";
-require c."secure.php";
-require c."router.php";
-require c."plug.php";
-require c."view.php";
-require c."repo.php";
+require_once c."config.php";
+require_once c."secure.php";
+require_once c."router.php";
+require_once c."plug.php";
+require_once c."repo.php";
+require_once c."view.php";
+
 #- libraries included
+require_once "../data/schema.php";
 
 $app = new Router();

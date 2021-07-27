@@ -2,6 +2,7 @@
 class View{
 
   function __construct(){
+    
   }
 
   public function render($main, $page, $no_layout = false){

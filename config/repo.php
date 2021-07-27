@@ -1,29 +1,27 @@
 <?php
-class Repo {
+class Repo{
   
-  private $conn;
-
   function __construct(){
-    $this->conn = null;
-
-    try {
-      $this->conn = new PDO("mysql:host=".DB["HOST"].";dbname=".DB["NAME"], DB["USER"], DB["PASSWORD"]);
-      $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    } catch(PDOException $e) {
-      echo "Connection failed: " . $e->getMessage();
-    }
+    $this->conn = new PDO("mysql:host=".DB["HOST"].";dbname=".DB["NAME"], DB["USER"], DB["PASSWORD"]);
+    $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   }
 
   #- Fetch all record in table by ID
   public function get_by($table, $id){
-    $stmt = 
-      $conn->prepare(
-        "SELECT * FROM $table WHERE id = $id"
-      );
+    $stmt = $this->conn->prepare("SELECT * FROM $table WHERE id = $id");
     $stmt->execute();
-    $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-    return json_encode($results);
+    $results = $stmt->fetch(PDO::FETCH_ASSOC);
+    $results = json_encode($results);
+    return $results;
+  }
+
+  #- Fetch all record in table by ID
+  public function all($query){
+    $stmt = $this->conn->prepare($query);
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $results = json_encode($results);
+    return $results;
   }
 
 }

@@ -1,7 +1,6 @@
 <?php
-class Auth extends Plug{
 
-  private $main;
+class Auth extends Plug{
 
   function __construct(){
     parent::__construct();
