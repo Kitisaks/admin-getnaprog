@@ -29,7 +29,8 @@
         Admin Web Application
       </p>
     </div>
-    <form id="sign-in" class="mt-8 space-y-6" action="#" method="POST">
+    <form class="sign-in mt-8 space-y-6" action="/auth/login" method="POST">
+      <input type="hidden" name="token" value="<?php echo $_SESSION["token"]; ?>">
       <input type="hidden" name="remember" value="true">
       <div class="rounded-md shadow-sm -space-y-px">
         <div>

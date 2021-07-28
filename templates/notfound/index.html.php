@@ -2,7 +2,7 @@
 <div class="bg-white">
   <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex-shrink-0 pt-16">
-      <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600" alt="Workflow">
+      <img class="mx-auto h-28 w-auto" src="<?php echo r; ?>assets/statics/logo.webp" alt="Deved_Logo">
     </div>
     <div class="max-w-xl mx-auto py-16 sm:py-24">
       <div class="text-center">
@@ -126,7 +126,7 @@
           </li>
         </ul>
         <div class="mt-8">
-          <a href="#" class="text-base font-medium text-indigo-600 hover:text-indigo-500">Or go back home<span aria-hidden="true"> &rarr;</span></a>
+          <a href="/main" class="text-base font-medium text-indigo-600 hover:text-indigo-500">Or go back home<span aria-hidden="true"> &rarr;</span></a>
         </div>
       </div>
     </div>

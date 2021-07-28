@@ -7,7 +7,9 @@ class Notfound extends Plug{
   }
 
   public function index(){
-    $this->view->render($this->main,"index");
+    $this
+    ->view
+    ->render($this->main,"index",1);
   }
   
 }

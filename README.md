@@ -64,7 +64,7 @@ if (!empty($_POST['token'])) {
 ```html
  <form>
 //...
-<input type="hidden" name="token" value="<?php echo $_SESSION["token"]; ?>" />
+<input type="hidden" name="token" value="<?php echo $_SESSION["token"]; ?>">
 //...
 </form>
 ```

@@ -10,6 +10,7 @@ require_once c."repo.php";
 require_once c."view.php";
 
 #- libraries included
-require_once "../data/schema.php";
+
+
 
 $app = new Router();
