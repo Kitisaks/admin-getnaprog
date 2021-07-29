@@ -19,6 +19,18 @@ class Auth extends Plug{
     ->login();
   }
 
+  public function register(){
+    $this
+    ->view
+    ->render($this->main,"register",1);
+  }
+
+  public function add(){
+    $this
+    ->controller
+    ->register();
+  }
+
   public function logout(){
     session_destroy();
     header("location: /auth");

@@ -1,27 +1,7 @@
-<?php
-  // $users = new Repo();
-  // $obj = $users->get_by("users", 1);
-  // $obj = json_decode($obj, true);
-  // echo $obj['id'];
-  // echo $obj['username'];
-  // echo $obj['role'];
-  // echo $obj['email'];
-  
-  // echo "===============";
-
-  // $repo = new Repo();
-  // $query = "SELECT * FROM users";
-  // $results = $repo->all($query);
-  // $results = json_decode($results, true);
-  // foreach ($results as $i){
-  //   echo($i["username"]);
-  // }
-?>
-
 <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
   <div class="max-w-md w-full space-y-8">
     <div>
-      <img class="mx-auto h-26 w-auto" src="<?php echo r; ?>assets/statics/logo.webp" alt="Workflow">
+      <img class="mx-auto h-26 w-auto animate-pulse" src="<?php echo r; ?>assets/statics/logo.webp" alt="Workflow">
       <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
         DEVED
       </h2>
@@ -34,8 +14,8 @@
       <input type="hidden" name="remember" value="true">
       <div class="rounded-md shadow-sm -space-y-px">
         <div>
-          <label for="email-address" class="sr-only">Email address</label>
-          <input id="email-address" name="email" type="email" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Email address">
+          <label for="email-address" class="sr-only">Username or Email address</label>
+          <input id="email-address" name="username_email" type="text" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Username or Email address">
         </div>
         <div>
           <label for="password" class="sr-only">Password</label>
@@ -53,7 +33,7 @@
 
         <div class="text-sm">
           <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
-            Forgot your password?
+            Forgot you password?
           </a>
         </div>
       </div>

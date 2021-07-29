@@ -4,8 +4,9 @@ require_once "../migration.php";
 #- keep users information
 $sql = "CREATE TABLE users (
   id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(30) NOT NULL,
   username VARCHAR(30) NOT NULL,
-  password VARCHAR(30) NOT NULL,
+  password VARCHAR(100) NOT NULL,
   email VARCHAR(50) NOT NULL,
   role INT(5) NOT NULL DEFAULT 1,
   ip VARCHAR(30) NOT NULL,

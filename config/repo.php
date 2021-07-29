@@ -20,7 +20,6 @@ class Repo extends PDO{
 
     $stmt->execute(array(":id" => $id));
     $results = $stmt->fetch(PDO::FETCH_ASSOC);
-    $results = json_encode($results);
     return $results;
   }
 
@@ -32,7 +31,6 @@ class Repo extends PDO{
       ->prepare($query);
     $stmt->execute();
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $results = json_encode($results);
     return $results;
   }
 

@@ -1,3 +1,4 @@
+<?php $users = json_decode($_SESSION["current_user"]); ?>
 <div class="h-screen flex overflow-hidden bg-white">
   <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
   <div class="fixed border inset-0 flex z-40 lg:hidden" role="dialog" aria-modal="true">
@@ -81,20 +82,20 @@
   <div class="hidden lg:flex lg:flex-shrink-0">
       <div class="flex flex-col w-64 border-r border-gray-200 pt-5 pb-4 bg-gray-100">
         <div class="flex items-center flex-shrink-0 px-6">
-          <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-logo-purple-500-mark-gray-700-text.svg" alt="Workflow">
+          <img class="h-14 w-auto" src="<?php echo r; ?>assets/statics/logo.webp" alt="Workflow">
+          <h1 class="ml-2 font-semibold text-xl">Deved Admin</h1>
         </div>
         <!-- Sidebar component, swap this element with another sidebar if you like -->
         <div class="h-0 flex-1 flex flex-col overflow-y-auto">
           <!-- User account dropdown -->
           <div class="px-3 mt-6 relative inline-block text-left">
-            <div>
+            <div class="border rounded-lg shadow-sm">
               <button type="button" class="dropdown group w-full bg-gray-100 rounded-md px-3.5 py-2 text-sm text-left font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-purple-500" target-id="dropdown-account" aria-expanded="false" aria-haspopup="true">
                 <span class="flex w-full justify-between items-center">
                   <span class="flex min-w-0 items-center justify-between space-x-3">
-                    <img class="w-10 h-10 bg-gray-300 rounded-full flex-shrink-0" src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80" alt="">
                     <span class="flex-1 flex flex-col min-w-0">
-                      <span class="text-gray-900 text-sm font-medium truncate">Jessy Schwarz</span>
-                      <span class="text-gray-500 text-sm truncate">@jessyschwarz</span>
+                      <span class="text-gray-900 text-sm font-medium truncate"><?php echo $users->name; ?></span>
+                      <span class="text-gray-500 text-sm truncate">@<?php echo $users->username; ?></span>
                     </span>
                   </span>
                   <!-- Heroicon name: solid/selector -->
