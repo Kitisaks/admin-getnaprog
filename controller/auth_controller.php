@@ -60,8 +60,8 @@ class AuthController extends Repo{
         ->conn
         ->prepare(
           "INSERT INTO users 
-          (name, username, password, email) 
-          VALUES (:name, :username, :password, :email)"
+          (name, username, password, email, ip) 
+          VALUES (:name, :username, :password, :email, :ip)"
         );
 
       $stmt
@@ -70,7 +70,8 @@ class AuthController extends Repo{
           ":name" => $_POST["name"],
           ":username" => $_POST["username"],
           ":password" => md5($_POST["password"]),
-          ":email" => $_POST["email"]
+          ":email" => $_POST["email"],
+          ":ip" => $_POST["ip"]
         )
       );
       header("location: /auth");

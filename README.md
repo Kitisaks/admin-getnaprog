@@ -5,6 +5,16 @@
 #### 2. Also change some database configurations in that file. 
 #### 3. Enjoy :)
 
+## ==== **Install** ====
+### 1. Create db and tables by go to browser type this url
+```c
+#- create db
+url : 'localhost/priv/migration/database/db_name.php' * change db_name
+
+#- create tables
+url : 'localhost/priv/migration/table/table_name.php' * change table_name
+```
+
 ## ==== **Structure** ====
 ```c
 |= index.php  --> "1st plug to get _req from client browser"
@@ -39,6 +49,20 @@
 ### **Controller**
 ```php
 //== TEMPLATE CONTROLLER ==//
+class AuthController extends Repo{
+  
+  function __construct(){
+    parent::__construct();
+  }
+
+  public function yourcontroller(){
+    #- your logics here
+  }
+
+```
+### **View**
+```php
+//== TEMPLATE VIEW ==//
 class Template extends Plug{
 
   function __construct(){
@@ -48,6 +72,12 @@ class Template extends Plug{
   #- render page you want
   public function index(){
     $this->view->render($this->main,"index");
+  }
+  #- target your controller
+    public function logic(){
+    $this
+    ->controller
+    ->logic();
   }
 }
 ```
@@ -69,7 +99,7 @@ if (!empty($_POST['token'])) {
 </form>
 ```
 ### **SQL Repo**
-#### *Query by id from records*
+#### *Query by id from table*
 ```php
   $repo = new Repo();
   $results = $repo->get_by("field", "id"); #- field: string, id: integer
@@ -80,7 +110,7 @@ if (!empty($_POST['token'])) {
   echo $results['role'];
   echo $results['email'];
 ```
-#### *Query by custom record from SQl*
+#### *Query by custom query from SQL*
 ```php
   $repo = new Repo();
   $query = "SELECT * FROM users"; #- custom your query

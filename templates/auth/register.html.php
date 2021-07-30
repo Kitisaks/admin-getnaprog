@@ -13,7 +13,7 @@
     <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
       <form class="space-y-6" action="/auth/add" method="POST">
         <input type="hidden" name="token" value="<?php echo $_SESSION["token"]; ?>">
-        <input type="hidden" name="ip" value="<?php echo $_SERVER["REMOTE_HOST"] ?>">
+        <input type="hidden" name="ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>">
         <div>
           <label for="email" class="block text-sm font-medium text-gray-700">
             Name
