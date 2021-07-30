@@ -1,14 +1,14 @@
 <?php
 //== SELECT MODE ==//
 #- ["DEV", "PRO"]
-define("MODE", "DEV");
+define("MODE", "PRO");
 
 //== DATABASE CONFIGURATIONS ==//
 switch (MODE) {
   case "PRO":
     define("DB", array(
-      "NAME" => "bansaingam_database",
-      "USER" => "bansaingam_database",
+      "NAME" => "bansaing_admin",
+      "USER" => "bansaing_admin",
       "PASSWORD" => "Ts02310799",
       "HOST" => "localhost"
     ));

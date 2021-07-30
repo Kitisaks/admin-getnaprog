@@ -1,7 +1,7 @@
 
 # Displaying php errors
-php_flag display_errors on
-php_value error_reporting 6143
+#php_flag display_errors off
+#php_value error_reporting 6143
 
 RewriteEngine on
 
@@ -9,4 +9,4 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-l
 
-RewriteRule ^(.+)$ /view/render.php?url=$1 [L,QSA]
+RewriteRule ^(.*)$ /view/render.php?url=$1 [L]

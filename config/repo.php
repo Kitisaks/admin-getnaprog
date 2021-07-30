@@ -1,5 +1,5 @@
 <?php
-class Repo extends PDO{
+class Repo{
   
   function __construct(){
     $this->conn = new PDO("mysql:host=".DB["HOST"].";dbname=".DB["NAME"], DB["USER"], DB["PASSWORD"]);

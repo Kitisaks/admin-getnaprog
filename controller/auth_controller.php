@@ -3,6 +3,7 @@ class AuthController extends Repo{
   
   function __construct(){
     parent::__construct();
+    $this->repo = new Repo();
   }
 
   #- login
@@ -47,8 +48,10 @@ class AuthController extends Repo{
   
   #- check exist user in db
   private function check_user($username){
-    $repo = new Repo();
-    $check = $repo->all("SELECT username FROM users WHERE username = '$username'");
+    $check = 
+      $this
+      ->repo
+      ->all("SELECT username FROM users WHERE username = '$username'");
     return $check;
   }
 

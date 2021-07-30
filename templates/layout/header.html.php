@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin web application for developer who need to built your own application with a simple machine!"/>
     <link rel="icon" href="<?php echo r; ?>assets/statics/favicon.ico" type="image/x-icon">
     <link href="<?php echo r; ?>assets/css/app.css" rel="stylesheet">
     <script src="<?php echo r; ?>assets/js/jquery-3.6.0.min.js"></script>
