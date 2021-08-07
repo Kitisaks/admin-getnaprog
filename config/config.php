@@ -7,16 +7,16 @@ define("MODE", "DEV");
 switch (MODE) {
   case "PRO":
     define("DB", array(
-      "NAME" => "bansaing_admin",
-      "USER" => "bansaing_admin",
-      "PASSWORD" => "Ts02310799",
-      "HOST" => "localhost"
+      "NAME" => "database_name",
+      "USER" => "database_user",
+      "PASSWORD" => "database_password",
+      "HOST" => "database_host"
     ));
     break;
   
   case "DEV":
     define("DB", array(
-      "NAME" => "school_dev",
+      "NAME" => "database_name",
       "USER" => "root",
       "PASSWORD" => "",
       "HOST" => "localhost"

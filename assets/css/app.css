@@ -1,2 +1,16 @@
 @import "tailwindcss.css";
 
+/* Read more */
+.add-readmore.show-less .sec-sec,
+.add-readmore.show-less .readless{
+  display: none;
+}
+.add-readmore.show-more .readmore{
+  display: none;
+}
+.add-readmore .readmore,
+.add-readmore .readless{
+  margin-left: 2px;
+  color: rgb(90, 90, 228);
+  cursor: pointer;
+}

@@ -19,12 +19,13 @@ if (empty($_SESSION['token'])) {
 
 //== SET SECURITY ACTIVE WHEN ON PRODUCTION MODE ==//
 if(MODE == "PRO"){
-
-
   header("X-Frame-Options: SAMEORIGIN");
   header("X-XSS-Protection: 1; mode=block");
   header("X-Content-Type-Options: nosniff");
-  header("Content-Security-Policy: default-src https:");
   header("Vary: User-Agent,Accept");
+}else{
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
 }
 
