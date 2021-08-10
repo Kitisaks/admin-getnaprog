@@ -1,12 +1,17 @@
 # **School Dev**
 
 ## ==== **Deployment** ====
-#### 1. Change 'MODE' to 'PRO' in *``` config/config.php ```*
-#### 2. Also change some database configurations in that file. 
+
+#### 1. Change 'MODE' to 'PRO' in _`config/config.php`_
+
+#### 2. Also change some database configurations in that file.
+
 #### 3. Enjoy :)
 
 ## ==== **Install** ====
+
 ### 1. Create db and tables by go to browser type this url
+
 ```c
 #- create db
 url : 'localhost/priv/migration/database/db_name.php' * change db_name
@@ -16,6 +21,7 @@ url : 'localhost/priv/migration/table/table_name.php' * change table_name
 ```
 
 ## ==== **Structure** ====
+
 ```c
 |= index.php  --> "1st plug to get _req from client browser"
 |= data  --> "data for use in application"
@@ -23,10 +29,11 @@ url : 'localhost/priv/migration/table/table_name.php' * change table_name
 |= view  --> "views for all directories"
 |= priv  --> "keep all privacy data"
 |= config --> "e.g, router, config"
-|= assets --> "keep all static items (e.g, js, css)" 
+|= assets --> "keep all static items (e.g, js, css)"
 ```
 
 ## ==== **Directories** ====
+
 ```
 |__assets
 |        |__js
@@ -41,16 +48,19 @@ url : 'localhost/priv/migration/table/table_name.php' * change table_name
 ```
 
 ## ==== Documentories ====
+
 - Docs for css. [tailwindCSS](https://tailwindcss.com/docs)
 - Docs for js. [jQuery](https://api.jquery.com/)
 - Docs for PHP. [PHP](https://www.php.net/docs.php)
 
 ## ==== **Templates** ====
+
 ### **Controller**
+
 ```php
 //== TEMPLATE CONTROLLER ==//
 class AuthController extends Repo{
-  
+
   function __construct(){
     parent::__construct();
   }
@@ -60,7 +70,9 @@ class AuthController extends Repo{
   }
 
 ```
+
 ### **View**
+
 ```php
 //== TEMPLATE VIEW ==//
 class Template extends Plug{
@@ -81,7 +93,9 @@ class Template extends Plug{
   }
 }
 ```
+
 ### **Token check**
+
 ```php
 if (!empty($_POST['token'])) {
   if (hash_equals($_SESSION['token'], $_POST['token'])) {
@@ -91,15 +105,18 @@ if (!empty($_POST['token'])) {
   }
 }
 ```
+
 ```html
- <form>
-//...
-<input type="hidden" name="token" value="<?php echo $_SESSION["token"]; ?>">
-//...
+<form>
+  //... <input type="hidden" name="token" value="<?php echo $_SESSION["token"]; ?>">
+  //...
 </form>
 ```
+
 ### **SQL Repo**
-#### *Query by id from table*
+
+#### _Query by id from table_
+
 ```php
   $repo = new Repo();
   $results = $repo->get_by("field", "id"); #- field: string, id: integer
@@ -110,7 +127,9 @@ if (!empty($_POST['token'])) {
   echo $results['role'];
   echo $results['email'];
 ```
-#### *Query by custom query from SQL*
+
+#### _Query by custom query from SQL_
+
 ```php
   $repo = new Repo();
   $query = "SELECT * FROM users"; #- custom your query
@@ -119,15 +138,7 @@ if (!empty($_POST['token'])) {
   foreach ($results as $i){
     echo($i["username"]);
   }
-``` 
-
-
-
-
-
-
-
-
+```
 
 <!-- ### ==== Deployment ====
 ### 1. Setup for Database

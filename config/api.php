@@ -1,12 +1,8 @@
 <?php
-class Api{
-  
-
-  function __construct(){
-
-  }
-
-  public function setup(){
+class Api
+{
+  public function setup()
+  {
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
     header("Access-Control-Allow-Methods: PATCH,GET,POST,PUT,DELETE");
@@ -18,5 +14,4 @@ class Api{
 
     return $params;
   }
-
 }

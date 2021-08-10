@@ -13,12 +13,12 @@ switch (MODE) {
       "HOST" => "database_host"
     ));
     break;
-  
+
   case "DEV":
     define("DB", array(
-      "NAME" => "database_name",
+      "NAME" => "getprog_db",
       "USER" => "root",
-      "PASSWORD" => "",
+      "PASSWORD" => "@Fluke160941",
       "HOST" => "localhost"
     ));
     break;
@@ -30,12 +30,10 @@ switch (MODE) {
 
 switch (MODE) {
   case 'PRO':
-    define('r', 'https://'. $_SERVER['HTTP_HOST'] .'/');
+    define('r', 'https://' . $_SERVER['HTTP_HOST'] . '/');
     break;
-  
+
   case 'DEV':
-    define('r', 'http://'. $_SERVER['HTTP_HOST'] .'/');
+    define('r', 'http://' . $_SERVER['HTTP_HOST'] . '/');
     break;
 }
-
-

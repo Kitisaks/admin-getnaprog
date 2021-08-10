@@ -1,5 +1,6 @@
 <?php
-class Notfound extends Plug
+
+class Project extends Plug
 {
 
   function __construct()
@@ -12,6 +13,6 @@ class Notfound extends Plug
   {
     $this
       ->view
-      ->render($this->main, "index", 1);
+      ->render($this->main, "index");
   }
 }

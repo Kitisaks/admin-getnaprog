@@ -6,7 +6,7 @@ switch (MODE) {
     case "PRO":
         switch (isset($_SERVER["HTTPS"])) {
             case true:
-                header("Location: /template");
+                header("Location: /auth");
                 break;
             default:
                 header("Location: /error");
@@ -14,7 +14,6 @@ switch (MODE) {
         }
         break;
     case "DEV":
-        header("Location: /template");
+        header("Location: /auth");
         break;
 }
-
