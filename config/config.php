@@ -7,10 +7,10 @@ define("MODE", "DEV");
 switch (MODE) {
   case "PRO":
     define("DB", array(
-      "NAME" => "database_name",
-      "USER" => "database_user",
-      "PASSWORD" => "database_password",
-      "HOST" => "database_host"
+      "NAME" => "getnapro_db",
+      "USER" => "getnapro_db",
+      "PASSWORD" => "@Fluke160941",
+      "HOST" => "localhost"
     ));
     break;
 
