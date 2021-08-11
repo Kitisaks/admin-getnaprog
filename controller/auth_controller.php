@@ -6,7 +6,7 @@ class AuthController
   {
     $this->repo = new Repo();
     if (isset($_SESSION["current_user"])) {
-      header("location: /main");
+      header("location: /home");
     }
   }
 
@@ -25,10 +25,11 @@ class AuthController
 
           switch ($results) {
             case false:
-              $_SESSION["errno"] = array(
+              $_SESSION["errno"] = 
+              [
                 "status" => 0,
                 "message" => "Username or password incorrect!"
-              );
+              ];
               header("location: /auth");
               break;
 
@@ -68,10 +69,10 @@ class AuthController
         switch ($e) {
           case true:
             $_SESSION["errno"] =
-              array(
+              [
                 "status" => 0,
                 "message" => "Username or email already taken!"
-              );
+              ];
 
             header("location: /auth/signup");
             break;
@@ -80,7 +81,7 @@ class AuthController
             break;
         }
       } else {
-        header("location: /notfound");
+        header($_SERVER["SERVER_PROTOCOL"] . "405 Method Not Allowed");
       }
     }
   }
@@ -102,6 +103,7 @@ class AuthController
     try {
       $stmt =
         $this
+        ->repo
         ->conn
         ->prepare(
           "INSERT INTO users 
@@ -111,7 +113,7 @@ class AuthController
 
       $stmt
         ->execute(
-          array(
+          [
             ":name" => trim($_POST["name"]),
             ":username" => trim(strtolower($_POST["username"])),
             ":password" => md5(trim($_POST["password"])),
@@ -119,7 +121,7 @@ class AuthController
             ":gender" => trim($_POST["gender"]),
             ":phone" => trim($_POST["phone"]),
             ":ip" => trim($_POST["ip"])
-          )
+          ]
         );
       header("location: /auth");
     } catch (PDOException $e) {

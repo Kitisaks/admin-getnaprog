@@ -1,7 +1,6 @@
 <?php
 define('c', '../config/');
 
-
 #- modules required
 #- aware to arrange the important desc
 require_once c . "config.php";

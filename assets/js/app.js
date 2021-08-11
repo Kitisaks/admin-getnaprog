@@ -1,4 +1,10 @@
 $(function () {
+
+  //== Setup for csrf_token
+  $.ajaxSetup({
+    data: window.token
+  });
+  
   //== Clock
   clockUpdate();
   setInterval(clockUpdate, 1000);

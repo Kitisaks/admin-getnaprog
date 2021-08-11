@@ -23,11 +23,6 @@ class Project extends Plug
       ->render($this->main, "new");
   }
 
-  public function test()
-  {
-    echo "huy";
-  }
-
   public function create()
   {
     $this

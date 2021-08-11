@@ -14,7 +14,7 @@ session_regenerate_id();
 
 //== GENERATE TOKEN FOR USE IN HTTP REQUEST ==//
 if (empty($_SESSION['token'])) {
-  $_SESSION['token'] = bin2hex(random_bytes(32));
+  $_SESSION['token'] = bin2hex(random_bytes(35));
 }
 
 //== SET SECURITY ACTIVE WHEN ON PRODUCTION MODE ==//

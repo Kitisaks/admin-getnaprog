@@ -6,21 +6,23 @@ define("MODE", "DEV");
 //== DATABASE CONFIGURATIONS ==//
 switch (MODE) {
   case "PRO":
-    define("DB", array(
+    define("DB",
+    [
       "NAME" => "getnapro_db",
       "USER" => "getnapro_db",
       "PASSWORD" => "@Fluke160941",
       "HOST" => "localhost"
-    ));
+    ]);
     break;
 
   case "DEV":
-    define("DB", array(
+    define("DB", 
+    [
       "NAME" => "getprog_db",
       "USER" => "root",
       "PASSWORD" => "@Fluke160941",
       "HOST" => "localhost"
-    ));
+    ]);
     break;
 }
 

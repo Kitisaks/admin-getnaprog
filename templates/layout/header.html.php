@@ -10,5 +10,6 @@
     <link href="<?php echo r; ?>assets/css/app.css" rel="stylesheet">
     <script src="<?php echo r; ?>assets/js/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="<?php echo r; ?>assets/js/app.js"></script>
+    <script>window.csrf = { token: '<?php echo $_SESSION['token']; ?>' };</script>
 </head>
 <body class="bg-gray-100 font-mono">
