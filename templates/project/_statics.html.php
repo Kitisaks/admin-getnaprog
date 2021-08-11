@@ -1,7 +1,7 @@
 <h3 class="text-lg leading-6 font-bold mb-4">
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-mdbg-pink-100 text-pink-800">
-  Last 30 Days
-</span>
+  <span class="inline-flex items-center px-2.5 py-0.5 rounded-mdbg-pink-100 text-pink-800">
+    Last 30 Days
+  </span>
 </h3>
 <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
   <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
@@ -31,4 +31,3 @@
     </dd>
   </div>
 </dl>
-

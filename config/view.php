@@ -14,7 +14,7 @@ class View
       case true:
         require "../templates/layout/header.html.php";
         require "../templates/$main/$page.html.php";
-        require "../templates/layout/footer.html.php";
+        require "../templates/layout/bottom.html.php";
         break;
 
       case false:
@@ -26,7 +26,8 @@ class View
         // require "../templates/layout/_messenger.html.php";
         require "../templates/layout/_navbar.html.php";
         require "../templates/$main/$page.html.php";  
-        require "../templates/layout/footer.html.php";
+        require "../templates/layout/_footer.html.php";
+        require "../templates/layout/bottom.html.php";
         break;
     }
   }
@@ -39,7 +40,7 @@ class View
         foreach ($pages as $page) {
           require "../templates/$main/$page.html.php";
         }
-        require "../templates/layout/footer.html.php";
+        require "../templates/layout/bottom.html.php";
         break;
 
       case false:
@@ -48,12 +49,12 @@ class View
         require "../templates/layout/_popup.html.php";
         require "../templates/layout/_alert.html.php";
         // require "../templates/layout/_messenger.html.php";
-        require "../templates/layout/sidebar_top.html.php";
+        require "../templates/layout/_navbar.html.php";
         foreach ($pages as $page) {
           require "../templates/$main/$page.html.php";
         }
-        require "../templates/layout/sidebar_bot.html.php";
-        require "../templates/layout/footer.html.php";
+        require "../templates/layout/_footer.html.php";
+        require "../templates/layout/bottom.html.php";
         break;
     }
   }

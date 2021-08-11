@@ -3,6 +3,9 @@ class Router
 {
   function __construct()
   {
+    require_once "error_view.php";
+    $render = new Notfound();
+
     $url = isset($_GET["url"]) ? $_GET["url"] : null;
     $url = rtrim($url, "/");
     $url = explode("/", $url);
@@ -12,8 +15,7 @@ class Router
     if (file_exists($file)) {
       require $file;
     } else {
-      require "error_view.php";
-      $render = new Notfound();
+      
       $render->index();
       return false;
     }
@@ -23,19 +25,17 @@ class Router
 
     if (isset($url[2])) {
       $render->{$url[1]}($url[2]);
-    } else {
-      if (isset($url[1])) {
-        if (method_exists($render, $url[1]) == true) {
-          $render->{$url[1]}();
-        } else {
-          require "error_view.php";
-          $render = new Notfound();
-          $render->index();
-          return false;
-        }
+    } elseif (isset($url[1])) {
+      if (method_exists($render, $url[1]) == true) {
+        $render->{$url[1]}();
       } else {
         $render->index();
+        return false;
       }
+    } else {
+      $render->index();
+      return false;
     }
+
   }
 }

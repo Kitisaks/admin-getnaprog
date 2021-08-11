@@ -11,6 +11,7 @@ $fields = "
   country VARCHAR(50) NULL,
   zip_code VARCHAR(10) NULL,
   phone VARCHAR(15) NULL,
+  email VARCHAR(100) NOT NULL,
   domain VARCHAR(30) NOT NULL,
   meta_title VARCHAR(255) NULL,
   meta_description VARCHAR(255) NULL,
@@ -18,7 +19,7 @@ $fields = "
   status INT(5) NOT NULL DEFAULT 1,
   inserted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   
-  UNIQUE KEY (cname)
+  UNIQUE KEY (cname, email)
 ";
 
 print_r(query_sql("table", $table, $fields));

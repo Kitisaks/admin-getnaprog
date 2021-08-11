@@ -1,10 +1,9 @@
 <?php
-class AuthController extends Repo
+class AuthController
 {
 
   function __construct()
   {
-    parent::__construct();
     $this->repo = new Repo();
     if (isset($_SESSION["current_user"])) {
       header("location: /main");

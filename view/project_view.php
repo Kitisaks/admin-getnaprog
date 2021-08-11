@@ -15,4 +15,23 @@ class Project extends Plug
       ->view
       ->render($this->main, "index");
   }
+
+  public function new()
+  {
+    $this
+      ->view
+      ->render($this->main, "new");
+  }
+
+  public function test()
+  {
+    echo "huy";
+  }
+
+  public function create()
+  {
+    $this
+      ->controller
+      ->create();
+  }
 }

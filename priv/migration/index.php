@@ -10,6 +10,7 @@
     #- Create tables
     require_once "./table/agencies.php";
     require_once "./table/users.php";
+    require_once "./table/pages.php";
     require_once "./table/posts.php";
     //==== put more if want .. ====//
     ?>

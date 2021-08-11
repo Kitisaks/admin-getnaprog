@@ -82,4 +82,19 @@ $(function () {
     return false;
   });
 
+  //== sidebar menu new project
+  $('body').on('click', '.project-menu', function() {
+    let target = $(this).attr('data-id');
+    $('body .project-menu').removeClass('bg-gray-50 text-indigo-700 hover:bg-white');
+    $(this).addClass('bg-gray-50 text-indigo-700 hover:bg-white');
+    $('body .show').hide();
+    $('body #'+target).show();
+    return false;
+  });
+
+  //== create new project form
+  $('body').on('click', '#project-create', function (){
+    $('body #project-create-form').submit();
+  });
+
 });
