@@ -25,30 +25,16 @@ class AuthController
 
           switch ($results) {
             case false:
-              $_SESSION["errno"] = 
-              [
-                "status" => 0,
-                "message" => "Username or password incorrect!"
-              ];
+              $_SESSION["errno"] = [
+                  "status" => 0,
+                  "message" => "Username or password incorrect!"
+                ];
               header("location: /auth");
               break;
 
             case true:
-              $id = $results["id"];
-
-              $current_user =
-                $this
-                ->repo
-                ->update("users", "status = 1", $id);
-
-              if ($current_user) {
-                $_SESSION["current_user"] = json_encode($current_user);
-                header("location: /home");
-                return false;
-              } else {
-                header("location: /auth");
-                return false;
-              }
+              $_SESSION["current_user"] = json_encode($results);
+              header("location: /home");
               break;
           }
         } catch (PDOException $e) {
@@ -68,14 +54,13 @@ class AuthController
         $e = $this->check($_POST["username"], $_POST["email"]);
         switch ($e) {
           case true:
-            $_SESSION["errno"] =
-              [
-                "status" => 0,
-                "message" => "Username or email already taken!"
-              ];
-
+            $_SESSION["errno"] = [
+              "status" => 0,
+              "message" => "Username or email already taken!"
+            ];
             header("location: /auth/signup");
             break;
+
           case false:
             $this->init_register();
             break;
@@ -112,17 +97,15 @@ class AuthController
         );
 
       $stmt
-        ->execute(
-          [
-            ":name" => trim($_POST["name"]),
-            ":username" => trim(strtolower($_POST["username"])),
-            ":password" => md5(trim($_POST["password"])),
-            ":email" => trim(strtolower($_POST["email"])),
-            ":gender" => trim($_POST["gender"]),
-            ":phone" => trim($_POST["phone"]),
-            ":ip" => trim($_POST["ip"])
-          ]
-        );
+        ->execute([
+          ":name" => trim($_POST["name"]),
+          ":username" => trim(strtolower($_POST["username"])),
+          ":password" => md5(trim($_POST["password"])),
+          ":email" => trim(strtolower($_POST["email"])),
+          ":gender" => trim($_POST["gender"]),
+          ":phone" => trim($_POST["phone"]),
+          ":ip" => trim($_POST["ip"])
+        ]);
       header("location: /auth");
     } catch (PDOException $e) {
       echo "Error: " . $e->getMessage();
@@ -132,17 +115,10 @@ class AuthController
   public function logout()
   {
     if (isset($_SESSION["current_user"])) {
-      $user_id = json_decode($_SESSION["current_user"], true)["id"];
-      $logout =
-        $this
-        ->repo
-        ->update("users", "status = 0", $user_id);
-      if ($logout) {
-        session_destroy();
-        header("location: /auth");
-      } else {
-        header("location: /home");
-      }
+      session_destroy();
+      header("location: /auth");
+    } else {
+      header("location: /home");
     }
   }
 

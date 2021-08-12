@@ -1,8 +1,10 @@
 <?php
 define('c', '../config/');
+define('v', '../vendor/');
 
 #- modules required
 #- aware to arrange the important desc
+require_once v . "autoload.php";
 require_once c . "config.php";
 require_once c . "secure.php";
 require_once c . "router.php";

@@ -6,8 +6,7 @@ define("MODE", "DEV");
 //== DATABASE CONFIGURATIONS ==//
 switch (MODE) {
   case "PRO":
-    define("DB",
-    [
+    define("DB", [
       "NAME" => "getnapro_db",
       "USER" => "getnapro_db",
       "PASSWORD" => "@Fluke160941",
@@ -16,8 +15,7 @@ switch (MODE) {
     break;
 
   case "DEV":
-    define("DB", 
-    [
+    define("DB", [
       "NAME" => "getprog_db",
       "USER" => "root",
       "PASSWORD" => "@Fluke160941",

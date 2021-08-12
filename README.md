@@ -10,14 +10,13 @@
 
 ## ==== **Install** ====
 
-### 1. Create db and tables by go to browser type this url
+### Create db and tables by go to browser type this url
 
-```c
-#- create db
-url : 'localhost/priv/migration/database/db_name.php' * change db_name
-
-#- create tables
-url : 'localhost/priv/migration/table/table_name.php' * change table_name
+```bash
+1. create executable for db_create.sh 
+  sudo chmod +x db_create.sh
+2. run db_create.sh file
+  ./db_create.sh
 ```
 
 ## ==== **Structure** ====
@@ -59,10 +58,10 @@ url : 'localhost/priv/migration/table/table_name.php' * change table_name
 
 ```php
 //== TEMPLATE CONTROLLER ==//
-class AuthController extends Repo{
+class AuthController{
 
   function __construct(){
-    parent::__construct();
+    $this->repo = new Repo();
   }
 
   public function yourcontroller(){
@@ -152,3 +151,26 @@ bash -c "sh db_create.sh"
 sudo chmod +x db_create.sh
 ./db_create.sh
 ``` -->
+
+### === Libralies Include === ###
+### 1. Send-Mail ###
+```php
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mailer\Mailer;
+
+$transport = Transport::fromDsn('smtp://localhost');
+$mailer = new Mailer($transport);
+
+$email = (new Email())
+    ->from('hello@example.com')
+    ->to('you@example.com')
+    //->cc('cc@example.com')
+    //->bcc('bcc@example.com')
+    //->replyTo('fabien@example.com')
+    //->priority(Email::PRIORITY_HIGH)
+    ->subject('Time for Symfony Mailer!')
+    ->text('Sending emails is fun again!')
+    ->html('<p>See Twig integration for better HTML integration!</p>');
+
+$mailer->send($email);
+```
