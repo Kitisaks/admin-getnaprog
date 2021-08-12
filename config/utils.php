@@ -1,8 +1,14 @@
 <?php
-#- use to declare the libraries for your app. // Static function
+################# Libraries Includes ########################
 
+
+
+#############################################################
+
+#- use to declare the libraries for your app. // Static function
 class Utils
 {
+
   public static function check_current_user()
   {
     if (empty($_SESSION["current_user"])) {
@@ -64,22 +70,12 @@ class Utils
 
   public static function ftp_init()
   {
-    // The internal adapter
-    $adapter = new League\Flysystem\FTP\FtpAdapter(
-      // Connection options
-      League\Flysystem\FTP\FtpConnectionOptions::fromArray([
-          'host' => 'getnaprog.com', // required
-          'root' => '	/home/getnapro/domains/getnaprog.com/public_html/db/data/', // required
-          'username' => 'getnapro_admin@getnaprog.com', // required
-          'password' => '@Fluke160941', // required
-      ]),
-      new League\Flysystem\FTP\FtpConnectionProvider(),
-      new League\Flysystem\FTP\NoopCommandConnectivityChecker(),
-      new League\Flysystem\UnixVisibility\PortableVisibilityConverter()
-    );
-
-    // The FilesystemOperator
-    $filesystem = new League\Flysystem\Filesystem($adapter);
-    return "ok";
+    $host = "getnaprog.com";
+    $user = "getnapro_admin@getnaprog.com";
+    $password = "@Fluke160941";
+    $ftp = new \FtpClient\FtpClient();
+    $ftp->connect($host);
+    $ftp->login($user, $password);
+    return $ftp;
   }
 }

@@ -8,6 +8,7 @@ class ProjectController
 
   public function create()
   {
-    echo Utils::ftp_init();
+    $ftp = Utils::ftp_init();
+    var_dump($ftp->help());
   }
 }
