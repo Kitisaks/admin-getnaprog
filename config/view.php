@@ -3,8 +3,26 @@
 class View
 {
   function __construct(){
-    $this->utils = new Utils();
-    $this->utils->get_current_user();
+    $this->repo = new Repo();
+    $this->get_current_user();
+  }
+
+  private function current_user()
+  {
+    if (isset($_SESSION["current_user"])) {
+      return json_decode($_SESSION["current_user"]);
+    } else {
+      return null;
+    }
+  }
+
+  public function get_current_user()
+  {
+    $GLOBALS["current_user"] = $this->current_user();
+    $GLOBALS["users"] =
+      $this
+      ->repo
+      ->all("SELECT username, status, role FROM users ORDER BY status DESC, role ASC, username ASC");
   }
   
   public function render($main, $page, $no_layout = false)

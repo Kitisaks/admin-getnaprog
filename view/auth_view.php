@@ -6,7 +6,7 @@ class Auth extends Plug
   function __construct()
   {
     parent::__construct();
-    $this->main = strtolower(get_class($this));
+    $this->main = strtolower(__CLASS__);
   }
 
   public function index()
@@ -31,7 +31,7 @@ class Auth extends Plug
 
     $this
       ->view
-      ->render($this->main, "forg_pswd", 1);
+      ->render($this->main, "reset", 1);
   }
 
   public function signup()

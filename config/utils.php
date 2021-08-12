@@ -1,31 +1,8 @@
 <?php
-#- use to declare the utilities of your app.
-class Utils extends Plug
+#- use to declare the libraries for your app. // Static function
+
+class Utils
 {
-
-  function __construct()
-  {
-    $this->repo = new Repo();
-  }
-
-  private function current_user()
-  {
-    if (isset($_SESSION["current_user"])) {
-      return json_decode($_SESSION["current_user"]);
-    } else {
-      return null;
-    }
-  }
-
-  public function get_current_user()
-  {
-    $GLOBALS["current_user"] = $this->current_user();
-    $GLOBALS["users"] =
-      $this
-      ->repo
-      ->all("SELECT username, status, role FROM users ORDER BY status DESC, role ASC, username ASC");
-  }
-
   public static function check_current_user()
   {
     if (empty($_SESSION["current_user"])) {
@@ -47,7 +24,6 @@ class Utils extends Plug
 
   public static function get_client_ip()
   {
-    $ipaddress = '';
     if (isset($_SERVER['HTTP_CLIENT_IP']))
       $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
     else if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
@@ -84,5 +60,26 @@ class Utils extends Plug
     // Country code output, field "country_code"
 
     return $address;
+  }
+
+  public static function ftp_init()
+  {
+    // The internal adapter
+    $adapter = new League\Flysystem\FTP\FtpAdapter(
+      // Connection options
+      League\Flysystem\FTP\FtpConnectionOptions::fromArray([
+          'host' => 'getnaprog.com', // required
+          'root' => '	/home/getnapro/domains/getnaprog.com/public_html/db/data/', // required
+          'username' => 'getnapro_admin@getnaprog.com', // required
+          'password' => '@Fluke160941', // required
+      ]),
+      new League\Flysystem\FTP\FtpConnectionProvider(),
+      new League\Flysystem\FTP\NoopCommandConnectivityChecker(),
+      new League\Flysystem\UnixVisibility\PortableVisibilityConverter()
+    );
+
+    // The FilesystemOperator
+    $filesystem = new League\Flysystem\Filesystem($adapter);
+    return "ok";
   }
 }

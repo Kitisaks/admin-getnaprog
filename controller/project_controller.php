@@ -1,7 +1,6 @@
 <?php
 class ProjectController
 {
-
   function __construct()
   {
     $this->repo = new Repo();
@@ -9,6 +8,6 @@ class ProjectController
 
   public function create()
   {
-    echo "hi";
+    echo Utils::ftp_init();
   }
 }

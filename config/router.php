@@ -3,7 +3,7 @@ class Router
 {
   function __construct()
   {
-    require "error_view.php";
+    require_once "error_view.php";
     $notfound = new Notfound();
     $url = isset($_GET["url"]) ? $_GET["url"] : null;
     $url = rtrim($url, "/");
@@ -12,7 +12,7 @@ class Router
     $file = $url[0] . "_view.php";
 
     if (file_exists($file)) {
-      require $file;
+      require_once $file;
     } else {
       $notfound->index();
       return false;

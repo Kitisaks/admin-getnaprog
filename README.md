@@ -174,3 +174,30 @@ $email = (new Email())
 
 $mailer->send($email);
 ```
+
+### 2. PDF Handler ###
+```php 
+// reference the Dompdf namespace
+use Dompdf\Dompdf;
+// instantiate and use the dompdf class
+$dompdf = new Dompdf();
+$dompdf->loadHtml('hello world');
+// (Optional) Setup the paper size and orientation
+$dompdf->setPaper('A4', 'landscape');
+// Render the HTML as PDF
+$dompdf->render();
+// Output the generated PDF to Browser
+$dompdf->stream();
+```
+config options
+```php
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
+$options = new Options();
+$options->set('defaultFont', 'Courier');
+$dompdf = new Dompdf($options);
+```
+
+### 3. CSV Handler ###
+see docs at https://csv.thephpleague.com/9.0/

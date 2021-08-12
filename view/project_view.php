@@ -6,7 +6,7 @@ class Project extends Plug
   function __construct()
   {
     parent::__construct();
-    $this->main = strtolower(get_class($this));
+    $this->main = strtolower(__CLASS__);
   }
 
   public function index()

@@ -1,5 +1,5 @@
 <?php
-require "../../config/config.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/config/config.php";
 
 function query_sql($cond, $params1, $params2)
 {

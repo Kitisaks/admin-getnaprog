@@ -103,4 +103,11 @@ $(function () {
     $('body #project-create-form').submit();
   });
 
+  //== Side menu new project
+  $('body').on('click', '.side-next', function(){
+    alert("kuy");
+    
+    return false;
+  });
+
 });

@@ -4,14 +4,14 @@
   <h4 style="text-align: center;">
     <?php
     #- Create databases
-    require_once "./migration.php";
-    require_once "./database/getprog_db.php";
+    require_once __DIR__ . "/migration.php";
+    require_once __DIR__ . "/database/getprog_db.php";
 
     #- Create tables
-    require_once "./table/agencies.php";
-    require_once "./table/users.php";
-    require_once "./table/pages.php";
-    require_once "./table/posts.php";
+    require_once __DIR__ . "/table/agencies.php";
+    require_once __DIR__ . "/table/users.php";
+    require_once __DIR__ . "/table/pages.php";
+    require_once __DIR__ . "/table/posts.php";
     //==== put more if want .. ====//
     ?>
   </h4>

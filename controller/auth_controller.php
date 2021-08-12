@@ -122,7 +122,7 @@ class AuthController
     }
   }
 
-  public function forg_pswd()
+  public function reset()
   {
     if (!empty($_POST['token'])) {
       if (hash_equals($_SESSION['token'], $_POST['token'])) {

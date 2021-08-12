@@ -9,7 +9,7 @@ class Plug
 
   public function loadmodule($main)
   {
-    $path = "../controller/" . $main . "_controller.php";
+    $path = $_SERVER["DOCUMENT_ROOT"] . "/controller/" . $main . "_controller.php";
 
     if (file_exists($path)) {
       require_once $path;
@@ -17,4 +17,5 @@ class Plug
       $this->controller = new $name;
     }
   }
+
 }

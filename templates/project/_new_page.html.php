@@ -12,22 +12,29 @@
         </label>
         <div class="mt-1 rounded-md shadow-sm flex">
           <span class="bg-gray-50 border border-r-0 border-gray-300 rounded-l-md px-3 inline-flex items-center text-gray-500 sm:text-sm">
-            getnaprog.com/pg/
+            getnaprog.com/site/
           </span>
-          <input type="text" name="name" id="name" autocomplete="name" class="p-2 border focus:ring-indigo-500 focus:border-indigo-500 flex-grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300" required>
+          <input type="text" name="name" id="name" autocomplete="name" class="p-2 border focus:ring-indigo-500 focus:border-indigo-500 flex-grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300" placeholder="mypage" required>
         </div>
+      </div>
+
+      <div class="col-span-3 sm:col-span-2">
+        <label for="meta_title" class="block text-sm font-medium text-gray-700">Meta Title</label>
+        <input type="text" name="meta_title" id="meta_title" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="At least 8 words" required>
+      </div>
+
+      <div class="col-span-3 sm:col-span-2">
+        <label for="meta_keyword" class="block text-sm font-medium text-gray-700">Meta Keywords</label>
+        <input type="text" name="meta_keyword" id="meta_keyword" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="shoes, shirt, t-shirt, ..." required>
       </div>
 
       <div class="col-span-3">
         <label for="about" class="block text-sm font-medium text-gray-700">
-          Description
+          Meta Description
         </label>
         <div class="mt-1">
-          <textarea id="about" name="about" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2" placeholder="Something here..."></textarea>
+          <textarea id="meta_description" name="meta_description" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2" placeholder="Brief something about your page. Recommend at least 80 words"></textarea>
         </div>
-        <p class="mt-2 text-sm text-gray-500">
-          Brief description for your page.
-        </p>
       </div>
 
       <div class="col-span-3">
@@ -43,6 +50,7 @@
           <button type="button" class="ml-5 bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             Change
           </button>
+          <p class="text-sm ml-2">.ico</p>
         </div>
       </div>
 
@@ -71,7 +79,7 @@
     </div>
   </div>
   <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-    <button type="submit" class="bg-indigo-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+    <button type="submit" class="side-next bg-indigo-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
       Next
     </button>
   </div>
