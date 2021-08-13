@@ -1,8 +1,12 @@
 {
     "require": {
-        "symfony/mailer": "^5.3",
         "dompdf/dompdf": "^1.0",
         "league/csv": "^9.7",
-        "nicolab/php-ftp-client": "^1.6"
+        "nicolab/php-ftp-client": "^1.6",
+        "swiftmailer/swiftmailer": "^6.0",
+        "filp/whoops": "^2.14",
+        "rinvex/countries": "^7.3",
+        "jenssegers/agent": "^2.6",
+        "ramsey/uuid": "^4.2"
     }
 }

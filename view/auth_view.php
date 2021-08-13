@@ -23,7 +23,7 @@ class Auth extends Plug
       ->login();
   }
 
-  public function forg_pwsd()
+  public function reset()
   {
     $this
       ->controller

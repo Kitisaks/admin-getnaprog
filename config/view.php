@@ -37,11 +37,9 @@ class View
 
       case false:
         Utils::check_current_user();
-        // $this->utils->messenger();
         require "../templates/layout/header.html.php";
         require "../templates/layout/_popup.html.php";
         require "../templates/layout/_alert.html.php";
-        // require "../templates/layout/_messenger.html.php";
         require "../templates/layout/_navbar.html.php";
         require "../templates/$main/$page.html.php";  
         require "../templates/layout/_footer.html.php";

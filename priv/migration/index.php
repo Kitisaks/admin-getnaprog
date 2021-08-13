@@ -1,7 +1,7 @@
 <div>
   <h2 style="text-align: center">============CREATE NEW DATABASE!============</h2>
 
-  <h4 style="text-align: center;">
+  <h4 style="text-align: center; padding: 10px; border-style: solid;">
     <?php
     #- Create databases
     require_once __DIR__ . "/migration.php";
@@ -12,6 +12,8 @@
     require_once __DIR__ . "/table/users.php";
     require_once __DIR__ . "/table/pages.php";
     require_once __DIR__ . "/table/posts.php";
+    require_once __DIR__ . "/table/actions.php";
+    require_once __DIR__ . "/table/attachments.php";
     //==== put more if want .. ====//
     ?>
   </h4>

@@ -152,30 +152,30 @@ sudo chmod +x db_create.sh
 ./db_create.sh
 ``` -->
 
-### === Libralies Include === ###
-### 1. Send-Mail ###
+# === Libralies Include === 
+## 1. Send-Mail 
 ```php
-use Symfony\Component\Mailer\Transport;
-use Symfony\Component\Mailer\Mailer;
+// Create the Transport
+$transport = (new Swift_SmtpTransport('smtp.example.org', 25))
+  ->setUsername('your username')
+  ->setPassword('your password')
+;
 
-$transport = Transport::fromDsn('smtp://localhost');
-$mailer = new Mailer($transport);
+// Create the Mailer using your created Transport
+$mailer = new Swift_Mailer($transport);
 
-$email = (new Email())
-    ->from('hello@example.com')
-    ->to('you@example.com')
-    //->cc('cc@example.com')
-    //->bcc('bcc@example.com')
-    //->replyTo('fabien@example.com')
-    //->priority(Email::PRIORITY_HIGH)
-    ->subject('Time for Symfony Mailer!')
-    ->text('Sending emails is fun again!')
-    ->html('<p>See Twig integration for better HTML integration!</p>');
+// Create a message
+$message = (new Swift_Message('Wonderful Subject'))
+  ->setFrom(['john@doe.com' => 'John Doe'])
+  ->setTo(['receiver@domain.org', 'other@domain.org' => 'A name'])
+  ->setBody('Here is the message itself')
+  ;
 
-$mailer->send($email);
+// Send the message
+$result = $mailer->send($message);
 ```
 
-### 2. PDF Handler ###
+## 2. PDF Handler 
 ```php 
 // reference the Dompdf namespace
 use Dompdf\Dompdf;
@@ -199,8 +199,11 @@ $options->set('defaultFont', 'Courier');
 $dompdf = new Dompdf($options);
 ```
 
-### 3. CSV Handler ###
-see docs at https://csv.thephpleague.com/9.0/
+## 3. CSV Handler
+https://csv.thephpleague.com/9.0/
 
-### 4. Ftp-Client ###
-see docs https://github.com/Nicolab/php-ftp-client
+## 4. Ftp-Client
+https://github.com/Nicolab/php-ftp-client
+
+## 5. Countries
+https://packagist.org/packages/rinvex/countries

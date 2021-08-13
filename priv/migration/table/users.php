@@ -4,6 +4,7 @@ $table = "users";
 $fields = "
   id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   agency_id INT(10) UNSIGNED,
+  uuid CHAR(50) NOT NULL,
   username VARCHAR(50) NOT NULL,
   password VARCHAR(100) NOT NULL,
   name VARCHAR(50) NOT NULL,
@@ -19,7 +20,7 @@ $fields = "
   status INT(5) NOT NULL DEFAULT 1,
   inserted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-  UNIQUE KEY (username, email),
+  UNIQUE KEY (username, email, uuid),
   FOREIGN KEY (agency_id) REFERENCES agencies(id)
 ";
 

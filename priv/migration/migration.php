@@ -12,7 +12,7 @@ function query_sql($cond, $params1, $params2)
         $sql = "CREATE DATABASE $params1";
 
         $conn->exec($sql);
-        return ("Database created successfully<br>");
+        return ("Database $params1 created successfully<br>");
       } catch (PDOException $e) {
         return ($e->getMessage() . "<br>");
       }
@@ -27,7 +27,7 @@ function query_sql($cond, $params1, $params2)
 
         $conn->exec($sql);
 
-        return ("Table users created successfully<br>");
+        return ("Table $params1 created successfully<br>");
       } catch (PDOException $e) {
         return ($e->getMessage() . "<br>");
       }
