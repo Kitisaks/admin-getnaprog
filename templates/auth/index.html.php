@@ -1,7 +1,7 @@
 <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-900">
   <div class="max-w-md w-full space-y-8">
     <div>
-      <img class="mx-auto h-26 w-auto border-2 border-gray-600 animate-pulse" src="<?php echo r; ?>assets/statics/logo.svg" alt="Reaml-Logo">
+      <img class="mx-auto h-26 w-auto border-2 border-gray-600 animate-pulse" src="<?= r ?>assets/statics/logo.svg" alt="Reaml-Logo">
       <h2 class="mt-6 text-center text-3xl font-extrabold text-white">
         Reaml Admin
       </h2>
@@ -10,7 +10,7 @@
       </p>
     </div>
     <form class="sign-in mt-8 space-y-6" action="/auth/login" method="POST">
-      <input type="hidden" name="token" value="<?php echo $_SESSION["token"]; ?>">
+      <input type="hidden" name="token" value="<?= $_SESSION["token"] ?>">
       <input type="hidden" name="remember" value="true">
       <div class="rounded-md shadow-sm -space-y-px">
         <div>
@@ -24,10 +24,10 @@
       </div>
       <?php if (isset($_SESSION["errno"]) && $_SESSION["errno"]["status"] == 0) : ?>
         <div class="p-2 bg-red-300 text-center border border-red-400 rounded-md">
-          <p class="font-bold text-xs text-red-900"><?php echo $_SESSION["errno"]["message"]; ?></p>
+          <p class="font-bold text-xs text-red-900"><?= $_SESSION["errno"]["message"] ?></p>
         </div>
-      <?php endif;
-      unset($_SESSION["errno"]); ?>
+      <?php endif ?>
+      <?php unset($_SESSION["errno"]) ?>
       <div class="flex items-center justify-between">
         <div class="flex items-center">
           <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">

@@ -13,7 +13,7 @@ class Project extends Plug
   {
     $this
       ->view
-      ->render($this->main, "index"); 
+      ->render($this->main, "index");
   }
 
   public function new()

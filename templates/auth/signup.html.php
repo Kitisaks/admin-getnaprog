@@ -1,6 +1,6 @@
 <div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gray-900">
   <div class="sm:mx-auto sm:w-full sm:max-w-md">
-    <img class="mx-auto h-32 w-auto border-2 border-gray-600" src="<?php echo r; ?>assets/statics/logo.svg" alt="Reaml-Logo">
+    <img class="mx-auto h-32 w-auto border-2 border-gray-600" src="<?= r ?>assets/statics/logo.svg" alt="Reaml-Logo">
     <h2 class="mt-6 text-center text-3xl font-extrabold text-white">
       Sign-Up
     </h2>
@@ -12,8 +12,20 @@
   <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
     <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
       <form class="grid grid-cols-2 gap-4" action="/auth/add" method="POST">
-        <input type="hidden" name="token" value="<?php echo $_SESSION["token"]; ?>">
-        <input type="hidden" name="ip" value="<?php echo Utils::get_client_ip(); ?>">
+        <input type="hidden" name="token" value="<?= $_SESSION["token"] ?>">
+        <input type="hidden" name="ip" value="<?= Utils::get_client_ip() ?>">
+        
+        <div class="col-span-2">
+          <label for="agency_id" class="block text-sm font-medium text-gray-700">
+            Agency
+          </label>
+          <select name="agency_id" class="block bg-white w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <?php foreach($GLOBALS["agencies"] as $agency): ?>
+              <option value="<?= $agency["uuid"] ?>"><?= $agency["cname"] ?></option>
+            <?php endforeach ?>
+          </select>
+        </div>
+
         <div class="col-span-2">
           <label for="name" class="block text-sm font-medium text-gray-700">
             Name
@@ -46,8 +58,8 @@
             Gender
           </label>
           <div class="mt-1">
-            <select name="gender" id="gender" class="appearance-none cursor-pointer block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-              <option value="">--not identified--</option>
+            <select name="gender" id="gender" class="cursor-pointer bg-white block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+              <option value="">Select</option>
               <option value="m">Male</option>
               <option value="f">Female</option>
             </select>
@@ -73,10 +85,10 @@
         </div>
         <?php if (isset($_SESSION["errno"]) && $_SESSION["errno"]["status"] == 0) : ?>
           <div class="p-2 col-span-2 bg-red-300 text-center border border-red-400 rounded-md">
-            <p class="font-bold text-xs text-red-900"><?php echo $_SESSION["errno"]["message"]; ?></p>
+            <p class="font-bold text-xs text-red-900"><?= $_SESSION["errno"]["message"] ?></p>
           </div>
-        <?php endif;
-        unset($_SESSION["errno"]); ?>
+        <?php endif ?>
+        <?php unset($_SESSION["errno"]) ?>
         <div class="pt-4 col-span-2">
           <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             Sign-up

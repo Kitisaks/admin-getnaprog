@@ -46,8 +46,17 @@ class AuthController
     }
   }
 
+  public function signup()
+  {
+    $agencies = 
+      $this
+        ->repo
+        ->all("SELECT cname, uuid FROM agencies ORDER BY cname ASC");
+    $GLOBALS["agencies"] = $agencies;
+  }
+
   #- recieve post method action
-  public function register()
+  public function create()
   {
     if (!empty($_POST['token'])) {
       if (hash_equals($_SESSION['token'], $_POST['token'])) {
@@ -86,26 +95,28 @@ class AuthController
   private function init_register()
   {
     try {
-      $stmt =
-        $this
+      $agency_id = $this->repo->one("SELECT id FROM agencies WHERE uuid = '$_POST[agency_id]'");
+
+      $data = [
+          "agency_id" => $agency_id["id"],
+          "name" => trim($_POST["name"]),
+          "username" => trim(strtolower($_POST["username"])),
+          "password" => md5(trim($_POST["password"])),
+          "email" => trim(strtolower($_POST["email"])),
+          "gender" => trim($_POST["gender"]),
+          "phone" => trim($_POST["phone"]),
+          "ip" => trim($_POST["ip"]),
+          "uuid" => GenUuid::uuid6()
+      ];
+
+      $this
         ->repo
-        ->conn
-        ->prepare(
-          "INSERT INTO users 
-          (name, username, password, email, gender, phone, ip) 
-          VALUES (:name, :username, :password, :email, :gender, :phone, :ip)"
+        ->insert(
+          "users",
+          "agency_id, name, username, password, email, gender, phone, ip, uuid",
+          "$data[agency_id], '$data[name]', '$data[username]', '$data[password]', '$data[email]', '$data[gender]', '$data[phone]', '$data[ip]', '$data[uuid]'"
         );
 
-      $stmt
-        ->execute([
-          ":name" => trim($_POST["name"]),
-          ":username" => trim(strtolower($_POST["username"])),
-          ":password" => md5(trim($_POST["password"])),
-          ":email" => trim(strtolower($_POST["email"])),
-          ":gender" => trim($_POST["gender"]),
-          ":phone" => trim($_POST["phone"]),
-          ":ip" => trim($_POST["ip"])
-        ]);
       header("location: /auth");
     } catch (PDOException $e) {
       echo "Error: " . $e->getMessage();

@@ -27,8 +27,7 @@ class Auth extends Plug
   {
     $this
       ->controller
-      ->forg_pswd();
-
+      ->reset();
     $this
       ->view
       ->render($this->main, "reset", 1);
@@ -36,6 +35,9 @@ class Auth extends Plug
 
   public function signup()
   {
+    $this
+      ->controller
+      ->signup();
     $this
       ->view
       ->render($this->main, "signup", 1);
@@ -45,7 +47,7 @@ class Auth extends Plug
   {
     $this
       ->controller
-      ->register();
+      ->create();
   }
 
   public function logout()

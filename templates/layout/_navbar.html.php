@@ -16,8 +16,8 @@
           </button>
         </div>
         <div class="flex-shrink-0 flex items-center">
-          <img class="block lg:hidden h-8 w-auto" src="<?php echo r; ?>assets/statics/logo.svg" alt="Reaml-Admin-Logo">
-          <img class="hidden lg:block h-8 w-auto" src="<?php echo r; ?>assets/statics/logo.svg" alt="Reaml-Admin-Logo">
+          <img class="block lg:hidden h-8 w-auto" src="<?= r ?>assets/statics/logo.svg" alt="Reaml-Admin-Logo">
+          <img class="hidden lg:block h-8 w-auto" src="<?= r ?>assets/statics/logo.svg" alt="Reaml-Admin-Logo">
         </div>
         <div class="hidden md:ml-6 md:flex md:items-center md:space-x-4">
           <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
@@ -89,8 +89,8 @@
     <div class="pb-3 border-t border-gray-700">
       <div class="flex items-center py-3 bg-gray-800 px-3 border-b border-gray-700">
         <div class="ml-3">
-          <div class="text-base font-medium text-white"><?php echo $GLOBALS["current_user"]->name; ?></div>
-          <div class="text-sm font-medium text-gray-400"><?php echo $GLOBALS["current_user"]->email; ?></div>
+          <div class="text-base font-medium text-white"><?= $GLOBALS["current_user"]->name ?></div>
+          <div class="text-sm font-medium text-gray-400"><?= $GLOBALS["current_user"]->email ?></div>
         </div>
         <button class="ml-auto flex-shrink-0 bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
           <span class="sr-only">View notifications</span>
