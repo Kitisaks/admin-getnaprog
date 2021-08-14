@@ -4,27 +4,28 @@
       <h3 class="text-lg leading-6 font-medium text-gray-900">Customer Information</h3>
       <p class="mt-1 text-sm text-gray-500">Use a permanent address where you can recieve mail.</p>
     </div>
-
+    <input type="hidden" name="user[uuid]" value="<?= GenUuid::uuid6(); ?>">
+    <input type="hidden" name="user[agency_id]" value="<?= $GLOBALS["conn"]["agency"]["id"]; ?>">
     <div class="grid grid-cols-6 gap-6">
       <div class="col-span-6 sm:col-span-3">
-        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-        <input type="text" name="name" id="name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Customer name" required>
+        <label for="user[name]" class="block text-sm font-medium text-gray-700">Name</label>
+        <input type="text" name="user[name]" id="user[name]" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Customer name" required>
       </div>
 
       <div class="col-span-6 sm:col-span-3">
-        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-        <input type="text" name="password" id="password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="At lease 8 characters" required>
+        <label for="user[password]" class="block text-sm font-medium text-gray-700">Password</label>
+        <input type="text" name="user[password]" id="user[password]" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="At lease 8 characters" required>
         <p class="text-xs p-1 text-gray-600">For use in statics page</p>
       </div>
 
       <div class="col-span-6 sm:col-span-3">
-        <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
-        <input type="email" name="email" id="email" autocomplete="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+        <label for="user[email]" class="block text-sm font-medium text-gray-700">Email address</label>
+        <input type="email" name="user[email]" id="user[email]" autocomplete="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
       </div>
 
       <div class="col-span-6 sm:col-span-3">
-        <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
-        <input type="tel" name="phone" id="phone" autocomplete="phone" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+        <label for="user[phone]" class="block text-sm font-medium text-gray-700">Phone</label>
+        <input type="tel" name="user[phone]" id="user[phone]" autocomplete="phone" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
       </div>
 
     </div>

@@ -89,8 +89,8 @@
     <div class="pb-3 border-t border-gray-700">
       <div class="flex items-center py-3 bg-gray-800 px-3 border-b border-gray-700">
         <div class="ml-3">
-          <div class="text-base font-medium text-white"><?= $GLOBALS["current_user"]->name ?></div>
-          <div class="text-sm font-medium text-gray-400"><?= $GLOBALS["current_user"]->email ?></div>
+          <div class="text-base font-medium text-white"><?= $GLOBALS["conn"]["current_user"]["name"] ?></div>
+          <div class="text-sm font-medium text-gray-400"><?= $GLOBALS["conn"]["current_user"]["email"] ?></div>
         </div>
         <button class="ml-auto flex-shrink-0 bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
           <span class="sr-only">View notifications</span>

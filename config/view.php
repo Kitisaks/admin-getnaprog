@@ -2,29 +2,39 @@
 #- use to render view.
 class View
 {
-  function __construct(){
+  function __construct()
+  {
     $this->repo = new Repo();
-    $this->get_current_user();
+    $GLOBALS["conn"] = [
+      "current_user" => $this->current_user(),
+      "agency" => $this->current_agency()
+    ];
   }
 
   private function current_user()
   {
     if (isset($_SESSION["current_user"])) {
-      return json_decode($_SESSION["current_user"]);
+      return json_decode($_SESSION["current_user"], true);
     } else {
       return null;
     }
   }
 
-  public function get_current_user()
+  private function current_agency()
   {
-    $GLOBALS["current_user"] = $this->current_user();
-    $GLOBALS["users"] =
-      $this
-      ->repo
-      ->all("SELECT username, status, role FROM users ORDER BY status DESC, role ASC, username ASC");
+    if (isset($_SESSION["current_user"])) {
+      $user = $this->current_user();
+      $agency =
+        $this
+        ->repo
+        ->get("agencies", $user["agency_id"]);
+      return $agency;
+    } else {
+      return null;
+    }
   }
-  
+
+
   public function render($main, $page, $no_layout = false)
   {
     #- no layout set ($no_layout = 1)
@@ -41,7 +51,7 @@ class View
         require "../templates/layout/_popup.html.php";
         require "../templates/layout/_alert.html.php";
         require "../templates/layout/_navbar.html.php";
-        require "../templates/$main/$page.html.php";  
+        require "../templates/$main/$page.html.php";
         require "../templates/layout/_footer.html.php";
         require "../templates/layout/bottom.html.php";
         break;
