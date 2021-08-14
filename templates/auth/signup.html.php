@@ -59,7 +59,7 @@
           </label>
           <div class="mt-1">
             <select name="gender" id="gender" class="cursor-pointer bg-white block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-              <option value="">Select</option>
+              <option value="" selected hidden>Select</option>
               <option value="m">Male</option>
               <option value="f">Female</option>
             </select>

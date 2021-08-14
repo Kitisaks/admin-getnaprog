@@ -10,19 +10,19 @@
       <div class="mt-4 space-y-4">
         <div class="flex items-start">
           <div class="h-5 flex items-center">
-            <input id="comments" name="comments" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+            <input id="notification[email]" name="notification[email]" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
           </div>
           <div class="ml-3 text-sm">
-            <label for="comments" class="font-medium text-gray-700">Email</label>
+            <label for="notification[email]" class="font-medium text-gray-700">Email</label>
           </div>
         </div>
         <div>
           <div class="flex items-start">
             <div class="h-5 flex items-center">
-              <input id="candidates" name="candidates" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+              <input id="notification[line]" name="notification[line]" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
             </div>
             <div class="ml-3 text-sm">
-              <label for="candidates" class="font-medium text-gray-700">Line</label>
+              <label for="notification[line]" class="font-medium text-gray-700">Line</label>
             </div>
           </div>
         </div>
