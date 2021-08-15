@@ -34,6 +34,13 @@ class View
     }
   }
 
+  private function check_current_user()
+  {
+    if (empty($_SESSION["current_user"])) {
+      header("location: /auth");
+      exit;
+    }
+  }
 
   public function render($main, $page, $no_layout = false)
   {
@@ -41,15 +48,15 @@ class View
     switch ($no_layout) {
       case true:
         require "../templates/layout/header.html.php";
+        require "../templates/layout/_popup.html.php";
         require "../templates/$main/$page.html.php";
         require "../templates/layout/bottom.html.php";
         break;
 
       case false:
-        Utils::check_current_user();
+        $this->check_current_user();
         require "../templates/layout/header.html.php";
         require "../templates/layout/_popup.html.php";
-        require "../templates/layout/_alert.html.php";
         require "../templates/layout/_navbar.html.php";
         require "../templates/$main/$page.html.php";
         require "../templates/layout/_footer.html.php";
@@ -63,6 +70,7 @@ class View
     switch ($no_layout) {
       case true:
         require "../templates/layout/header.html.php";
+        require "../templates/layout/_popup.html.php";
         foreach ($pages as $page) {
           require "../templates/$main/$page.html.php";
         }
@@ -73,7 +81,6 @@ class View
         // $this->utils->messenger();
         require "../templates/layout/header.html.php";
         require "../templates/layout/_popup.html.php";
-        require "../templates/layout/_alert.html.php";
         // require "../templates/layout/_messenger.html.php";
         require "../templates/layout/_navbar.html.php";
         foreach ($pages as $page) {

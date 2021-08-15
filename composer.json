@@ -7,6 +7,10 @@
         "filp/whoops": "^2.14",
         "rinvex/countries": "^7.3",
         "jenssegers/agent": "^2.6",
-        "ramsey/uuid": "^4.2"
+        "ramsey/uuid": "^4.2",
+        "league/flysystem": "^2.2",
+        "league/mime-type-detection": "^1.7",
+        "uptodown/random-username-generator": "^1.0",
+        "nesbot/carbon": "^2.51"
     }
 }

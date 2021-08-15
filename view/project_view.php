@@ -12,6 +12,9 @@ class Project extends Plug
   public function index()
   {
     $this
+      ->controller
+      ->index();
+    $this
       ->view
       ->render($this->main, "index");
   }

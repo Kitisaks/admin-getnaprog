@@ -1,5 +1,5 @@
 <?php if (isset($_SESSION["popup"]) && $_SESSION["popup"]["status"] == 1) : ?>
-  <div aria-live="assertive" id="popup-success" class="popup fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start">
+  <div aria-live="assertive" id="popup-success" class="z-50 popup fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start">
     <div class="w-full flex flex-col items-center space-y-4 sm:items-end">
       <div class="max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
         <div class="p-4">
@@ -11,10 +11,7 @@
             </div>
             <div class="ml-3 w-0 flex-1 pt-0.5">
               <p class="text-sm font-medium text-gray-900">
-                ดำเนินการเสร็จสิ้น
-              </p>
-              <p class="mt-1 text-sm text-gray-500">
-                สามารถตรวจสอบการแก้ไขที่หน้าเว็บ
+                <?= $_SESSION["popup"]["info"] ?>
               </p>
             </div>
             <div class="ml-4 flex-shrink-0 flex">
@@ -31,7 +28,7 @@
     </div>
   </div>
 <?php elseif (isset($_SESSION["popup"]) && $_SESSION["popup"]["status"] == 0) : ?>
-  <div aria-live="assertive" id="popup-fail" class="popup fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start">
+  <div aria-live="assertive" id="popup-fail" class="popup z-50 fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start">
     <div class="w-full flex flex-col items-center space-y-4 sm:items-end">
       <div class="max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
         <div class="p-4">
@@ -43,10 +40,7 @@
             </div>
             <div class="ml-3 w-0 flex-1 pt-0.5">
               <p class="text-sm font-medium text-red-900">
-                ดำเนินการไม่สำเร็จ
-              </p>
-              <p class="mt-1 text-sm text-red-500">
-                มีข้อผิดพลาดบางอย่างเกิดขึ้น โปรดลองอีกครั้งในภายหลัง
+                <?= $_SESSION["popup"]["error"] ?>
               </p>
             </div>
             <div class="ml-4 flex-shrink-0 flex">

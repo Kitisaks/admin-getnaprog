@@ -39,7 +39,7 @@ class Repo
       $stmt =
         $this
         ->conn
-        ->prepare("SELECT * FROM $table WHERE $param1 = $param2 ORDER BY id DESC");
+        ->prepare("SELECT * FROM $table WHERE $param1 = '$param2' ORDER BY id DESC");
 
       $stmt->execute();
       $results = $stmt->fetch(PDO::FETCH_ASSOC);

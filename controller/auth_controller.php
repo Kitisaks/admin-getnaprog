@@ -54,7 +54,6 @@ class AuthController
         ->all("SELECT cname, uuid FROM agencies ORDER BY cname ASC");
     $GLOBALS["agencies"] = $agencies;
   }
-
   #- recieve post method action
   public function create()
   {
@@ -96,7 +95,6 @@ class AuthController
   {
     try {
       $agency_id = $this->repo->one("SELECT id FROM agencies WHERE uuid = '$_POST[agency_id]'");
-
       $data = [
           "agency_id" => $agency_id["id"],
           "name" => trim($_POST["name"]),
@@ -108,7 +106,6 @@ class AuthController
           "ip" => trim($_POST["ip"]),
           "uuid" => GenUuid::uuid6()
       ];
-
       $this
         ->repo
         ->insert(
@@ -116,8 +113,19 @@ class AuthController
           "agency_id, name, username, password, email, gender, phone, ip, uuid",
           "$data[agency_id], '$data[name]', '$data[username]', '$data[password]', '$data[email]', '$data[gender]', '$data[phone]', '$data[ip]', '$data[uuid]'"
         );
+      $user = $this->repo->get_by("users", "username", "$data[username]");
 
-      header("location: /auth");
+      #- Create user directory
+      $user_dir = FileHandler::create_dir("users/$user[uuid]");
+
+      if ($user_dir) {
+        $_SESSION["popup"] = ["status" => 1, "info" => "Already created your account."];
+        header("location: /auth");
+      } else {
+        $_SESSION["popup"] = ["status" => 0, "error" => "Somethings went wrong."];
+        header("location: /auth/signup");
+      }
+
     } catch (PDOException $e) {
       echo "Error: " . $e->getMessage();
     }
@@ -125,12 +133,8 @@ class AuthController
 
   public function logout()
   {
-    if (isset($_SESSION["current_user"])) {
-      session_destroy();
-      header("location: /auth");
-    } else {
-      header("location: /home");
-    }
+    session_destroy();
+    header("location: /auth");
   }
 
   public function reset()

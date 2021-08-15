@@ -154,7 +154,7 @@ $(function () {
 
   //favicon preview
   $('body').on('change', '#favicon-upload', function () {
-    let target_id = $(this).attr('name');
+    let target_id = $(this).attr('data-id');
     //params for usez
     let size = $(this).attr('max-size');
     let preview_img = $("body span[id='"+target_id+"']");
@@ -165,7 +165,7 @@ $(function () {
   });
 
   $('body').on('change', '#cover-image-upload', function(){
-    let target_id = $(this).attr('name');
+    let target_id = $(this).attr('data-id');
     //params for use;
     let size = $(this).attr('max-size');
     let preview_img = $("body div[id='"+target_id+"']");

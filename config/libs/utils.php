@@ -3,14 +3,6 @@
 #- use to declare the libraries for your app. // Static function
 class Utils
 {
-  public static function check_current_user()
-  {
-    if (empty($_SESSION["current_user"])) {
-      header("location: /auth");
-      exit;
-    }
-  }
-
   public static function validate_phone_number($phone)
   {
     $filtered_phone_number = filter_var($phone, FILTER_SANITIZE_NUMBER_INT);

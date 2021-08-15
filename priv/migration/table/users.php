@@ -8,7 +8,7 @@ $fields = "
   username VARCHAR(50) NOT NULL,
   password VARCHAR(100) NOT NULL,
   name VARCHAR(50) NOT NULL,
-  gender CHAR(2) NOT NULL,
+  gender CHAR(2) NULL,
   email VARCHAR(100) NOT NULL,
   address VARCHAR(255) NULL,
   city VARCHAR(50) NULL,
@@ -16,7 +16,7 @@ $fields = "
   zip_code VARCHAR(10) NULL,
   phone VARCHAR(20) NOT NULL,
   role INT(5) NOT NULL DEFAULT 1,
-  ip VARCHAR(50) NOT NULL,
+  ip VARCHAR(50) NULL,
   status INT(5) NOT NULL DEFAULT 1,
   inserted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
