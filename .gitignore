@@ -1,5 +1,6 @@
-/priv/data/users/*
-/priv/data/agencies/*
-/priv/data/pages/*
+/priv/data/users/
+/priv/data/agencies/
+/priv/data/pages/
 
+/.vscode/
 
