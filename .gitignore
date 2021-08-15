@@ -1,3 +1,5 @@
-/priv/data/user/*
+/priv/data/users/*
+/priv/data/agencies/*
+/priv/data/pages/*
 
 
