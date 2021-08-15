@@ -1,7 +1,7 @@
 <?php
 //== SELECT MODE ==//
 #- ["DEV", "PRO"]
-define("MODE", "DEV");
+define("MODE", "PRO");
 
 //== DATABASE CONFIGURATIONS ==//
 switch (MODE) {
