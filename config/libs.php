@@ -1,5 +1,4 @@
 <?php
-
 require_once $_SERVER["DOCUMENT_ROOT"] . "/vendor/autoload.php";
 
 ################### Include Libraries #######################
@@ -12,4 +11,5 @@ require_once __DIR__ . "/libs/uuid.php";
 require_once __DIR__ . "/libs/filesystem.php";
 require_once __DIR__ . "/libs/rand_username.php";
 require_once __DIR__ . "/libs/timex.php";
+require_once __DIR__ . "/libs/percentage.php";
 #############################################################

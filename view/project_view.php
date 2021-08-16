@@ -7,6 +7,7 @@ class Project extends Plug
   {
     parent::__construct();
     $this->main = strtolower(__CLASS__);
+    $this->authenticate();
   }
 
   public function index()

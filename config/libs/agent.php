@@ -1,4 +1,5 @@
 <?php
+
 use Jenssegers\Agent\Agent;
 
 class UserAgent

@@ -9,7 +9,7 @@ class ProjectController
   public function index()
   {
     $agency_id = $GLOBALS["conn"]["agency"]["id"];
-    $GLOBALS["results"] =
+    $GLOBALS["unpublished"] =
       $this
       ->repo
       ->all(
@@ -17,9 +17,21 @@ class ProjectController
           FROM pages p
           INNER JOIN users u ON p.user_id = u.id
           INNER JOIN attachments a ON a.page_id = p.id
-          WHERE p.agency_id = $agency_id AND a.kind = 'page' AND a.title = 'cover_image'
+          WHERE p.agency_id = $agency_id AND a.kind = 'page' AND a.title = 'cover_image' AND p.status = 1 
           ORDER BY p.id DESC"
       );
+    $GLOBALS["published"] =
+      $this
+      ->repo
+      ->all(
+        "SELECT p.permalink AS page_permalink, p.uuid AS page_uuid, p.meta_title AS page_meta_title, p.meta_description AS page_meta_description, p.inserted_at AS page_inserted_at, u.name AS user_name, u.role AS user_role, a.name AS attachment_name, a.kind AS attachment_kind, a.title AS attachment_title
+          FROM pages p
+          INNER JOIN users u ON p.user_id = u.id
+          INNER JOIN attachments a ON a.page_id = p.id
+          WHERE p.agency_id = $agency_id AND a.kind = 'page' AND a.title = 'cover_image' AND p.status = 2 
+          ORDER BY p.id DESC"
+      );
+    
   }
 
   public function create()

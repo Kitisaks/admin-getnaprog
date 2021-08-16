@@ -2,45 +2,6 @@
 #- use to render view.
 class View
 {
-  function __construct()
-  {
-    $this->repo = new Repo();
-    $GLOBALS["conn"] = [
-      "current_user" => $this->current_user(),
-      "agency" => $this->current_agency()
-    ];
-  }
-
-  private function current_user()
-  {
-    if (isset($_SESSION["current_user"])) {
-      return json_decode($_SESSION["current_user"], true);
-    } else {
-      return null;
-    }
-  }
-
-  private function current_agency()
-  {
-    if (isset($_SESSION["current_user"])) {
-      $user = $this->current_user();
-      $agency =
-        $this
-        ->repo
-        ->get("agencies", $user["agency_id"]);
-      return $agency;
-    } else {
-      return null;
-    }
-  }
-
-  private function check_current_user()
-  {
-    if (empty($_SESSION["current_user"])) {
-      header("location: /auth");
-      exit;
-    }
-  }
 
   public function render($main, $page, $no_layout = false)
   {
@@ -54,7 +15,6 @@ class View
         break;
 
       case false:
-        $this->check_current_user();
         require "../templates/layout/header.html.php";
         require "../templates/layout/_popup.html.php";
         require "../templates/layout/_navbar.html.php";
