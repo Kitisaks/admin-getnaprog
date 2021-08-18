@@ -15,8 +15,8 @@ class ProjectController
       ->all(
         "SELECT p.permalink AS page_permalink, p.uuid AS page_uuid, p.meta_title AS page_meta_title, p.meta_description AS page_meta_description, p.inserted_at AS page_inserted_at, u.name AS user_name, u.role AS user_role, a.name AS attachment_name, a.kind AS attachment_kind, a.title AS attachment_title
           FROM pages p
-          INNER JOIN users u ON p.user_id = u.id
-          INNER JOIN attachments a ON a.page_id = p.id
+          LEFT JOIN users u ON p.user_id = u.id
+          LEFT JOIN attachments a ON a.page_id = p.id
           WHERE p.agency_id = $agency_id AND a.kind = 'page' AND a.title = 'cover_image' AND p.status = 1 
           ORDER BY p.id DESC"
       );
@@ -26,12 +26,41 @@ class ProjectController
       ->all(
         "SELECT p.permalink AS page_permalink, p.uuid AS page_uuid, p.meta_title AS page_meta_title, p.meta_description AS page_meta_description, p.inserted_at AS page_inserted_at, u.name AS user_name, u.role AS user_role, a.name AS attachment_name, a.kind AS attachment_kind, a.title AS attachment_title
           FROM pages p
-          INNER JOIN users u ON p.user_id = u.id
-          INNER JOIN attachments a ON a.page_id = p.id
+          LEFT JOIN users u ON p.user_id = u.id
+          LEFT JOIN attachments a ON a.page_id = p.id
           WHERE p.agency_id = $agency_id AND a.kind = 'page' AND a.title = 'cover_image' AND p.status = 2 
           ORDER BY p.id DESC"
       );
-    
+    $count_unpub = 
+      $this
+      ->repo
+      ->one(
+        "SELECT DISTINCT count(p.id) AS num
+        FROM pages p
+        WHERE p.agency_id = $agency_id AND p.status = 1"
+      );
+    $count_pub = 
+      $this
+      ->repo
+      ->one(
+        "SELECT DISTINCT count(p.id) AS num
+        FROM pages p
+        WHERE p.agency_id = $agency_id AND p.status = 2"
+      );
+    $total = intval($count_unpub["num"]) + intval($count_pub["num"]);
+    if ($total != 0) {
+      $GLOBALS["statics"] = [
+        "total" => $total,
+        "percent_pub" => (intval($count_pub["num"])/$total)*100,
+        "percent_unpub" => (intval($count_unpub["num"])/$total)*100
+      ];
+    } else {
+      $GLOBALS["statics"] = [
+        "total" => 0,
+        "percent_pub" => 0,
+        "percent_unpub" => 0
+      ];
+    }
   }
 
   public function create()

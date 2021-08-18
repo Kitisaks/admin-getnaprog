@@ -21,7 +21,6 @@ class ComposerStaticInitf69c17cfcdbfb310caac84b23465f0a5
         'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
         '3c3a02bc9945aa3571024986c07a1e55' => __DIR__ . '/..' . '/rinvex/countries/src/helpers.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
-        '5f731641b680334dfb9f2b26ff605d11' => __DIR__ . '/..' . '/mattiasgeniar/php-percentages/src/Helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -56,10 +55,6 @@ class ComposerStaticInitf69c17cfcdbfb310caac84b23465f0a5
         'P' => 
         array (
             'Psr\\Log\\' => 8,
-        ),
-        'M' => 
-        array (
-            'Mattiasgeniar\\Percentage\\' => 25,
         ),
         'L' => 
         array (
@@ -163,10 +158,6 @@ class ComposerStaticInitf69c17cfcdbfb310caac84b23465f0a5
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
-        ),
-        'Mattiasgeniar\\Percentage\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/mattiasgeniar/php-percentages/src',
         ),
         'League\\MimeTypeDetection\\' => 
         array (

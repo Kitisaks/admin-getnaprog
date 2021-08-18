@@ -1,4 +1,3 @@
-<?php $count = ["pub" => count($GLOBALS["published"]), "unpub" => count($GLOBALS["unpublished"])] ?>
 <h3 class="text-lg leading-6 mb-1">
   <span class="inline-flex items-center rounded-mdbg-pink-100">
     Last 30 Days
@@ -10,7 +9,7 @@
       Unpublished
     </dt>
     <dd class="mt-1 text-3xl font-semibold text-gray-900">
-      <?= MathPercentage::find($count["unpub"], $count["pub"] + $count["unpub"]) ?>%
+      <?= $GLOBALS["statics"]["percent_unpub"] ?>%
     </dd>
   </div>
 
@@ -19,7 +18,7 @@
       Published
     </dt>
     <dd class="mt-1 text-3xl font-semibold text-gray-900">
-      <?= MathPercentage::find($count["pub"], $count["pub"] + $count["unpub"]) ?>%
+      <?= $GLOBALS["statics"]["percent_pub"] ?>%
     </dd>
   </div>
 
@@ -28,7 +27,7 @@
       All Projects
     </dt>
     <dd class="mt-1 text-3xl font-semibold text-gray-900">
-      <?= $count["pub"] + $count["unpub"] ?>
+      <?= $GLOBALS["statics"]["total"] ?>
     </dd>
   </div>
 </dl>

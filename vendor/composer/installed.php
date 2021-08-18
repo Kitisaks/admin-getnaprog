@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '6e6243f1152b26954554859e7b4fee949035fe75',
+        'reference' => '1f6166d850e526862b24ac2332153be8be12ede2',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '6e6243f1152b26954554859e7b4fee949035fe75',
+            'reference' => '1f6166d850e526862b24ac2332153be8be12ede2',
             'dev_requirement' => false,
         ),
         'brick/math' => array(
@@ -107,15 +107,6 @@
             'install_path' => __DIR__ . '/../league/mime-type-detection',
             'aliases' => array(),
             'reference' => '3b9dff8aaf7323590c1d2e443db701eb1f9aa0d3',
-            'dev_requirement' => false,
-        ),
-        'mattiasgeniar/php-percentages' => array(
-            'pretty_version' => '1.3.0',
-            'version' => '1.3.0.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../mattiasgeniar/php-percentages',
-            'aliases' => array(),
-            'reference' => 'f65439e5f65e860b861cc929c08aa77eb8e56bc5',
             'dev_requirement' => false,
         ),
         'mobiledetect/mobiledetectlib' => array(
