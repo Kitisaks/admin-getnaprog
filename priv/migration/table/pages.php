@@ -6,6 +6,8 @@ $fields = "
   user_id INT(10) UNSIGNED,
   uuid CHAR(50) NOT NULL,
   permalink VARCHAR(100) NULL,
+  title VARCHAR(140) NULL,
+  description VARCHAR(255) NULL,
   meta_title VARCHAR(255) NULL,
   meta_description VARCHAR(255) NULL,
   meta_keyword VARCHAR(255) NULL,
