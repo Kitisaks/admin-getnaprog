@@ -8,12 +8,7 @@ $fields = "
   email BOOLEAN DEFAULT FALSE,
   line BOOLEAN DEFAULT FALSE,
   sms BOOLEAN DEFAULT FALSE,
-  inserted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  
-  
-  FOREIGN KEY (user_id) REFERENCES users(id),
-  FOREIGN KEY (agency_id) REFERENCES agencies(id),
-  FOREIGN KEY (page_id) REFERENCES pages(id)
+  inserted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ";
 
 print_r(query_sql("table", $table, $fields));

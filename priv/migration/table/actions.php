@@ -7,10 +7,7 @@ $fields = "
   ip VARCHAR(50) NOT NULL,
   permalink VARCHAR(100) NULL,
   devices VARCHAR(100) NULL,
-  inserted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  
-  FOREIGN KEY (agency_id) REFERENCES agencies(id),
-  FOREIGN KEY (page_id) REFERENCES pages(id)
+  inserted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ";
 
 print_r(query_sql("table", $table, $fields));

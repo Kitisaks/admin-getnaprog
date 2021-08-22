@@ -1,7 +1,10 @@
-<?php 
+<?php
+
 use \Whoops\Run;
 use \Whoops\Handler\PrettyPageHandler;
 
-$whoops = new Run;
-$whoops->pushHandler(new PrettyPageHandler);
-$whoops->register();
+if (MODE == "DEV") {
+  $whoops = new Run;
+  $whoops->pushHandler(new PrettyPageHandler);
+  $whoops->register();
+}

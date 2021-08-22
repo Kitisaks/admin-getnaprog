@@ -14,9 +14,7 @@ $fields = "
   status INT(5) NOT NULL DEFAULT 1,
   inserted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   
-  UNIQUE KEY (uuid),
-  FOREIGN KEY (user_id) REFERENCES users(id),
-  FOREIGN KEY (agency_id) REFERENCES agencies(id)
+  UNIQUE KEY (uuid)
 ";
 
 print_r(query_sql("table", $table, $fields));

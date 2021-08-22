@@ -13,7 +13,7 @@ class ProjectController
       $this
       ->repo
       ->all(
-        "SELECT p.permalink AS page_permalink, p.uuid AS page_uuid, p.meta_title AS page_meta_title, p.meta_description AS page_meta_description, p.inserted_at AS page_inserted_at, u.name AS user_name, u.role AS user_role, a.name AS attachment_name, a.kind AS attachment_kind, a.title AS attachment_title
+        "SELECT p.id AS page_id, p.permalink AS page_permalink, p.uuid AS page_uuid, p.meta_title AS page_meta_title, p.meta_description AS page_meta_description, p.inserted_at AS page_inserted_at, u.name AS user_name, u.role AS user_role, a.name AS attachment_name, a.kind AS attachment_kind, a.title AS attachment_title
           FROM pages p
           LEFT JOIN users u ON p.user_id = u.id
           LEFT JOIN attachments a ON a.page_id = p.id
@@ -24,7 +24,7 @@ class ProjectController
       $this
       ->repo
       ->all(
-        "SELECT p.permalink AS page_permalink, p.uuid AS page_uuid, p.meta_title AS page_meta_title, p.meta_description AS page_meta_description, p.inserted_at AS page_inserted_at, u.name AS user_name, u.role AS user_role, a.name AS attachment_name, a.kind AS attachment_kind, a.title AS attachment_title
+        "SELECT p.id AS page_id, p.permalink AS page_permalink, p.uuid AS page_uuid, p.meta_title AS page_meta_title, p.meta_description AS page_meta_description, p.inserted_at AS page_inserted_at, u.name AS user_name, u.role AS user_role, a.name AS attachment_name, a.kind AS attachment_kind, a.title AS attachment_title
           FROM pages p
           LEFT JOIN users u ON p.user_id = u.id
           LEFT JOIN attachments a ON a.page_id = p.id
@@ -116,7 +116,7 @@ class ProjectController
       "meta_description" => trim($_POST["page"]["meta_description"])
     ];
     #- Insert pages table
-    $resp =
+    $resp_page =
       $this
       ->repo
       ->insert(
@@ -124,7 +124,7 @@ class ProjectController
         "agency_id, user_id, uuid, permalink, meta_title, meta_description",
         "$page[agency_id], $page[user_id], '$page[uuid]', '$page[permalink]', '$page[meta_title]', '$page[meta_description]'"
       );
-    if ($resp) {
+    if ($resp_page) {
       $data_page =
         $this
         ->repo
@@ -206,12 +206,16 @@ class ProjectController
       return false;
     } else {
       #- Upload all attachment to drive
-      $uploads_dir = $_SERVER["DOCUMENT_ROOT"] . "/priv/data/pages/$page[uuid]";
+      if (MODE == "DEV") {
+        $uploads_dir = dirname($_SERVER["DOCUMENT_ROOT"]) . "/api/priv/drive/{$GLOBALS['conn']['agency']['cname']}";
+      } elseif (MODE == "PRO") {
+        $uploads_dir = dirname($_SERVER["DOCUMENT_ROOT"]) . "/db/priv/drive/{$GLOBALS['conn']['agency']['cname']}";
+      }
       $files_upload = [$favicon, $cover_image];
       foreach ($files_upload as $file) {
         $tmp_name = $file["tmp_name"];
-        $name = $file["kind"] . ":" . $file["title"] . ":" . $file["name"];
-        move_uploaded_file($tmp_name, "$uploads_dir/$name");
+        $name = "{$file['kind']}-{$file['title']}-{$file['page_id']}-{$file['name']}";
+        move_uploaded_file($tmp_name, "{$uploads_dir}/{$name}");
       }
       $_SESSION["popup"] = ["status" => 1, "info" => "Already created your page."];
       header("location: /project");

@@ -1,9 +1,6 @@
 <?php
 
 //== PREVENTING SESSION HIJACKING ==//
-
-use Composer\Autoload\ClassLoader;
-
 ini_set('session.cookie_httponly', 1);
 ini_set('session.use_only_cookies', 1);
 ini_set('session.cookie_secure', 1);
@@ -26,7 +23,7 @@ if (MODE == "PRO") {
   header("X-XSS-Protection: 1; mode=block");
   header("X-Content-Type-Options: nosniff");
   header("Vary: User-Agent,Accept");
-} else {
+} elseif (MODE == "DEV") {
   ini_set('display_errors', 1);
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
