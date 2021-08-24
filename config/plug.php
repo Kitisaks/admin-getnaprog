@@ -26,7 +26,6 @@ class Plug
       "current_user" => $this->current_user(),
       "agency" => $this->current_agency()
     ];
-    return $GLOBALS["conn"];
   }
 
   private function current_user()
@@ -42,11 +41,10 @@ class Plug
   {
     if (isset($_SESSION["current_user"])) {
       $user = $this->current_user();
-      $agency =
+      return
         $this
         ->repo
         ->get("agencies", $user["agency_id"]);
-      return $agency;
     } else {
       return null;
     }

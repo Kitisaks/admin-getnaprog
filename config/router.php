@@ -15,7 +15,7 @@ class Router
       require_once $file;
     } else {
       $notfound->index();
-      return false;
+      exit;
     }
 
     $render = new $url[0];
@@ -24,12 +24,14 @@ class Router
     if ($n >= 1) {
       if (method_exists($render, $url[$n])) {
         $render->{$url[$n]}();
+        exit;
       } else {
         $notfound->index();
-        return false;
+        exit;
       }
     } else {
       $render->index();
+      exit;
     }
   }
 }

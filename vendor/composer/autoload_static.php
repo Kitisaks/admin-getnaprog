@@ -59,6 +59,7 @@ class ComposerStaticInitf69c17cfcdbfb310caac84b23465f0a5
         'L' => 
         array (
             'League\\MimeTypeDetection\\' => 25,
+            'League\\Flysystem\\Ftp\\' => 21,
             'League\\Flysystem\\' => 17,
             'League\\Csv\\' => 11,
         ),
@@ -163,6 +164,10 @@ class ComposerStaticInitf69c17cfcdbfb310caac84b23465f0a5
         array (
             0 => __DIR__ . '/..' . '/league/mime-type-detection/src',
         ),
+        'League\\Flysystem\\Ftp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/flysystem-ftp',
+        ),
         'League\\Flysystem\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/flysystem/src',
@@ -211,13 +216,6 @@ class ComposerStaticInitf69c17cfcdbfb310caac84b23465f0a5
             'Sabberworm\\CSS' => 
             array (
                 0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/lib',
-            ),
-        ),
-        'F' => 
-        array (
-            'FtpClient' => 
-            array (
-                0 => __DIR__ . '/..' . '/nicolab/php-ftp-client/src',
             ),
         ),
         'D' => 

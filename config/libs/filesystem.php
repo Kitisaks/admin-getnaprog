@@ -12,15 +12,15 @@ use League\Flysystem\UnableToCreateDirectory;
 use League\Flysystem\UnableToMoveFile;
 use League\Flysystem\UnableToCopyFile;
 use League\MimeTypeDetection\FinfoMimeTypeDetector;
+use League\Flysystem\StorageAttributes;
 
 class FileHandler
 {
-  private static function setup()
+  public static function adapter()
   {
     $adapter = new LocalFilesystemAdapter(
       // Determine the root directory
-      $_SERVER["DOCUMENT_ROOT"] . "/priv/data/",
-
+      $_SERVER["DOCUMENT_ROOT"] . "/",
       // Customize how visibility is converted to unix permissions
       PortableVisibilityConverter::fromArray([
         'file' => [
@@ -32,92 +32,102 @@ class FileHandler
           'private' => 0700,
         ]
       ]),
-
       // Write flags
       LOCK_EX,
-
       // How to deal with links, either DISALLOW_LINKS or SKIP_LINKS
       // Disallowing them causes exceptions when encountered
       LocalFilesystemAdapter::DISALLOW_LINKS
     );
 
-    $filesystem = new Filesystem($adapter, ["visibility" => "public"]);
-    return $filesystem;
+    return new Filesystem($adapter, ["visibility" => "public"]);
   }
 
-  public static function write_file($path, $contents, $config = [])
+  public static function write_file($adapter, $path, $contents, $config = [])
   {
     try {
-      self::setup()->write($path, $contents, $config);
+      $adapter->write($path, $contents, $config);
       return true;
     } catch (FilesystemException | UnableToWriteFile $exception) {
-      return "Unable to write: " . $exception;
+      exit("Unable to write file: " . $exception);
     }
   }
 
-  public static function read_file($path)
+  public static function read_file($adapter, $path)
   {
     try {
-      $response = self::setup()->read($path);
+      $response = $adapter->read($path);
       return $response;
     } catch (FilesystemException | UnableToReadFile $exception) {
-      return "Unable to read: " . $exception;
+      exit("Unable to read file: " . $exception);
     }
   }
 
-  public static function delete_file($path)
+  public static function delete_file($adapter, $path)
   {
     try {
-      self::setup()->delete($path);
+      $adapter->delete($path);
       return true;
     } catch (FilesystemException | UnableToDeleteFile $exception) {
-      return "Unable to delete file: " . $exception;
+      exit("Unable to delete file: " . $exception);
     }
   }
 
-  public static function delete_dir($path)
+  public static function delete_dir($adapter, $path)
   {
     try {
-      self::setup()->deleteDirectory($path);
+      $adapter->deleteDirectory($path);
       return true;
     } catch (FilesystemException | UnableToDeleteDirectory $exception) {
-      return "Unable to delete directory: " . $exception;
+      exit("Unable to delete directory: " . $exception);
     }
   }
 
-  public static function create_dir($path, $config = [])
+  public static function create_dir($adapter, $path, $config = [])
   {
     try {
-      self::setup()->createDirectory($path, $config);
+      $adapter->createDirectory($path, $config);
       return true;
     } catch (FilesystemException | UnableToCreateDirectory $exception) {
-      return "Unable to create directory: " . $exception;
+      exit("Unable to create directory: " . $exception);
     }
   }
 
-  public static function move_file($source, $destination, $config = [])
+  public static function move_file($adapter, $source, $destination, $config = [])
   {
     try {
-      self::setup()->move($source, $destination, $config);
+      $adapter->move($source, $destination, $config);
       return true;
     } catch (FilesystemException | UnableToMoveFile $exception) {
-      return "Unable to move file: " . $exception;
+      exit("Unable to move file: " . $exception);
     }
   }
 
-  public static function copy_file($source, $destination, $config = [])
+  public static function copy_file($adapter, $source, $destination, $config = [])
   {
     try {
-      self::setup()->copy($source, $destination, $config);
+      $adapter->copy($source, $destination, $config);
     } catch (FilesystemException | UnableToCopyFile $exception) {
-      return "Unable to copy file: " . $exception;
+      exit("Unable to copy file: " . $exception);
+    }
+  }
+
+  public static function lists($adapter, $path = ""): array
+  {
+    try {
+      return
+        $adapter
+        ->listContents($path)
+        ->sortByPath()
+        ->map(fn (StorageAttributes $attributes) => $attributes->path())
+        ->toArray();
+    } catch (FilesystemException | UnableToReadFile $exception) {
+      exit("Unable to listing directories: " . $exception);
     }
   }
 
   public static function mime_content_type($path)
   {
     $detector = new FinfoMimeTypeDetector();
-    $mimeType = $detector->detectMimeTypeFromFile($path);
-    return $mimeType;
+    return $detector->detectMimeTypeFromFile($path);
   }
 }

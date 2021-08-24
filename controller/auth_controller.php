@@ -21,7 +21,10 @@ class AuthController
           $results =
             $this
             ->repo
-            ->one("SELECT * FROM users WHERE (username = '$user_mail' OR email = '$user_mail') AND password = '$password'");
+            ->select("*")
+            ->from("users")
+            ->where("(username = '{$user_mail}' OR email = '{$user_mail}') AND password = '{$password}'")
+            ->one();
 
           switch ($results) {
             case false:
@@ -38,10 +41,11 @@ class AuthController
               break;
           }
         } catch (PDOException $e) {
-          echo "Error: " . $e->getMessage();
+          exit("Error: " . $e->getMessage());
         }
       } else {
-        header("location: /notfound");
+        header($_SERVER["SERVER_PROTOCOL"] . "405 Method Not Allowed");
+        exit;
       }
     }
   }
@@ -50,11 +54,14 @@ class AuthController
   {
     $agencies = 
       $this
-        ->repo
-        ->all("SELECT cname, uuid FROM agencies ORDER BY cname ASC");
+      ->repo
+      ->select(["cname", "uuid"])
+      ->from("agencies")
+      ->order_by(["ASC" => "cname"])
+      ->all();
     $GLOBALS["agencies"] = $agencies;
   }
-  #- recieve post method action
+
   public function create()
   {
     if (!empty($_POST['token'])) {
@@ -68,13 +75,13 @@ class AuthController
             ];
             header("location: /auth/signup");
             break;
-
           case false:
             $this->init_register();
             break;
         }
       } else {
         header($_SERVER["SERVER_PROTOCOL"] . "405 Method Not Allowed");
+        exit;
       }
     }
   }
@@ -85,8 +92,10 @@ class AuthController
     $check =
       $this
       ->repo
-      ->one("SELECT username, email FROM users WHERE username = '$username' OR email = '$email'");
-
+      ->select(["username", "email"])
+      ->from("users")
+      ->where("username = '{$username}' OR email = '{$email}'")
+      ->one();
     return $check;
   }
 
@@ -94,9 +103,16 @@ class AuthController
   private function init_register()
   {
     try {
-      $agency_id = $this->repo->one("SELECT id FROM agencies WHERE uuid = '$_POST[agency_id]'");
-      $data = [
-          "agency_id" => $agency_id["id"],
+      $agency_id = 
+        $this
+        ->repo
+        ->select("id")
+        ->from("agencies")
+        ->where("uuid = '{$_POST['agency_id']}'")
+        ->one();
+
+      $user = [
+          "agency_id" => intval($agency_id["id"]),
           "name" => trim($_POST["name"]),
           "username" => trim(strtolower($_POST["username"])),
           "password" => md5(trim($_POST["password"])),
@@ -106,19 +122,8 @@ class AuthController
           "ip" => trim($_POST["ip"]),
           "uuid" => GenUuid::uuid6()
       ];
-      $this
-        ->repo
-        ->insert(
-          "users",
-          "agency_id, name, username, password, email, gender, phone, ip, uuid",
-          "$data[agency_id], '$data[name]', '$data[username]', '$data[password]', '$data[email]', '$data[gender]', '$data[phone]', '$data[ip]', '$data[uuid]'"
-        );
-      $user = $this->repo->get_by("users", "username", "$data[username]");
 
-      #- Create user directory
-      $user_dir = FileHandler::create_dir("users/$user[uuid]");
-
-      if ($user_dir) {
+      if ($this->repo->insert("users", $user)) {
         $_SESSION["popup"] = ["status" => 1, "info" => "Already created your account."];
         header("location: /auth");
       } else {
@@ -127,7 +132,7 @@ class AuthController
       }
 
     } catch (PDOException $e) {
-      echo "Error: " . $e->getMessage();
+      exit("Error: " . $e->getMessage());
     }
   }
 
@@ -135,6 +140,7 @@ class AuthController
   {
     session_destroy();
     header("location: /auth");
+    exit;
   }
 
   public function reset()
@@ -142,7 +148,8 @@ class AuthController
     if (!empty($_POST['token'])) {
       if (hash_equals($_SESSION['token'], $_POST['token'])) {
       } else {
-        header("location: /notfound");
+        header($_SERVER["SERVER_PROTOCOL"] . "405 Method Not Allowed");
+        exit;
       }
     }
   }

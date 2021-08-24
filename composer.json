@@ -2,7 +2,6 @@
     "require": {
         "dompdf/dompdf": "^1.0",
         "league/csv": "^9.7",
-        "nicolab/php-ftp-client": "^1.6",
         "swiftmailer/swiftmailer": "^6.0",
         "filp/whoops": "^2.14",
         "rinvex/countries": "^7.3",
@@ -11,6 +10,7 @@
         "league/flysystem": "^2.2",
         "league/mime-type-detection": "^1.7",
         "uptodown/random-username-generator": "^1.0",
-        "nesbot/carbon": "^2.51"
+        "nesbot/carbon": "^2.51",
+        "league/flysystem-ftp": "^2.0"
     }
 }
