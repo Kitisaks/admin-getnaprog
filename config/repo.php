@@ -2,79 +2,69 @@
 #- all query db follow in here.
 class Repo
 {
-  private string $query;
+  private $query = "";
 
   function __construct()
   {
-    $this->query = "";
+    $this->conn =
+      new PDO(
+        "mysql:host=" . DB["HOST"] . ";dbname=" . DB["NAME"],
+        DB["USER"],
+        DB["PASSWORD"]
+      );
+    $this
+      ->conn
+      ->setAttribute(
+        PDO::ATTR_ERRMODE,
+        PDO::ERRMODE_EXCEPTION
+      );
   }
 
-  private function connect(): bool
+  public function select($params, string $opt = null)
   {
-    try {
-      $this->conn =
-        new PDO(
-          "mysql:host=" . DB["HOST"] . ";dbname=" . DB["NAME"],
-          DB["USER"],
-          DB["PASSWORD"]
-        );
-      return
-        $this
-        ->conn
-        ->setAttribute(
-          PDO::ATTR_ERRMODE,
-          PDO::ERRMODE_EXCEPTION
-        );
-    } catch (PDOException $e) {
-      exit("Connection failed: " . $e->getMessage());
-    }
-  }
 
-  public function select($params)
-  {
-    if (is_array($params)) {
-      $this->query .= "SELECT " . join(", ", $params);
-      return $this;
-    } else if (is_string($params)) {
-      $this->query .= "SELECT {$params}";
-      return $this;
-    }
-  }
-
-  public function select_distinct($params)
-  {
-    if (is_array($params)) {
-      $this->query .= "SELECT DISTINCT " . join(", ", $params);
-      return $this;
-    } else if (is_string($params)) {
-      $this->query .= "SELECT {$params}";
-      return $this;
+    if (isset($opt)) {
+      if (is_array($params)) {
+        $this->query .= "select {$opt}" . join(",", $params);
+        return $this;
+      } else if (is_string($params)) {
+        $this->query .= "select {$opt} {$params}";
+        return $this;
+      }
+    } else {
+      if (is_array($params)) {
+        $this->query .= "select " . join(",", $params);
+        return $this;
+      } else if (is_string($params)) {
+        $this->query .= "select {$params}";
+        return $this;
+      }
     }
   }
 
   public function where(string $clause)
   {
-    $this->query .= " WHERE {$clause}";
+    $this->query .= " where {$clause}";
     return $this;
   }
 
   public function join($position, array $params)
   {
     foreach ($params as $key => $value) {
-      $this->query .= " {$position} JOIN {$key} ON {$value}";
+      $this->query .= " {$position} join {$key} on {$value}";
     }
     return $this;
   }
 
   public function from($table)
   {
-    $this->query .= " FROM {$table}";
+    $this->query .= " from {$table}";
     return $this;
   }
 
   public function order_by(array $params)
   {
-    $this->query .= " ORDER BY ";
+    $this->query .= " order by ";
     foreach ($params as $key => $value) {
       $this->query .= "{$value} {$key}";
     }
@@ -85,7 +75,6 @@ class Repo
   public function one()
   {
     try {
-      $this->connect();
       $stmt =
         $this
         ->conn
@@ -95,7 +84,7 @@ class Repo
       $this->query = "";
       return $results;
     } catch (PDOException $e) {
-      return $e->getMessage();
+      exit($e->getMessage());
     }
     $this->conn = null;
   }
@@ -104,7 +93,6 @@ class Repo
   public function all()
   {
     try {
-      $this->connect();
       $stmt =
         $this
         ->conn
@@ -114,7 +102,7 @@ class Repo
       $this->query = "";
       return $results;
     } catch (PDOException $e) {
-      return $e->getMessage();
+      exit($e->getMessage());
     }
     $this->conn = null;
   }
@@ -126,44 +114,43 @@ class Repo
       $this
       ->select("*")
       ->from($table)
-      ->where("id = {$id}")
+      ->where("id={$id}")
       ->one();
   }
 
   #- Fetch all record in table by specific params
-  public function get_by($table, array $params)
+  public function get_by($table, string $clause)
   {
-    $clause = "";
-    foreach ($params as $key => $value) {
-      if (is_string($value))
-        $clause .= "{$key} = '{$value}'";
-      else
-        $clause .= "{$key} = {$value}";
-    }
     return
       $this
       ->select("*")
       ->from($table)
       ->where($clause)
-      ->order_by(["DESC" => "id"])
+      ->order_by(["desc" => "id"])
       ->one();
   }
 
   #- update with specific
-  public function update($table, array $params, int $id)
+  public function update($table, array $data, array $params)
   {
+    foreach ($params as $key => $val) {
+      if (is_string($val))
+        $values[] = "{$key}='{$val}'";
+      else
+        $values[] = "{$key}={$val}";
+    }
+    $value = join(",", $values);
     try {
-      $this->connect();
-      $sql = "UPDATE {$table} SET {$params} WHERE id = {$id}";
+      $sql = "UPDATE {$table} SET {$value} WHERE id={$data['id']}";
       $stmt =
         $this
         ->conn
         ->prepare($sql);
       $stmt->execute();
-      $return = $this->get($table, $id);
+      $return = $this->get($table, $data["id"]);
       return $return;
     } catch (PDOException $e) {
-      return $e->getMessage();
+      exit($e->getMessage());
     }
     $this->conn = null;
   }
@@ -171,24 +158,22 @@ class Repo
   public function insert($table, array $params)
   {
     foreach ($params as $key => $val) {
-      $k = ":{$key}";
       $keys[] = $key;
-      $binds[] = $k;
-      $assoc[$k] = $val;
+      $binds[] = ":{$key}";
+      $data[":{$key}"] = $val;
     }
-    $col = join(", ", $keys);
-    $bind = join(", ", $binds);
+    $col = join(",", $keys);
+    $bind = join(",", $binds);
     try {
-      $this->connect();
       $sql = "INSERT INTO {$table} ({$col}) VALUES ({$bind})";
       $stmt =
         $this
         ->conn
         ->prepare($sql);
-      $stmt->execute($assoc);
+      $stmt->execute($data);
       return true;
     } catch (PDOException $e) {
-      return $e->getMessage();
+      exit($e->getMessage());
     }
     $this->conn = null;
   }
@@ -196,8 +181,7 @@ class Repo
   public function delete($table, int $id)
   {
     try {
-      $this->connect();
-      $sql = "DELETE FROM {$table} WHERE id = {$id}";
+      $sql = "DELETE FROM {$table} WHERE id={$id}";
       $stmt =
         $this
         ->conn
@@ -205,7 +189,7 @@ class Repo
       $stmt->execute();
       return true;
     } catch (PDOException $e) {
-      return $e->getMessage();
+      exit($e->getMessage());
     }
     $this->conn = null;
   }

@@ -1,11 +1,11 @@
 <?php
 class AuthController
 {
-
   function __construct()
   {
+    $this->plug = new Plug();
     $this->repo = new Repo();
-    if (isset($_SESSION["current_user"])) {
+    if (isset($_SESSION["conn"])) {
       header("location: /home");
     }
   }
@@ -23,20 +23,23 @@ class AuthController
             ->repo
             ->select("*")
             ->from("users")
-            ->where("(username = '{$user_mail}' OR email = '{$user_mail}') AND password = '{$password}'")
+            ->where("(username = '{$user_mail}' || email = '{$user_mail}') && password = '{$password}'")
             ->one();
 
           switch ($results) {
             case false:
               $_SESSION["errno"] = [
-                  "status" => 0,
-                  "message" => "Username or password incorrect!"
-                ];
+                "status" => 0,
+                "message" => "Username or password incorrect!"
+              ];
               header("location: /auth");
               break;
 
             case true:
-              $_SESSION["current_user"] = json_encode($results);
+              $this
+                ->plug
+                ->assign_conn($results);
+
               header("location: /home");
               break;
           }
@@ -52,7 +55,7 @@ class AuthController
 
   public function signup()
   {
-    $agencies = 
+    $agencies =
       $this
       ->repo
       ->select(["cname", "uuid"])
@@ -94,7 +97,7 @@ class AuthController
       ->repo
       ->select(["username", "email"])
       ->from("users")
-      ->where("username = '{$username}' OR email = '{$email}'")
+      ->where("username = '{$username}' || email = '{$email}'")
       ->one();
     return $check;
   }
@@ -103,7 +106,7 @@ class AuthController
   private function init_register()
   {
     try {
-      $agency_id = 
+      $agency_id =
         $this
         ->repo
         ->select("id")
@@ -112,15 +115,15 @@ class AuthController
         ->one();
 
       $user = [
-          "agency_id" => intval($agency_id["id"]),
-          "name" => trim($_POST["name"]),
-          "username" => trim(strtolower($_POST["username"])),
-          "password" => md5(trim($_POST["password"])),
-          "email" => trim(strtolower($_POST["email"])),
-          "gender" => trim($_POST["gender"]),
-          "phone" => trim($_POST["phone"]),
-          "ip" => trim($_POST["ip"]),
-          "uuid" => GenUuid::uuid6()
+        "agency_id" => intval($agency_id["id"]),
+        "name" => trim($_POST["name"]),
+        "username" => trim(strtolower($_POST["username"])),
+        "password" => md5(trim($_POST["password"])),
+        "email" => trim(strtolower($_POST["email"])),
+        "gender" => trim($_POST["gender"]),
+        "phone" => trim($_POST["phone"]),
+        "ip" => trim($_POST["ip"]),
+        "uuid" => GenUuid::uuid6()
       ];
 
       if ($this->repo->insert("users", $user)) {
@@ -130,7 +133,6 @@ class AuthController
         $_SESSION["popup"] = ["status" => 0, "error" => "Somethings went wrong."];
         header("location: /auth/signup");
       }
-
     } catch (PDOException $e) {
       exit("Error: " . $e->getMessage());
     }

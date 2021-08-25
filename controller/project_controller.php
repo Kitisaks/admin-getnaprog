@@ -8,72 +8,72 @@ class ProjectController
 
   public function index()
   {
-    $agency_id = $GLOBALS["conn"]["agency"]["id"];
+    $agency_id = $_SESSION["conn"]["agency"]["id"];
 
     $GLOBALS["unpublished"] =
       $this
       ->repo
       ->select([
-        "p.id AS page_id",
-        "p.permalink AS page_permalink",
-        "p.uuid AS page_uuid",
-        "p.meta_title AS page_meta_title",
-        "p.meta_description AS page_meta_description",
-        "p.inserted_at AS page_inserted_at",
-        "u.name AS user_name",
-        "u.role AS user_role",
-        "a.name AS attachment_name",
-        "a.kind AS attachment_kind",
-        "a.title AS attachment_title"
+        "p.id as page_id",
+        "p.permalink as page_permalink",
+        "p.uuid as page_uuid",
+        "p.meta_title as page_meta_title",
+        "p.meta_description as page_meta_description",
+        "p.inserted_at as page_inserted_at",
+        "u.name as user_name",
+        "u.role as user_role",
+        "a.name as attachment_name",
+        "a.kind as attachment_kind",
+        "a.title as attachment_title"
       ])
       ->from("pages p")
-      ->join("LEFT", [
+      ->join("left", [
         "users u" => "p.user_id = u.id",
         "attachments a" => "a.page_id = p.id"
       ])
-      ->where("p.agency_id = {$agency_id} AND a.kind = 'page' AND a.title = 'cover_image' AND p.status = 1")
-      ->order_by(["DESC" => "p.id"])
+      ->where("p.agency_id = {$agency_id} && a.kind = 'page' && a.title = 'cover_image' && p.status = 1")
+      ->order_by(["desc" => "p.id"])
       ->all();
 
     $GLOBALS["published"] =
       $this
       ->repo
       ->select([
-        "p.id AS page_id",
-        "p.permalink AS page_permalink",
-        "p.uuid AS page_uuid",
-        "p.meta_title AS page_meta_title",
-        "p.meta_description AS page_meta_description",
-        "p.inserted_at AS page_inserted_at",
-        "u.name AS user_name",
-        "u.role AS user_role",
-        "a.name AS attachment_name",
-        "a.kind AS attachment_kind",
-        "a.title AS attachment_title"
+        "p.id as page_id",
+        "p.permalink as page_permalink",
+        "p.uuid as page_uuid",
+        "p.meta_title as page_meta_title",
+        "p.meta_description as page_meta_description",
+        "p.inserted_at as page_inserted_at",
+        "u.name as user_name",
+        "u.role as user_role",
+        "a.name as attachment_name",
+        "a.kind as attachment_kind",
+        "a.title as attachment_title"
       ])
       ->from("pages p")
-      ->join("LEFT", [
+      ->join("left", [
         "users u" => "p.user_id = u.id",
         "attachments a" => "a.page_id = p.id"
       ])
-      ->where("p.agency_id = {$agency_id} AND a.kind = 'page' AND a.title = 'cover_image' AND p.status = 2")
-      ->order_by(["DESC" => "p.id"])
+      ->where("p.agency_id = {$agency_id} && a.kind = 'page' && a.title = 'cover_image' && p.status = 2")
+      ->order_by(["desc" => "p.id"])
       ->all();
 
     $count_unpub =
       $this
       ->repo
-      ->select_distinct("count(p.id) AS num")
+      ->select("count(p.id) as num", "distinct")
       ->from("pages p")
-      ->where("p.agency_id = {$agency_id} AND p.status = 1")
+      ->where("p.agency_id = {$agency_id} && p.status = 1")
       ->one();
 
     $count_pub =
       $this
       ->repo
-      ->select_distinct("count(p.id) AS num")
+      ->select("count(p.id) as num", "distinct")
       ->from("pages p")
-      ->where("p.agency_id = {$agency_id} AND p.status = 2")
+      ->where("p.agency_id = {$agency_id} && p.status = 2")
       ->one();
 
     $total = intval($count_unpub["num"]) + intval($count_pub["num"]);
@@ -102,7 +102,7 @@ class ProjectController
       exit;
     }
 
-    $agency_id = $GLOBALS["conn"]["agency"]["id"];
+    $agency_id = $_SESSION["conn"]["agency"]["id"];
 
     $user = [
       "agency_id" => $agency_id,
@@ -115,7 +115,7 @@ class ProjectController
     ];
 
     if ($this->repo->insert("users", $user)) {
-      $data_user = $this->repo->get_by("users", ["uuid" => $user["uuid"]]);
+      $data_user = $this->repo->get_by("users", "uuid='{$user['uuid']}'");
     } else {
       $_SESSION["popup"] = ["status" => 0, "error" => "Somethings went wrong."];
       header("location: /project/new");
@@ -132,7 +132,7 @@ class ProjectController
     ];
 
     if ($this->repo->insert("pages", $page)) {
-      $data_page = $this->repo->get_by("pages", ["uuid" => $page["uuid"]]);
+      $data_page = $this->repo->get_by("pages", "uuid='{$page['uuid']}'");
     } else {
       $_SESSION["popup"] = ["status" => 0, "error" => "Somethings went wrong."];
       header("location: /project/new");
@@ -142,10 +142,20 @@ class ProjectController
     $notification = [
       "agency_id" => $agency_id,
       "user_id" => $data_user["id"],
-      "page_id" => $data_page["id"],
-      "email" => ($_POST["notification"]["email"] == "on") ? 1 : 0,
-      "line" => ($_POST["notification"]["line"] == "on") ? 1 : 0
+      "page_id" => $data_page["id"]
     ];
+
+    if (isset($_POST["notification"]["line"]))
+      array_merge(
+        $notification,
+        ["line" => ($_POST["notification"]["line"] == "on") ? 1 : 0]
+      );
+  
+    if (isset($_POST["notification"]["email"]))
+      array_merge(
+        $notification,
+        ["email" => ($_POST["notification"]["email"] == "on") ? 1 : 0]
+      );
 
     if (!$this->repo->insert("notifications", $notification)) {
       $_SESSION["popup"] = ["status" => 0, "error" => "Somethings went wrong."];
@@ -153,44 +163,58 @@ class ProjectController
       exit;
     }
 
-    $favicon = [
-      "agency_id" => $agency_id,
-      "user_id" => $data_user["id"],
-      "page_id" => $data_page["id"],
-      "name" => basename($_FILES["attachment"]["name"]["favicon"]),
-      "kind" => "page",
-      "title" => "favicon",
-      "type" => FileHandler::mime_content_type($_FILES["attachment"]["tmp_name"]["favicon"]),
-      "tmp_name" => $_FILES["attachment"]["tmp_name"]["favicon"]
-    ];
+    if ($_FILES["attachment"]["name"]["favicon"] != "") {
+      $favicon = [
+        "agency_id" => $agency_id,
+        "page_id" => $data_page["id"],
+        "name" => basename($_FILES["attachment"]["name"]["favicon"]),
+        "kind" => "page",
+        "title" => "favicon",
+        "type" => FileHandler::mime_content_type($_FILES["attachment"]["tmp_name"]["favicon"])
+      ];
 
-    $cover_image = [
-      "agency_id" => $agency_id,
-      "user_id" => $data_user["id"],
-      "page_id" => $data_page["id"],
-      "name" => basename($_FILES["attachment"]["name"]["cover_image"]),
-      "kind" => "page",
-      "title" => "cover_image",
-      "type" => FileHandler::mime_content_type($_FILES["attachment"]["tmp_name"]["cover_image"]),
-      "tmp_name" => $_FILES["attachment"]["tmp_name"]["cover_image"]
-    ];
-
-    if (!$this->repo->insert("attachments", $favicon) || !$this->repo->insert("attachments", $cover_image)) {
-      $_SESSION["popup"] = ["status" => 0, "error" => "Somethings went wrong."];
-      header("location: /project/new");
-      exit;
-    } else {
-      #- Upload all attachment to drive
-      $uploads_dir = "/priv/drive/{$GLOBALS['conn']['agency']['cname']}";
-      $files_upload = [$favicon, $cover_image];
-      foreach ($files_upload as $file) {
-        $tmp_name = $file["tmp_name"];
-        $name = "{$file['kind']}-{$file['title']}-{$file['page_id']}-{$file['name']}";
-        move_uploaded_file($tmp_name, "{$uploads_dir}/{$name}");
+      if (!$this->repo->insert("attachments", $favicon)) {
+        $_SESSION["popup"] = ["status" => 0, "error" => "Somethings went wrong."];
+        header("location: /project/new");
+        exit;
       }
-      $_SESSION["popup"] = ["status" => 1, "info" => "Already created your page."];
-      header("location: /project");
-      exit;
+
+      $favicon =
+        array_merge(
+          $favicon,
+          ["tmp_name" => $_FILES["attachment"]["tmp_name"]["favicon"]]
+        );
+
+      Utils::upload_file_ftp($favicon);
     }
+
+    if ($_FILES["attachment"]["name"]["cover_image"] != "") {
+      $cover_image = [
+        "agency_id" => $agency_id,
+        "page_id" => $data_page["id"],
+        "name" => basename($_FILES["attachment"]["name"]["cover_image"]),
+        "kind" => "page",
+        "title" => "cover_image",
+        "type" => FileHandler::mime_content_type($_FILES["attachment"]["tmp_name"]["cover_image"])
+      ];
+
+      if (!$this->repo->insert("attachments", $cover_image)) {
+        $_SESSION["popup"] = ["status" => 0, "error" => "Somethings went wrong."];
+        header("location: /project/new");
+        exit;
+      }
+
+      $cover_image =
+        array_merge(
+          $cover_image,
+          ["tmp_name" => $_FILES["attachment"]["tmp_name"]["cover_image"]]
+        );
+
+      Utils::upload_file_ftp($cover_image);
+    }
+
+    $_SESSION["popup"] = ["status" => 1, "info" => "Already created your page."];
+    header("location: /project");
+    exit;
   }
 }

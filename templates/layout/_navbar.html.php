@@ -1,4 +1,3 @@
-<!-- This example requires Tailwind CSS v2.0+ -->
 <nav class="bg-gray-900">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16">
@@ -21,16 +20,24 @@
         </div>
         <div class="hidden md:ml-6 md:flex md:items-center md:space-x-4">
           <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-          <a href="/home" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Dashboard</a>
-
-          <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Team</a>
-
-          <a href="/project" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Projects</a>
-
-          <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Calendar</a>
+          <a href="/home" class="<?= ($_GET["url"] === "home") ? "bg-gray-900 text-white border" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> px-3 py-2 rounded-md text-sm font-medium" <?= ($_GET["url"] === "home") ? "aria-current='page'" : null ?>>
+            Dashboard
+          </a>
+          <a href="#" class="<?= ($_GET["url"] === "team") ? "bg-gray-900 text-white border" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> px-3 py-2 rounded-md text-sm font-medium" <?= ($_GET["url"] === "team") ? "aria-current='page'" : null ?>>
+            Team
+          </a>
+          <a href="/project" class="<?= ($_GET["url"] === "project") ? "bg-gray-900 text-white border" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> px-3 py-2 rounded-md text-sm font-medium" <?= ($_GET["url"] === "project") ? "aria-current='page'" : null ?>>
+            Projects
+          </a>
+          <a href="#" class="<?= ($_GET["url"] === "calendar") ? "bg-gray-900 text-white border" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> px-3 py-2 rounded-md text-sm font-medium" <?= ($_GET["url"] === "calendar") ? "aria-current='page'" : null ?>>
+            Calendar
+          </a>
         </div>
       </div>
       <div class="flex items-center">
+        <a target="_blank" href="<?= "https://" . $_SESSION["conn"]["agency"]["sub_domain"] . "." . $_SESSION["conn"]["agency"]["cname"] ?>" class="mr-4 text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" <?= ($_GET["url"] === "calendar") ? "aria-current='page'" : null ?>>
+          <?= ucfirst($_SESSION["conn"]["agency"]["cname"]) ?>
+        </a>
         <div class="flex-shrink-0">
           <a href="/project/new" class="cursor-pointer relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-red-500">
             <!-- Heroicon name: solid/plus -->
@@ -77,20 +84,25 @@
   <!-- Mobile menu, show/hide based on menu state. -->
   <div id="mobile-menu" class="hidden" id="mobile-menu">
     <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-      <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-      <a href="/home" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium" aria-current="page">Dashboard</a>
-
-      <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Team</a>
-
-      <a href="/project" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Projects</a>
-
-      <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Calendar</a>
+      <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" block px-3 py-2 rounded-md text-base font-medium-->
+      <a href="/home" class="<?= ($_GET["url"] === "home") ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> block px-3 py-2 rounded-md text-base font-medium" <?= ($_GET["url"] === "home") ? "aria-current='page'" : null ?>>
+        Dashboard
+      </a>
+      <a href="#" class="<?= ($_GET["url"] === "team") ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> block px-3 py-2 rounded-md text-base font-medium" <?= ($_GET["url"] === "team") ? "aria-current='page'" : null ?>>
+        Team
+      </a>
+      <a href="/project" class="<?= ($_GET["url"] === "project") ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> block px-3 py-2 rounded-md text-base font-medium" <?= ($_GET["url"] === "project") ? "aria-current='page'" : null ?>>
+        Projects
+      </a>
+      <a href="#" class="<?= ($_GET["url"] === "calendar") ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> block px-3 py-2 rounded-md text-base font-medium" <?= ($_GET["url"] === "calendar") ? "aria-current='page'" : null ?>>
+        Calendar
+      </a>
     </div>
     <div class="pb-3 border-t border-gray-700">
       <div class="flex items-center py-3 bg-gray-800 px-3 border-b border-gray-700">
         <div class="ml-3">
-          <div class="text-base font-medium text-white"><?= $GLOBALS["conn"]["current_user"]["name"] ?></div>
-          <div class="text-sm font-medium text-gray-400"><?= $GLOBALS["conn"]["current_user"]["email"] ?></div>
+          <div class="text-base font-medium text-white"><?= $_SESSION["conn"]["current_user"]["name"] ?></div>
+          <div class="text-sm font-medium text-gray-400"><?= $_SESSION["conn"]["current_user"]["email"] ?></div>
         </div>
         <button class="ml-auto flex-shrink-0 bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
           <span class="sr-only">View notifications</span>
@@ -102,9 +114,7 @@
       </div>
       <div class="mt-3 px-2 space-y-1 sm:px-3">
         <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Your Profile</a>
-
         <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Settings</a>
-
         <a href="auth/logout" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Sign out</a>
       </div>
     </div>

@@ -6,57 +6,38 @@ class Plug
   {
     $this->view = new View();
     $this->repo = new Repo();
-    $this->conn();
   }
 
   public function loadmodule($main)
   {
-    $path = $_SERVER["DOCUMENT_ROOT"] . "/controller/" . $main . "_controller.php";
+    $path = $_SERVER["DOCUMENT_ROOT"] . "/controller/{$main}_controller.php";
 
     if (file_exists($path)) {
       require_once $path;
-      $name = $main . "controller";
+      $name = ucfirst($main) . "Controller";
       $this->controller = new $name;
     }
   }
 
-  public function conn()
+  public function assign_conn($current_user)
   {
-    $GLOBALS["conn"] = [
-      "current_user" => $this->current_user(),
-      "agency" => $this->current_agency()
-    ];
+    $_SESSION["conn"]["current_user"] = $current_user;
+    $_SESSION["conn"]["agency"] = $this->current_agency($current_user);
   }
 
-  private function current_user()
+  private function current_agency($current_user)
   {
-    if (isset($_SESSION["current_user"])) {
-      return json_decode($_SESSION["current_user"], true);
-    } else {
-      return null;
-    }
-  }
-
-  private function current_agency()
-  {
-    if (isset($_SESSION["current_user"])) {
-      $user = $this->current_user();
-      return
-        $this
-        ->repo
-        ->get("agencies", $user["agency_id"]);
-    } else {
-      return null;
-    }
+    return
+      $this
+      ->repo
+      ->get("agencies", $current_user["agency_id"]);
   }
 
   public function authenticate()
   {
-    if (empty($_SESSION["current_user"])) {
+    if (empty($_SESSION["conn"])) {
       header("location: /auth");
       exit;
     }
   }
-
-
 }

@@ -66,7 +66,7 @@ class Utils
   private static function default_url($filename): string
   {
     $key = self::get_token()["drive"];
-    $host = $GLOBALS["conn"]["agency"]["cname"];
+    $host = $_SESSION["conn"]["agency"]["cname"];
     return "https://db.getnaprog.com/api/v1/{$filename}?key={$key}&h={$host}";
   }
 
@@ -79,5 +79,26 @@ class Utils
     } else {
       exit("Cannot read key file.");
     }
+  }
+
+  public static function upload_file_ftp(array $obj, int $mode = FTP_BINARY): void
+  {
+    #- Prepare upload all attachment to drive
+    $agency_cname = $_SESSION["conn"]["agency"]["cname"];
+    $tmp_dir = $_SERVER["DOCUMENT_ROOT"] . "/priv/temp";
+    $id = $obj["{$obj['kind']}_id"];
+
+    $f_name = "{$obj['kind']}:{$obj['title']}:{$id}:{$obj['name']}";
+    $tmp_path = "{$tmp_dir}/{$f_name}";
+
+    #- Move file to temp directory
+    move_uploaded_file($obj["tmp_name"], $tmp_path);
+
+    $target = "/priv/drive/{$agency_cname}";
+
+    #- Upload with FTP
+    @FtpHandler::upload_file($tmp_dir, $target, $mode) or die("Cannot upload file {$obj['name']}");
+
+    FileHandler::delete_file("priv/temp/{$f_name}");
   }
 }

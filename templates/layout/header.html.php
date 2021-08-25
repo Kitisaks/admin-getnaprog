@@ -10,6 +10,6 @@
     <link href="<?= r ?>assets/css/app.css" rel="stylesheet">
     <script src="<?= r ?>assets/js/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="<?= r ?>assets/js/app.js"></script>
-    <script>window.csrf = { token: '<?= $_SESSION['token'] ?>' };</script>
+    <script>window.csrf = { token: "<?= $_SESSION["token"] ?>" };</script>
 </head>
-<body class="bg-gray-100 font-mono">
+<body class="bg-gray-100 font-sans antialiased ordinal proportional-nums tracking-normal leading-normal list-inside align-middle">

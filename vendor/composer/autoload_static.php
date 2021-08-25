@@ -218,6 +218,13 @@ class ComposerStaticInitf69c17cfcdbfb310caac84b23465f0a5
                 0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/lib',
             ),
         ),
+        'F' => 
+        array (
+            'FtpClient' => 
+            array (
+                0 => __DIR__ . '/..' . '/nicolab/php-ftp-client/src',
+            ),
+        ),
         'D' => 
         array (
             'Detection' => 

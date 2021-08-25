@@ -10,7 +10,7 @@ class View
       case true:
         require "../templates/layout/header.html.php";
         require "../templates/layout/_popup.html.php";
-        require "../templates/$main/$page.html.php";
+        require "../templates/{$main}/{$page}.html.php";
         require "../templates/layout/bottom.html.php";
         break;
 
@@ -18,21 +18,21 @@ class View
         require "../templates/layout/header.html.php";
         require "../templates/layout/_popup.html.php";
         require "../templates/layout/_navbar.html.php";
-        require "../templates/$main/$page.html.php";
+        require "../templates/{$main}/{$page}.html.php";
         require "../templates/layout/_footer.html.php";
         require "../templates/layout/bottom.html.php";
         break;
     }
   }
 
-  public function render_many($main, $pages, $no_layout = false)
+  public function render_many($main, array $pages, $no_layout = false)
   {
     switch ($no_layout) {
       case true:
         require "../templates/layout/header.html.php";
         require "../templates/layout/_popup.html.php";
         foreach ($pages as $page) {
-          require "../templates/$main/$page.html.php";
+          require "../templates/{$main}/{$page}.html.php";
         }
         require "../templates/layout/bottom.html.php";
         break;
@@ -44,7 +44,7 @@ class View
         // require "../templates/layout/_messenger.html.php";
         require "../templates/layout/_navbar.html.php";
         foreach ($pages as $page) {
-          require "../templates/$main/$page.html.php";
+          require "../templates/{$main}/{$page}.html.php";
         }
         require "../templates/layout/_footer.html.php";
         require "../templates/layout/bottom.html.php";
@@ -56,10 +56,10 @@ class View
   {
     if (is_array($pages)) {
       foreach ($pages as $page) {
-        require "../templates/$main/$page.html.php";
+        require "../templates/{$main}/{$page}.html.php";
       }
     } else {
-      require "../templates/$main/$pages.html.php";
+      require "../templates/{$main}/{$pages}.html.php";
     }
   }
 }

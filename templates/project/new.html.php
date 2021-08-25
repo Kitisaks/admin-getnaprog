@@ -37,7 +37,7 @@
 
     <div class="space-y-6 sm:px-6 lg:px-0 lg:col-span-9">
       <form action="/project/create" method="POST" enctype="multipart/form-data" id="project-create-form">
-        <?= View::partial("project", ["_new_page", "_new_customer", "_new_notification"]); ?>
+        <?php View::partial("project", ["_new_page", "_new_customer", "_new_notification"]) ?>
       </form>
     </div>
 

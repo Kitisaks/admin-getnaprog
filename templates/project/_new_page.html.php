@@ -13,7 +13,7 @@
         </label>
         <div class="mt-1 rounded-md shadow-sm flex">
           <span class="bg-gray-50 border border-r-0 border-gray-300 rounded-l-md px-3 inline-flex items-center text-gray-500 sm:text-sm">
-            <?= $GLOBALS["conn"]["agency"]["cname"] ?>/
+            <?= $_SESSION["conn"]["agency"]["cname"] ?>/
           </span>
           <input type="text" name="page[permalink]" id="page[permalink]" autocomplete="name" class="p-2 border focus:ring-indigo-500 focus:border-indigo-500 flex-grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300" placeholder="mypage" required>
         </div>
@@ -51,8 +51,8 @@
           <button type="button" class="ml-5 bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             <label for="favicon-upload">Change</label>
           </button>
-          <p class="text-sm ml-2" id="favicon-preview">maximum size is 5 KB</p>
-          <input type="file" accept="image/*" multiple="false" id="favicon-upload" data-id="favicon-preview" name="attachment[favicon]" max-size="<?= 5*pow(10, 3) ?>" class="sr-only">
+          <p class="text-sm ml-2" id="favicon-preview">maximum size is 1 MB</p>
+          <input type="file" accept="image/*" multiple="false" id="favicon-upload" data-id="favicon-preview" name="attachment[favicon]" max-size="<?= 1*pow(10, 6) ?>" class="sr-only">
         </div>
       </div>
 

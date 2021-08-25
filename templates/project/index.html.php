@@ -2,7 +2,7 @@
 
   <!-- Statics Analytics Section -->
   <div class="p-4">
-    <?php View::partial("project", "_statics"); ?>
+    <?php View::partial("project", "_statics") ?>
   </div>
 
   <!-- For Unpublished -->
@@ -17,7 +17,7 @@
       <?php if ($GLOBALS["unpublished"] != null) : ?>
         <?php foreach ($GLOBALS["unpublished"] as $result) : ?>
           <li class="col-span-1 flex flex-col text-center border-2 bg-white rounded-lg shadow-md divide-y divide-gray-200 hover:border-indigo-500 cursor-pointer">
-            <?php $img = "{$result['attachment_kind']}-{$result['attachment_title']}-{$result['page_id']}-{$result['attachment_name']}" ?>
+            <?php $img = "{$result['attachment_kind']}:{$result['attachment_title']}:{$result['page_id']}:{$result['attachment_name']}" ?>
             <img class="w-full h-40 flex-shrink-0 mx-auto rounded-t-lg" src="<?= Utils::default_image($img, "280x160") ?>" alt="<?= $result["attachment_name"] ?>">
             <div class="flex-1 flex flex-col px-8 py-4">
               <h3 class="text-gray-900 text-md font-bold"><?= $result["page_permalink"] ?></h3>
@@ -61,7 +61,7 @@
       <?php if ($GLOBALS["published"] != null) : ?>
         <?php foreach ($GLOBALS["published"] as $result) : ?>
           <li class="col-span-1 flex flex-col text-center border-2 bg-white rounded-lg shadow-md divide-y divide-gray-200 hover:border-indigo-500 cursor-pointer">
-            <?php $img = "{$result['attachment_kind']}-{$result['attachment_title']}-{$result['page_id']}-{$result['attachment_name']}" ?>
+            <?php $img = "{$result['attachment_kind']}:{$result['attachment_title']}:{$result['page_id']}:{$result['attachment_name']}" ?>
             <img class="w-full h-40 flex-shrink-0 mx-auto rounded-t-lg" src="<?= Utils::default_image($img, "280x160") ?>" alt="<?= $result["attachment_name"] ?>">
             <div class="flex-1 flex flex-col px-8 py-4">
               <h3 class="text-gray-900 text-md font-bold"><?= $result["page_permalink"] ?></h3>

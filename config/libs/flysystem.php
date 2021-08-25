@@ -1,5 +1,4 @@
 <?php
-
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use League\Flysystem\Filesystem;
@@ -16,20 +15,19 @@ use League\Flysystem\StorageAttributes;
 
 class FileHandler
 {
-  public static function adapter()
+  private static function adapter()
   {
     $adapter = new LocalFilesystemAdapter(
-      // Determine the root directory
       $_SERVER["DOCUMENT_ROOT"] . "/",
       // Customize how visibility is converted to unix permissions
       PortableVisibilityConverter::fromArray([
         'file' => [
-          'public' => 0744,
-          'private' => 0700,
+          'public' => 0644,
+          'private' => 0604,
         ],
         'dir' => [
           'public' => 0755,
-          'private' => 0700,
+          'private' => 7604,
         ]
       ]),
       // Write flags
@@ -42,80 +40,80 @@ class FileHandler
     return new Filesystem($adapter, ["visibility" => "public"]);
   }
 
-  public static function write_file($adapter, $path, $contents, $config = [])
+  public static function write_file($path, $contents, $config = ["visibility" => "public"])
   {
     try {
-      $adapter->write($path, $contents, $config);
+      self::adapter()->write($path, $contents, $config);
       return true;
     } catch (FilesystemException | UnableToWriteFile $exception) {
       exit("Unable to write file: " . $exception);
     }
   }
 
-  public static function read_file($adapter, $path)
+  public static function read_file($path)
   {
     try {
-      $response = $adapter->read($path);
+      $response = self::adapter()->read($path);
       return $response;
     } catch (FilesystemException | UnableToReadFile $exception) {
       exit("Unable to read file: " . $exception);
     }
   }
 
-  public static function delete_file($adapter, $path)
+  public static function delete_file($path)
   {
     try {
-      $adapter->delete($path);
+      self::adapter()->delete($path);
       return true;
     } catch (FilesystemException | UnableToDeleteFile $exception) {
       exit("Unable to delete file: " . $exception);
     }
   }
 
-  public static function delete_dir($adapter, $path)
+  public static function delete_dir($path)
   {
     try {
-      $adapter->deleteDirectory($path);
+      self::adapter()->deleteDirectory($path);
       return true;
     } catch (FilesystemException | UnableToDeleteDirectory $exception) {
       exit("Unable to delete directory: " . $exception);
     }
   }
 
-  public static function create_dir($adapter, $path, $config = [])
+  public static function create_dir($path, $config = ["visibility" => "public"])
   {
     try {
-      $adapter->createDirectory($path, $config);
+      self::adapter()->createDirectory($path, $config);
       return true;
     } catch (FilesystemException | UnableToCreateDirectory $exception) {
       exit("Unable to create directory: " . $exception);
     }
   }
 
-  public static function move_file($adapter, $source, $destination, $config = [])
+  public static function move_file($source, $destination, $config = ["visibility" => "public"])
   {
     try {
-      $adapter->move($source, $destination, $config);
+      self::adapter()->move($source, $destination, $config);
       return true;
     } catch (FilesystemException | UnableToMoveFile $exception) {
       exit("Unable to move file: " . $exception);
     }
   }
 
-  public static function copy_file($adapter, $source, $destination, $config = [])
+  public static function copy_file($source, $destination, $config = ["visibility" => "public"])
   {
     try {
-      $adapter->copy($source, $destination, $config);
+      self::adapter()->copy($source, $destination, $config);
     } catch (FilesystemException | UnableToCopyFile $exception) {
       exit("Unable to copy file: " . $exception);
     }
   }
 
-  public static function lists($adapter, $path = ""): array
+  public static function lists($path = "."): array
   {
     try {
       return
-        $adapter
+        self::adapter()
         ->listContents($path)
         ->sortByPath()
         ->map(fn (StorageAttributes $attributes) => $attributes->path())
