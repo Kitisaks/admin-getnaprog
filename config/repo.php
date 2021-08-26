@@ -25,7 +25,7 @@ class Repo
 
     if (isset($opt)) {
       if (is_array($params)) {
-        $this->query .= "select {$opt}" . join(",", $params);
+        $this->query .= "select {$opt} " . join(",", $params);
         return $this;
       } else if (is_string($params)) {
         $this->query .= "select {$opt} {$params}";

@@ -15,36 +15,33 @@ class AuthController
   {
     if (!empty($_POST['token'])) {
       if (hash_equals($_SESSION['token'], $_POST['token'])) {
-        $user_mail = trim(strtolower($_POST["user_mail"]));
+        $user_mail = strtolower(trim($_POST["user_mail"]));
         $password = md5(trim($_POST["password"]));
-        try {
-          $results =
+
+        $results =
+          $this
+          ->repo
+          ->select("*")
+          ->from("users")
+          ->where("(username = '{$user_mail}' or email = '{$user_mail}') and password = '{$password}'")
+          ->one();
+
+        switch ($results) {
+          case false:
+            $_SESSION["errno"] = [
+              "status" => 0,
+              "message" => "Username or password incorrect!"
+            ];
+            header("location: /auth");
+            break;
+
+          case true:
             $this
-            ->repo
-            ->select("*")
-            ->from("users")
-            ->where("(username = '{$user_mail}' || email = '{$user_mail}') && password = '{$password}'")
-            ->one();
+              ->plug
+              ->assign_conn($results);
 
-          switch ($results) {
-            case false:
-              $_SESSION["errno"] = [
-                "status" => 0,
-                "message" => "Username or password incorrect!"
-              ];
-              header("location: /auth");
-              break;
-
-            case true:
-              $this
-                ->plug
-                ->assign_conn($results);
-
-              header("location: /home");
-              break;
-          }
-        } catch (PDOException $e) {
-          exit("Error: " . $e->getMessage());
+            header("location: /home");
+            break;
         }
       } else {
         header($_SERVER["SERVER_PROTOCOL"] . "405 Method Not Allowed");
@@ -55,14 +52,13 @@ class AuthController
 
   public function signup()
   {
-    $agencies =
+    $GLOBALS["agencies"] =
       $this
       ->repo
       ->select(["cname", "uuid"])
       ->from("agencies")
       ->order_by(["ASC" => "cname"])
       ->all();
-    $GLOBALS["agencies"] = $agencies;
   }
 
   public function create()
@@ -97,7 +93,7 @@ class AuthController
       ->repo
       ->select(["username", "email"])
       ->from("users")
-      ->where("username = '{$username}' || email = '{$email}'")
+      ->where("username = '{$username}' or email = '{$email}'")
       ->one();
     return $check;
   }
@@ -105,36 +101,32 @@ class AuthController
   #- start to register the form
   private function init_register()
   {
-    try {
-      $agency_id =
-        $this
-        ->repo
-        ->select("id")
-        ->from("agencies")
-        ->where("uuid = '{$_POST['agency_id']}'")
-        ->one();
+    $agency =
+      $this
+      ->repo
+      ->select("id")
+      ->from("agencies")
+      ->where("uuid = '{$_POST['agency_id']}'")
+      ->one();
 
-      $user = [
-        "agency_id" => intval($agency_id["id"]),
-        "name" => trim($_POST["name"]),
-        "username" => trim(strtolower($_POST["username"])),
-        "password" => md5(trim($_POST["password"])),
-        "email" => trim(strtolower($_POST["email"])),
-        "gender" => trim($_POST["gender"]),
-        "phone" => trim($_POST["phone"]),
-        "ip" => trim($_POST["ip"]),
-        "uuid" => GenUuid::uuid6()
-      ];
+    $user = [
+      "agency_id" => $agency["id"],
+      "name" => trim($_POST["name"]),
+      "username" => strtolower(trim($_POST["username"])),
+      "password" => md5(trim($_POST["password"])),
+      "email" => strtolower(trim($_POST["email"])),
+      "gender" => trim($_POST["gender"]),
+      "phone" => trim($_POST["phone"]),
+      "ip" => trim($_POST["ip"]),
+      "uuid" => GenUuid::uuid6()
+    ];
 
-      if ($this->repo->insert("users", $user)) {
-        $_SESSION["popup"] = ["status" => 1, "info" => "Already created your account."];
-        header("location: /auth");
-      } else {
-        $_SESSION["popup"] = ["status" => 0, "error" => "Somethings went wrong."];
-        header("location: /auth/signup");
-      }
-    } catch (PDOException $e) {
-      exit("Error: " . $e->getMessage());
+    if ($this->repo->insert("users", $user)) {
+      $_SESSION["popup"] = ["status" => 1, "info" => "Already created your account."];
+      header("location: /auth");
+    } else {
+      $_SESSION["popup"] = ["status" => 0, "error" => "Somethings went wrong."];
+      header("location: /auth/signup");
     }
   }
 

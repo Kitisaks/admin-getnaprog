@@ -31,7 +31,7 @@ class ProjectController
         "users u" => "p.user_id = u.id",
         "attachments a" => "a.page_id = p.id"
       ])
-      ->where("p.agency_id = {$agency_id} && a.kind = 'page' && a.title = 'cover_image' && p.status = 1")
+      ->where("p.agency_id = {$agency_id} and a.kind = 'page' and a.title = 'cover_image' and p.status = 1")
       ->order_by(["desc" => "p.id"])
       ->all();
 
@@ -56,7 +56,7 @@ class ProjectController
         "users u" => "p.user_id = u.id",
         "attachments a" => "a.page_id = p.id"
       ])
-      ->where("p.agency_id = {$agency_id} && a.kind = 'page' && a.title = 'cover_image' && p.status = 2")
+      ->where("p.agency_id = {$agency_id} and a.kind = 'page' and a.title = 'cover_image' and p.status = 2")
       ->order_by(["desc" => "p.id"])
       ->all();
 
@@ -65,7 +65,7 @@ class ProjectController
       ->repo
       ->select("count(p.id) as num", "distinct")
       ->from("pages p")
-      ->where("p.agency_id = {$agency_id} && p.status = 1")
+      ->where("p.agency_id = {$agency_id} and p.status = 1")
       ->one();
 
     $count_pub =
@@ -73,7 +73,7 @@ class ProjectController
       ->repo
       ->select("count(p.id) as num", "distinct")
       ->from("pages p")
-      ->where("p.agency_id = {$agency_id} && p.status = 2")
+      ->where("p.agency_id = {$agency_id} and p.status = 2")
       ->one();
 
     $total = intval($count_unpub["num"]) + intval($count_pub["num"]);
@@ -110,7 +110,7 @@ class ProjectController
       "username" => RandUsername::generate(),
       "name" => trim($_POST["user"]["name"]),
       "password" => md5(trim($_POST["user"]["password"])),
-      "email" => trim(strtolower($_POST["user"]["email"])),
+      "email" => strtolower(trim($_POST["user"]["email"])),
       "phone" => $_POST["user"]["phone"]
     ];
 
@@ -126,7 +126,7 @@ class ProjectController
       "agency_id" => $agency_id,
       "user_id" => $data_user["id"],
       "uuid" => $_POST["page"]["uuid"],
-      "permalink" => trim(strtolower($_POST["page"]["permalink"])),
+      "permalink" => strtolower(trim($_POST["page"]["permalink"])),
       "meta_title" => trim($_POST["page"]["meta_title"]),
       "meta_description" => trim($_POST["page"]["meta_description"])
     ];
@@ -150,7 +150,7 @@ class ProjectController
         $notification,
         ["line" => ($_POST["notification"]["line"] == "on") ? 1 : 0]
       );
-  
+
     if (isset($_POST["notification"]["email"]))
       array_merge(
         $notification,
