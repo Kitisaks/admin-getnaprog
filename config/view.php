@@ -2,19 +2,25 @@
 #- use to render view.
 class View
 {
+  private $layout = true;
 
-  public function render($main, $page, $no_layout = false)
+  public function layout(bool $layout)
   {
-    #- no layout set ($no_layout = 1)
-    switch ($no_layout) {
-      case true:
+    $this->layout = $layout;
+    return $this;
+  }
+
+  public function render($main, $page)
+  {
+    switch ($this->layout) {
+      case false:
         require "../templates/layout/header.html.php";
         require "../templates/layout/_popup.html.php";
         require "../templates/{$main}/{$page}.html.php";
         require "../templates/layout/bottom.html.php";
         break;
 
-      case false:
+      case true:
         require "../templates/layout/header.html.php";
         require "../templates/layout/_popup.html.php";
         require "../templates/layout/_navbar.html.php";
@@ -25,10 +31,10 @@ class View
     }
   }
 
-  public function render_many($main, array $pages, $no_layout = false)
+  public function render_many($main, array $pages)
   {
-    switch ($no_layout) {
-      case true:
+    switch ($this->layout) {
+      case false:
         require "../templates/layout/header.html.php";
         require "../templates/layout/_popup.html.php";
         foreach ($pages as $page) {
@@ -37,11 +43,9 @@ class View
         require "../templates/layout/bottom.html.php";
         break;
 
-      case false:
-        // $this->utils->messenger();
+      case true:
         require "../templates/layout/header.html.php";
         require "../templates/layout/_popup.html.php";
-        // require "../templates/layout/_messenger.html.php";
         require "../templates/layout/_navbar.html.php";
         foreach ($pages as $page) {
           require "../templates/{$main}/{$page}.html.php";

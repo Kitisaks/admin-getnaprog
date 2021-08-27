@@ -2,7 +2,9 @@ $(function () {
 
   //== Setup for csrf_token
   $.ajaxSetup({
-    data: window.token
+    headers: {
+      'X-CSRF-TOKEN': $('head meta[name="csrf-token"]').attr('content')
+    }
   });
 
   //== Clock
@@ -11,6 +13,7 @@ $(function () {
 
   function clockUpdate() {
     let date = new Date()
+
     function addZero(x) {
       if (x < 10) {
         return '0' + x;
@@ -18,6 +21,7 @@ $(function () {
         return x;
       }
     }
+
     function twelveHour(x) {
       if (x > 12) {
         return x - 12;
@@ -27,6 +31,7 @@ $(function () {
         return x;
       }
     }
+
     function Option(x) {
       if (x > 12) {
         return 'AM';
@@ -48,6 +53,7 @@ $(function () {
   });
   //== Readmore
   readmore();
+
   function readmore() {
     let str_limit = 360;
     let readmore_txt = '...เพิ่มเติม';
@@ -118,7 +124,7 @@ $(function () {
   });
 
   //== Previw File upload
-  function image_preview(file, size, preview_img, preview_url=false) {
+  function image_preview(file, size, preview_img, preview_url = false) {
     let reader = new FileReader();
     if (file.size <= size) {
       preview_img.empty();
@@ -130,11 +136,11 @@ $(function () {
       }
       if (preview_url) {
         if (file.size < 1000) {
-          preview_url.html('name: '+file.name+', size: '+file.size+' Byte');
+          preview_url.html('name: ' + file.name + ', size: ' + file.size + ' Byte');
         } else if (file.size >= 1000 && file.size < 1000000) {
-          preview_url.html('name: '+file.name+', size: '+file.size/1000+' KB');
+          preview_url.html('name: ' + file.name + ', size: ' + file.size / 1000 + ' KB');
         } else if (file.size >= 1000000) {
-          preview_url.html('name: '+file.name+', size: '+file.size/1000000+' MB');
+          preview_url.html('name: ' + file.name + ', size: ' + file.size / 1000000 + ' MB');
         }
       }
       preview_img.show();
@@ -142,11 +148,11 @@ $(function () {
     } else {
       if (preview_url) {
         if (size < 1000) {
-          preview_url.html("<b class='text-red-600'>maximum</b> image size is "+size+" Byte");
+          preview_url.html("<b class='text-red-600'>maximum</b> image size is " + size + " Byte");
         } else if (size >= 1000 && size < 1000000) {
-          preview_url.html("<b class='text-red-600'>maximum</b> image size is "+size/1000+" KB");
+          preview_url.html("<b class='text-red-600'>maximum</b> image size is " + size / 1000 + " KB");
         } else if (size >= 1000000) {
-          preview_url.html("<b class='text-red-600'>maximum</b> image size is "+size/1000000+" MB");
+          preview_url.html("<b class='text-red-600'>maximum</b> image size is " + size / 1000000 + " MB");
         }
       }
     }
@@ -157,19 +163,19 @@ $(function () {
     let target_id = $(this).attr('data-id');
     //params for usez
     let size = $(this).attr('max-size');
-    let preview_img = $("body span[id='"+target_id+"']");
-    let preview_url = $("body p[id='"+target_id+"']");
+    let preview_img = $("body span[id='" + target_id + "']");
+    let preview_url = $("body p[id='" + target_id + "']");
     let file = $(this)[0].files[0];
     image_preview(file, size, preview_img, preview_url);
     return false;
   });
 
-  $('body').on('change', '#cover-image-upload', function(){
+  $('body').on('change', '#cover-image-upload', function () {
     let target_id = $(this).attr('data-id');
     //params for use;
     let size = $(this).attr('max-size');
-    let preview_img = $("body div[id='"+target_id+"']");
-    let preview_url = $("body p[id='"+target_id+"']");
+    let preview_img = $("body div[id='" + target_id + "']");
+    let preview_url = $("body p[id='" + target_id + "']");
     let file = $(this)[0].files[0];
     image_preview(file, size, preview_img, preview_url);
     return false;

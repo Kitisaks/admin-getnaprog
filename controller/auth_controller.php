@@ -3,50 +3,39 @@ class AuthController
 {
   function __construct()
   {
-    $this->plug = new Plug();
     $this->repo = new Repo();
-    if (isset($_SESSION["conn"])) {
-      header("location: /home");
-    }
   }
 
   #- login
   public function login()
   {
-    if (!empty($_POST['token'])) {
-      if (hash_equals($_SESSION['token'], $_POST['token'])) {
-        $user_mail = strtolower(trim($_POST["user_mail"]));
-        $password = md5(trim($_POST["password"]));
+    $user_mail = strtolower(trim($_POST["user_mail"]));
+    $password = md5(trim($_POST["password"]));
 
-        $results =
-          $this
-          ->repo
-          ->select("*")
-          ->from("users")
-          ->where("(username = '{$user_mail}' or email = '{$user_mail}') and password = '{$password}'")
-          ->one();
+    $results =
+      $this
+      ->repo
+      ->select("*")
+      ->from("users")
+      ->where("(username = '{$user_mail}' or email = '{$user_mail}') and password = '{$password}'")
+      ->one();
 
-        switch ($results) {
-          case false:
-            $_SESSION["errno"] = [
-              "status" => 0,
-              "message" => "Username or password incorrect!"
-            ];
-            header("location: /auth");
-            break;
+    switch ($results) {
+      case false:
+        $_SESSION["errno"] = [
+          "status" => 0,
+          "message" => "Username or password incorrect!"
+        ];
+        header("location: /auth");
+        break;
 
-          case true:
-            $this
-              ->plug
-              ->assign_conn($results);
+      case true:
+        $plug = new Plug();
+        $plug->assign_conn($results);
 
-            header("location: /home");
-            break;
-        }
-      } else {
-        header($_SERVER["SERVER_PROTOCOL"] . "405 Method Not Allowed");
-        exit;
-      }
+        header("location: /home");
+        break;
+    
     }
   }
 
@@ -63,25 +52,18 @@ class AuthController
 
   public function create()
   {
-    if (!empty($_POST['token'])) {
-      if (hash_equals($_SESSION['token'], $_POST['token'])) {
-        $e = $this->check($_POST["username"], $_POST["email"]);
-        switch ($e) {
-          case true:
-            $_SESSION["errno"] = [
-              "status" => 0,
-              "message" => "Username or email already taken!"
-            ];
-            header("location: /auth/signup");
-            break;
-          case false:
-            $this->init_register();
-            break;
-        }
-      } else {
-        header($_SERVER["SERVER_PROTOCOL"] . "405 Method Not Allowed");
-        exit;
-      }
+    $e = $this->check($_POST["username"], $_POST["email"]);
+    switch ($e) {
+      case true:
+        $_SESSION["errno"] = [
+          "status" => 0,
+          "message" => "Username or email already taken!"
+        ];
+        header("location: /auth/signup");
+        break;
+      case false:
+        $this->init_register();
+        break;
     }
   }
 
@@ -130,8 +112,9 @@ class AuthController
     }
   }
 
-  public function logout()
+  public function signout()
   {
+    session_unset();
     session_destroy();
     header("location: /auth");
     exit;
@@ -139,12 +122,6 @@ class AuthController
 
   public function reset()
   {
-    if (!empty($_POST['token'])) {
-      if (hash_equals($_SESSION['token'], $_POST['token'])) {
-      } else {
-        header($_SERVER["SERVER_PROTOCOL"] . "405 Method Not Allowed");
-        exit;
-      }
-    }
+    exit("reset");
   }
 }

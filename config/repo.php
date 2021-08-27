@@ -6,26 +6,31 @@ class Repo
 
   function __construct()
   {
+    $attributes = [
+      PDO::ATTR_EMULATE_PREPARES => false,
+      PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+      PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ];
     $this->conn =
       new PDO(
-        "mysql:host=" . DB["HOST"] . ";dbname=" . DB["NAME"],
+        "mysql:host=" . DB["HOST"] . ";dbname=" . DB["NAME"] . ";charset=utf8",
         DB["USER"],
-        DB["PASSWORD"]
+        DB["PASSWORD"],
+        $attributes
       );
-    $this
-      ->conn
-      ->setAttribute(
-        PDO::ATTR_ERRMODE,
-        PDO::ERRMODE_EXCEPTION
-      );
+  }
+
+  function __destruct()
+  {
+    if (isset($this->conn))
+      $this->conn = null;
   }
 
   public function select($params, string $opt = null)
   {
-
     if (isset($opt)) {
       if (is_array($params)) {
-        $this->query .= "select {$opt} " . join(",", $params);
+        $this->query .= "select {$opt}" . join(",", $params);
         return $this;
       } else if (is_string($params)) {
         $this->query .= "select {$opt} {$params}";
@@ -86,7 +91,6 @@ class Repo
     } catch (PDOException $e) {
       exit($e->getMessage());
     }
-    $this->conn = null;
   }
 
   #- Select for universal
@@ -104,8 +108,8 @@ class Repo
     } catch (PDOException $e) {
       exit($e->getMessage());
     }
-    $this->conn = null;
   }
+
 
   #- Fetch all record in table by ID
   public function get($table, int $id)
@@ -142,17 +146,14 @@ class Repo
     $value = join(",", $values);
     try {
       $sql = "UPDATE {$table} SET {$value} WHERE id={$data['id']}";
-      $stmt =
-        $this
+      $this
         ->conn
-        ->prepare($sql);
-      $stmt->execute();
-      $return = $this->get($table, $data["id"]);
-      return $return;
+        ->prepare($sql)
+        ->execute();
+      return $this->get($table, $data["id"]);
     } catch (PDOException $e) {
       exit($e->getMessage());
     }
-    $this->conn = null;
   }
 
   public function insert($table, array $params)
@@ -166,31 +167,27 @@ class Repo
     $bind = join(",", $binds);
     try {
       $sql = "INSERT INTO {$table} ({$col}) VALUES ({$bind})";
-      $stmt =
-        $this
+      $this
         ->conn
-        ->prepare($sql);
-      $stmt->execute($data);
+        ->prepare($sql)
+        ->execute($data);
       return true;
     } catch (PDOException $e) {
       exit($e->getMessage());
     }
-    $this->conn = null;
   }
 
   public function delete($table, int $id)
   {
     try {
       $sql = "DELETE FROM {$table} WHERE id={$id}";
-      $stmt =
-        $this
+      $this
         ->conn
-        ->prepare($sql);
-      $stmt->execute();
+        ->prepare($sql)
+        ->execute();
       return true;
     } catch (PDOException $e) {
       exit($e->getMessage());
     }
-    $this->conn = null;
   }
 }

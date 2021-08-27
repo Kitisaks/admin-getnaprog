@@ -1,13 +1,12 @@
 <?php
 
-class Home extends Plug
+class HomeView extends Plug
 {
-
   function __construct()
   {
     parent::__construct();
-    $this->main = strtolower(__CLASS__);
-    $this->authenticate();
+    $this->main = $this->call(__CLASS__);
+    $this->permitted();
   }
 
   public function index()

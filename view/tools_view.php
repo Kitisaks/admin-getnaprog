@@ -1,25 +1,27 @@
 <?php
 
-class Tools extends Plug
+class ToolsView extends Plug
 {
 
   function __construct()
   {
     parent::__construct();
-    $this->main = strtolower(__CLASS__);
+    $this->main = $this->call(__CLASS__);
   }
 
   public function index()
   {
     $this
     ->view
-    ->render($this->main, "index", 1);
+    ->layout(false)
+    ->render($this->main, "index");
   }
 
   public function genuuid()
   {
     $this
     ->view
-    ->render($this->main, "genuuid", 1);
+    ->layout(false)
+    ->render($this->main, "genuuid");
   }
 }

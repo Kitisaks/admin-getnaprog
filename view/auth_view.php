@@ -1,19 +1,23 @@
 <?php
 
-class Auth extends Plug
+class AuthView extends Plug
 {
 
   function __construct()
   {
     parent::__construct();
-    $this->main = strtolower(__CLASS__);
+    $this->main = $this->call(__CLASS__);
   }
 
   public function index()
   {
+    #- If exist old session, redirect to /home
+    $this->alived();
+
     $this
       ->view
-      ->render($this->main, "index", 1);
+      ->layout(false)
+      ->render($this->main, "index");
   }
 
   public function login()
@@ -28,9 +32,11 @@ class Auth extends Plug
     $this
       ->controller
       ->reset();
+
     $this
       ->view
-      ->render($this->main, "reset", 1);
+      ->layout(false)
+      ->render($this->main, "reset");
   }
 
   public function signup()
@@ -38,9 +44,11 @@ class Auth extends Plug
     $this
       ->controller
       ->signup();
+      
     $this
       ->view
-      ->render($this->main, "signup", 1);
+      ->layout(false)
+      ->render($this->main, "signup");
   }
 
   public function add()
@@ -50,10 +58,10 @@ class Auth extends Plug
       ->create();
   }
 
-  public function logout()
+  public function signout()
   {
     $this
       ->controller
-      ->logout();
+      ->signout();
   }
 }

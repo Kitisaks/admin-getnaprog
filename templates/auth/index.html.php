@@ -10,7 +10,6 @@
       </p>
     </div>
     <form class="sign-in mt-8 space-y-6" action="/auth/login" method="POST">
-      <input type="hidden" name="token" value="<?= $_SESSION["token"] ?>">
       <input type="hidden" name="remember" value="true">
       <div class="rounded-md shadow-sm -space-y-px">
         <div>

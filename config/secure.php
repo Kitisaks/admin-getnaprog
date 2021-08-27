@@ -1,30 +1,35 @@
 <?php
-
-//== PREVENTING SESSION HIJACKING ==//
-ini_set('session.cookie_httponly', 1);
-ini_set('session.use_only_cookies', 1);
-ini_set('session.cookie_secure', 1);
-#- set for 1 hour
-ini_set('session.gc_maxlifetime', 60 * 60);
-ini_set('session.gc_probability', 1);
-ini_set('session.gc_divisor', 1);
-session_name('token');
-session_start();
-session_regenerate_id();
-
 //== GENERATE TOKEN FOR USE IN HTTP REQUEST ==//
-if (empty($_SESSION['token'])) {
-  $_SESSION['token'] = bin2hex(random_bytes(35));
-}
+if (empty($_SESSION["_rainBID"]))
+  session_start([
+    "name" => "_rainBID",
+    "cookie_httponly" => 1,
+    "use_only_cookies" => 1,
+    "cookie_secure" => 1,
+    "gc_maxlifetime" => 1440,
+    "gc_probability" => 1,
+    "gc_divisor" => 1,
+    "sid_length" => 64,
+    "cache_expire" => (MODE === "DEV") ? 0 : 24,
+    "cache_limiter" => (MODE === "DEV") ? "nocache" : "public",
+    "save_path" => $_SERVER["DOCUMENT_ROOT"] . "/priv/server/sessions"
+  ]);
+session_regenerate_id(true);
 
 //== SET SECURITY ACTIVE WHEN ON PRODUCTION MODE ==//
 if (MODE == "PRO") {
   header("X-Frame-Options: SAMEORIGIN");
   header("X-XSS-Protection: 1; mode=block");
   header("X-Content-Type-Options: nosniff");
+  header("X-Powered-By: RainBot 1.2");
+  header("Server: RainBot");
   header("Vary: User-Agent,Accept");
+  ini_set("display_errors", 0);
+  ini_set("log_errors", 1);
 } elseif (MODE == "DEV") {
-  ini_set('display_errors', 1);
-  ini_set('display_startup_errors', 1);
+  header("X-Powered-By: RainBot 1.2");
+  header("Server: RainBot");
+  ini_set("display_errors", 1);
+  ini_set("display_startup_errors", 1);
   error_reporting(E_ALL);
 }

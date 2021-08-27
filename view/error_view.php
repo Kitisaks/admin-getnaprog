@@ -1,17 +1,19 @@
 <?php
-class Notfound extends Plug
+
+class NotfoundView extends Plug
 {
 
   function __construct()
   {
     parent::__construct();
-    $this->main = strtolower(__CLASS__);
+    $this->main = $this->call(__CLASS__);
   }
 
   public function index()
   {
     $this
       ->view
-      ->render($this->main, "index", 1);
+      ->layout(false)
+      ->render($this->main, "index");
   }
 }

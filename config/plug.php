@@ -1,11 +1,9 @@
 <?php
 class Plug
 {
-
   function __construct()
   {
     $this->view = new View();
-    $this->repo = new Repo();
   }
 
   public function loadmodule($main)
@@ -27,16 +25,29 @@ class Plug
 
   private function current_agency($current_user)
   {
+    $repo = new Repo();
     return
-      $this
-      ->repo
+      $repo
       ->get("agencies", $current_user["agency_id"]);
   }
 
-  public function authenticate()
+  protected function call($call)
+  {
+    return strtolower(str_replace("View", "", $call));
+  }
+
+  protected function permitted()
   {
     if (empty($_SESSION["conn"])) {
       header("location: /auth");
+      exit;
+    }
+  }
+
+  protected function alived()
+  {
+    if (isset($_SESSION["conn"])) {
+      header("location: /home");
       exit;
     }
   }
