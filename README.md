@@ -1,4 +1,4 @@
-# **School Dev**
+# **MVC TEMPLATE DEV**
 
 ## ==== **Deployment** ====
 
