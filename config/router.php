@@ -16,10 +16,10 @@ final class Router
 
       #- /home
       case "/home": $this->route(HomeView::class, "index"); break;
-      case "/home/abc": echo($_SERVER["REQUEST_URI"]); exit; break;
 
       #- /project
       case "/project": $this->route(ProjectView::class, "index"); break;
+      case "/project/:id": $this->route(ProjectView::class, "index"); break;
       case "/project/new": $this->route(ProjectView::class, "new"); break;
       case "/project/create": $this->route(ProjectView::class, "create"); break;
 
