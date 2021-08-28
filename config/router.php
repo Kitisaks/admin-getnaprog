@@ -1,77 +1,57 @@
 <?php
 final class Router
 {
-  function __construct()
+  function __construct($uri = "/")
   {
-    require_once "error_view.php";
-    $this->notfound = new NotfoundView();
-    $this->uri = $this->uri($_GET["url"]);
-
-    switch ($_GET["url"]) {
-
+    // exit($uri);
+    switch ($uri) {
+      case "/": $this->route(AuthView::class, "index"); break;
       #- /auth
-      case "auth": $this->route("index"); break;
-      case "auth/login": $this->route("login"); break;
-      case "auth/signup": $this->route("signup"); break;
-      case "auth/signout": $this->route("signout"); break;
-      case "auth/reset": $this->route("reset"); break;
-      case "auth/add": $this->route("add"); break;
+      case "/auth": $this->route(AuthView::class, "index"); break;
+      case "/auth/login": $this->route(AuthView::class, "login"); break;
+      case "/auth/signup": $this->route(AuthView::class, "signup"); break;
+      case "/auth/signout": $this->route(AuthView::class, "signout"); break;
+      case "/auth/reset": $this->route(AuthView::class, "reset"); break;
+      case "/auth/add": $this->route(AuthView::class, "add"); break;
 
       #- /home
-      case "home": $this->route("index"); break;
+      case "/home": $this->route(HomeView::class, "index"); break;
+      case "/home/abc": echo($_SERVER["REQUEST_URI"]); exit; break;
 
       #- /project
-      case "project": $this->route("index"); break;
-      case "project/new": $this->route("new"); break;
-      case "project/create": $this->route("create"); break;
+      case "/project": $this->route(ProjectView::class, "index"); break;
+      case "/project/new": $this->route(ProjectView::class, "new"); break;
+      case "/project/create": $this->route(ProjectView::class, "create"); break;
 
       #- /tools
-      case "tools": $this->route("index"); break;
-      case "tools/genuuid": $this->route("genuuid"); break;
+      case "/tools": $this->route(ToolsView::class, "index"); break;
+      case "/tools/genuuid": $this->route(ToolsView::class, "genuuid"); break;
 
       
-      default: $this->notfound->index(); break;
+      default: $this->route(NotfoundView::class, "index"); break;
     }
   }
 
-  private function uri($url)
+  private function route($view, $template)
   {
-    return explode("/", rtrim(isset($url) ? $url : null, "/"));
-  }
-
-  private function loadview()
-  {
-    $file = $this->uri[0] . "_view.php";
-
-    if (file_exists($file)) {
-      require_once $file;
-      $class = ucfirst($this->uri[0]) . "View";
-      $render = new $class;
-      return $render;
-    } else {
-      $this->notfound->index();
-      exit;
-    }
-  }
-
-  private function route($get)
-  {
-    #- Load View
-    $view = $this->loadview();
+    $file = $_SERVER["DOCUMENT_ROOT"] . "/view/" . str_replace("view", "", strtolower($view)) . "_view.php";
+    require_once $file;
+    $classview = new $view;
     #- Load Controller
-    $view->loadmodule($this->uri[0]);
-
-    $this->prepare($view, $get);
+    $this->loadcontroller($classview, $view);
+    #- Load View
+    $this->loadview($classview, $template);
   }
 
-  private function prepare($view, $method)
+  private function loadcontroller($classview, $view)
   {
-    if (method_exists($view, $method)) {
-      $view->$method();
-      exit;
-    } else {
-      $this->notfound->index();
-      exit;
-    }
+    $class = str_replace("view", "", strtolower($view));
+    $classview->loadmodule($class);
+  }
+
+  private function loadview($view, $template)
+  {
+    $view->$template();
+    return $view;
   }
 }

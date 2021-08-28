@@ -1,19 +1,11 @@
 <?php
-#- declare your first redirect home page.
-require_once "./config/config.php";
+require_once __DIR__ . "/config/config.php";
+require_once __DIR__ . "/config/libs.php";
+require_once __DIR__ . "/config/secure.php";
+require_once __DIR__ . "/config/plug.php";
+require_once __DIR__ . "/config/repo.php";
+require_once __DIR__ . "/config/api.php";
+require_once __DIR__ . "/config/view.php";
+require_once __DIR__ . "/config/router.php";
 
-switch (MODE) {
-    case "PRO":
-        switch (isset($_SERVER["HTTPS"])) {
-            case true:
-                header("Location: /auth");
-                break;
-            default:
-                header("Location: /error");
-                break;
-        }
-        break;
-    case "DEV":
-        header("Location: /auth");
-        break;
-}
+$app = new Router($_SERVER["REQUEST_URI"]);

@@ -1,4 +1,5 @@
 <?php
+
 class AuthController
 {
   function __construct()
@@ -35,7 +36,6 @@ class AuthController
 
         header("location: /home");
         break;
-    
     }
   }
 
@@ -46,7 +46,7 @@ class AuthController
       ->repo
       ->select(["cname", "uuid"])
       ->from("agencies")
-      ->order_by(["ASC" => "cname"])
+      ->order_by(["asc" => "cname"])
       ->all();
   }
 

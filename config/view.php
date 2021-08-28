@@ -12,58 +12,61 @@ class View
 
   public function render($main, $page)
   {
+    $path = $_SERVER["DOCUMENT_ROOT"];
     switch ($this->layout) {
       case false:
-        require "../templates/layout/header.html.php";
-        require "../templates/layout/_popup.html.php";
-        require "../templates/{$main}/{$page}.html.php";
-        require "../templates/layout/bottom.html.php";
+        require $path . "/templates/layout/header.html.php";
+        require $path . "/templates/layout/_popup.html.php";
+        require $path . "/templates/{$main}/{$page}.html.php";
+        require $path . "/templates/layout/bottom.html.php";
         break;
 
       case true:
-        require "../templates/layout/header.html.php";
-        require "../templates/layout/_popup.html.php";
-        require "../templates/layout/_navbar.html.php";
-        require "../templates/{$main}/{$page}.html.php";
-        require "../templates/layout/_footer.html.php";
-        require "../templates/layout/bottom.html.php";
+        require $path . "/templates/layout/header.html.php";
+        require $path . "/templates/layout/_popup.html.php";
+        require $path . "/templates/layout/_navbar.html.php";
+        require $path . "/templates/{$main}/{$page}.html.php";
+        require $path . "/templates/layout/_footer.html.php";
+        require $path . "/templates/layout/bottom.html.php";
         break;
     }
   }
 
   public function render_many($main, array $pages)
   {
+    $path = $_SERVER["DOCUMENT_ROOT"];
     switch ($this->layout) {
       case false:
-        require "../templates/layout/header.html.php";
-        require "../templates/layout/_popup.html.php";
+        require $path . "/templates/layout/header.html.php";
+        require $path . "/templates/layout/_popup.html.php";
         foreach ($pages as $page) {
-          require "../templates/{$main}/{$page}.html.php";
+          require $path . "/templates/{$main}/{$page}.html.php";
         }
-        require "../templates/layout/bottom.html.php";
+        require $path . "/templates/layout/bottom.html.php";
         break;
 
       case true:
-        require "../templates/layout/header.html.php";
-        require "../templates/layout/_popup.html.php";
-        require "../templates/layout/_navbar.html.php";
+        require $path . "/templates/layout/header.html.php";
+        require $path . "/templates/layout/_popup.html.php";
+        require $path . "/templates/layout/_navbar.html.php";
         foreach ($pages as $page) {
-          require "../templates/{$main}/{$page}.html.php";
+          require $path . "/templates/{$main}/{$page}.html.php";
         }
-        require "../templates/layout/_footer.html.php";
-        require "../templates/layout/bottom.html.php";
+        require $path . "/templates/layout/_footer.html.php";
+        require $path . "/templates/layout/bottom.html.php";
         break;
     }
   }
 
   public static function partial($main, $pages)
   {
+    $path = $_SERVER["DOCUMENT_ROOT"];
     if (is_array($pages)) {
       foreach ($pages as $page) {
-        require "../templates/{$main}/{$page}.html.php";
+        require $path . "/templates/{$main}/{$page}.html.php";
       }
     } else {
-      require "../templates/{$main}/{$pages}.html.php";
+      require $path . "/templates/{$main}/{$pages}.html.php";
     }
   }
 }
