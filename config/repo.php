@@ -76,6 +76,12 @@ class Repo
     return $this;
   }
 
+  public function limit(int $number)
+  {
+    $this->query .= " limit {$number}";
+    return $this;
+  }
+
   #- Select one record
   public function one()
   {

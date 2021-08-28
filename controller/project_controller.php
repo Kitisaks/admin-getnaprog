@@ -33,6 +33,7 @@ class ProjectController
       ])
       ->where("p.agency_id = {$agency_id} and a.kind = 'page' and a.title = 'cover_image' and p.status = 1")
       ->order_by(["desc" => "p.id"])
+      ->limit(8)
       ->all();
 
     $GLOBALS["published"] =
@@ -58,6 +59,7 @@ class ProjectController
       ])
       ->where("p.agency_id = {$agency_id} and a.kind = 'page' and a.title = 'cover_image' and p.status = 2")
       ->order_by(["desc" => "p.id"])
+      ->limit(8)
       ->all();
 
     $count_unpub =
