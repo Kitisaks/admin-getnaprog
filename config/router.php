@@ -1,6 +1,9 @@
 <?php
+
 final class Router
 {
+  private $uri;
+
   function __construct(string $uri = "/")
   {
     $this->uri = $uri;
@@ -19,8 +22,9 @@ final class Router
 
     #- /project
     $this->route("/project", ProjectView::class, "index");
-    $this->route("/project/new", ProjectView::class, "new");
-    $this->route("/project/create", ProjectView::class, "create");
+    $this->route("/project/:uuid", ProjectView::class, "show");
+    $this->route("/project/add/new", ProjectView::class, "new");
+    $this->route("/project/add/create", ProjectView::class, "create");
 
     #- /tools
     $this->route("/tools", ToolsView::class, "index");
@@ -39,20 +43,21 @@ final class Router
     if ($request === $target) {
       return true;
     } else {
+      $check = 0;
       if (count($request) === count($target)) {
         $sets = array_combine($target, $request);
-        $sum = 0;
         foreach ($sets as $key => $value) {
           if ($pos = strpos($key, ":") !== false) {
             $key = substr($key, $pos);
             $_REQUEST[$key] = $value;
-            $sum += 1;
+            $check += 1;
+          } else if ($key === $value) {
+            $check += 1;
           }
         }
-        if ($sum >= 1)
-          return true;
-        else
-          return false;
+      }
+      if ($check === count($request)) {
+        return true;
       } else {
         return false;
       }
@@ -64,7 +69,11 @@ final class Router
     return explode("/", trim($uri, "/"));
   }
 
-  private function route($uri, $view, $template)
+  /**
+   * To Create * Do Not * add /example/:id and /example/test like this!
+   * It will route to first item that found in this by top to bot
+   */
+  private function route(string $uri,string $view,string $template)
   {
     if ($this->set_param($uri)) {
       $this->endpoint($view, $template);

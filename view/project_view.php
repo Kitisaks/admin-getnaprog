@@ -20,6 +20,17 @@ class ProjectView extends Plug
       ->render($this->main, "index");
   }
 
+  public function show()
+  {
+    $this
+      ->controller
+      ->show();
+
+    $this
+      ->view
+      ->render($this->main, "show");
+  }
+
   public function new()
   {
     $this

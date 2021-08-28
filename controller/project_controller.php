@@ -95,6 +95,40 @@ class ProjectController
     }
   }
 
+  public function show()
+  {
+    global $page;
+    $page = 
+      $this
+      ->repo
+      ->select([
+        "p.id as page_id",
+        "p.permalink as page_permalink",
+        "p.uuid as page_uuid",
+        "p.title as page_title",
+        "p.content as page_content",
+        "p.description as page_description",
+        "p.meta_title as page_meta_title",
+        "p.meta_description as page_meta_description",
+        "p.inserted_at as page_inserted_at",
+        "u.id as user_id",
+        "u.name as user_name",
+        "u.email as user_email",
+        "u.phone as user_phone",
+        "u.role as user_role",
+        "a.name as attachment_name",
+        "a.kind as attachment_kind",
+        "a.title as attachment_title"
+      ])
+      ->from("pages p")
+      ->join("left", [
+        "users u" => "p.user_id = u.id",
+        "attachments a" => "a.page_id = p.id"
+      ])
+      ->where("p.uuid = '{$_REQUEST['uuid']}'")
+      ->one();
+  }
+
   public function create()
   {
     #- Validate phone number
@@ -216,7 +250,7 @@ class ProjectController
     }
 
     $_SESSION["popup"] = ["status" => 1, "info" => "Already created your page."];
-    header("location: /project");
+    header("location: /project/{$data_page['uuid']}");
     exit;
   }
 }

@@ -101,4 +101,12 @@ class Utils
 
     FileHandler::delete_file("priv/temp/{$f_name}");
   }
+
+  public static function permitted(int $user_id): bool
+  {
+    if ($_SESSION["conn"]["current_user"]["id"] === $user_id || $_SESSION["conn"]["current_user"]["role"] >= 3)
+      return true;
+    else
+      return false;
+  }
 }

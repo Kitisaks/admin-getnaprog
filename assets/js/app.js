@@ -96,26 +96,6 @@ $(function () {
     return false;
   });
 
-  //== create new project form
-  // $('body').on('submit', '#project-create-form', function (e) {
-  //   e.preventDefault();
-  //   let data = new FormData($(this)[0]);
-  //   console.log(data);
-  //   $.ajax({
-  //     url: $(this).action,
-  //     type: $(this).method,
-  //     data: data,
-  //     cache: false,
-  //     contentType: false,
-  //     processData: false,
-  //     beforeSend: function () {
-
-  //     }
-
-  //   });
-  //   return false;
-  // });
-
   //== Side menu new project
   $('body').on('click', '.side-next', function () {
     alert("kuy");
@@ -180,6 +160,13 @@ $(function () {
     image_preview(file, size, preview_img, preview_url);
     return false;
   });
+
+  //== Open code editor
+  $('body').on('click', '#toggle-code-editor', function () {
+    $('body #code-editor').toggleClass('hidden');
+    $('body #text-editor').toggleClass('hidden block');
+    return false;
+  })
 
 
 
