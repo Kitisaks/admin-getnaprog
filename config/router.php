@@ -26,6 +26,9 @@ final class Router
     $this->route("/project/add/new", ProjectView::class, "new");
     $this->route("/project/add/create", ProjectView::class, "create");
 
+    #- /design
+    $this->route("/design", DesignView::class, "index");
+
     #- /tools
     $this->route("/tools", ToolsView::class, "index");
     $this->route("/tools/genuuid", ToolsView::class, "genuuid");

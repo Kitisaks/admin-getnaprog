@@ -88,7 +88,7 @@
                 </dd>
               </dl>
             </div>
-            <p class="text-xs text-gray-400 py-2"><?= Timex::iso_format($result["page_inserted_at"], Locale::acceptFromHttp($_SERVER["HTTP_ACCEPT_LANGUAGE"])) ?></p>
+            <p class="text-xs text-gray-400 py-2"><?= Timex::iso_format($result["page_inserted_at"]) ?></p>
           </li>
         <?php endforeach ?>
       <?php else : ?>

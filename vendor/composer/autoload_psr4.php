@@ -24,7 +24,6 @@ return array(
     'Ramsey\\Collection\\' => array($vendorDir . '/ramsey/collection/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'League\\MimeTypeDetection\\' => array($vendorDir . '/league/mime-type-detection/src'),
-    'League\\Flysystem\\Ftp\\' => array($vendorDir . '/league/flysystem-ftp'),
     'League\\Flysystem\\' => array($vendorDir . '/league/flysystem/src'),
     'League\\Csv\\' => array($vendorDir . '/league/csv/src'),
     'Jenssegers\\Agent\\' => array($vendorDir . '/jenssegers/agent/src'),

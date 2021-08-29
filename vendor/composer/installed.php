@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '65cfe997a1b1171ed4044981f3efd3ba79cffeda',
+        'reference' => 'a61b16da14272fa089216ad8a3d845dcb25920a7',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '65cfe997a1b1171ed4044981f3efd3ba79cffeda',
+            'reference' => 'a61b16da14272fa089216ad8a3d845dcb25920a7',
             'dev_requirement' => false,
         ),
         'brick/math' => array(
@@ -98,15 +98,6 @@
             'install_path' => __DIR__ . '/../league/flysystem',
             'aliases' => array(),
             'reference' => '29a3ba148287db3142412ef34f6fdcbc22c957cd',
-            'dev_requirement' => false,
-        ),
-        'league/flysystem-ftp' => array(
-            'pretty_version' => '2.2.1',
-            'version' => '2.2.1.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../league/flysystem-ftp',
-            'aliases' => array(),
-            'reference' => 'bc74c1586f3c22f240bfadbf333cb2c21a2ed4f9',
             'dev_requirement' => false,
         ),
         'league/mime-type-detection' => array(

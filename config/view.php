@@ -2,7 +2,11 @@
 #- use to render view.
 class View
 {
-  private $layout = true;
+  function __construct()
+  {
+    $this->layout = true;
+    $this->path = $_SERVER["DOCUMENT_ROOT"];
+  }
 
   public function layout(bool $layout)
   {
@@ -10,51 +14,53 @@ class View
     return $this;
   }
 
-  public function render($main, $page)
+  private function require($page, $folder = "layout")
   {
-    $path = $_SERVER["DOCUMENT_ROOT"];
-    switch ($this->layout) {
-      case false:
-        require $path . "/templates/layout/header.html.php";
-        require $path . "/templates/layout/_popup.html.php";
-        require $path . "/templates/{$main}/{$page}.html.php";
-        require $path . "/templates/layout/bottom.html.php";
-        break;
-
-      case true:
-        require $path . "/templates/layout/header.html.php";
-        require $path . "/templates/layout/_popup.html.php";
-        require $path . "/templates/layout/_navbar.html.php";
-        require $path . "/templates/{$main}/{$page}.html.php";
-        require $path . "/templates/layout/_footer.html.php";
-        require $path . "/templates/layout/bottom.html.php";
-        break;
-    }
+    require_once $this->path . "/templates/{$folder}/{$page}.html.php";
   }
 
-  public function render_many($main, array $pages)
+  public function render($main, $pages)
   {
-    $path = $_SERVER["DOCUMENT_ROOT"];
-    switch ($this->layout) {
-      case false:
-        require $path . "/templates/layout/header.html.php";
-        require $path . "/templates/layout/_popup.html.php";
+    if ($this->layout) {
+      if (is_string($pages)) {
+        $this->require("header");
+        $this->require("_alert");
+        $this->require("_notice");
+        $this->require("_popup");
+        $this->require("_navbar");
+        $this->require($pages, $main);
+        $this->require("_footer");
+        $this->require("bottom");
+      } else if (is_array($pages)) {
+        $this->require("header");
+        $this->require("_alert");
+        $this->require("_notice");
+        $this->require("_popup");
+        $this->require("_navbar");
         foreach ($pages as $page) {
-          require $path . "/templates/{$main}/{$page}.html.php";
+          $this->require($page, $main);
         }
-        require $path . "/templates/layout/bottom.html.php";
-        break;
-
-      case true:
-        require $path . "/templates/layout/header.html.php";
-        require $path . "/templates/layout/_popup.html.php";
-        require $path . "/templates/layout/_navbar.html.php";
+        $this->require("_footer");
+        $this->require("bottom");
+      }
+    } else {
+      if (is_string($pages)) {
+        $this->require("header");
+        $this->require("_alert");
+        $this->require("_notice");
+        $this->require("_popup");
+        $this->require($pages, $main);
+        $this->require("bottom");
+      } else if (is_array($pages)) {
+        $this->require("header");
+        $this->require("_alert");
+        $this->require("_notice");
+        $this->require("_popup");
         foreach ($pages as $page) {
-          require $path . "/templates/{$main}/{$page}.html.php";
+          $this->require($page, $main);
         }
-        require $path . "/templates/layout/_footer.html.php";
-        require $path . "/templates/layout/bottom.html.php";
-        break;
+        $this->require("bottom");
+      }
     }
   }
 
@@ -63,10 +69,10 @@ class View
     $path = $_SERVER["DOCUMENT_ROOT"];
     if (is_array($pages)) {
       foreach ($pages as $page) {
-        require $path . "/templates/{$main}/{$page}.html.php";
+        require_once $path . "/templates/{$main}/{$page}.html.php";
       }
     } else {
-      require $path . "/templates/{$main}/{$pages}.html.php";
+      require_once $path . "/templates/{$main}/{$pages}.html.php";
     }
   }
 }

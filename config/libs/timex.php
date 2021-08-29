@@ -3,23 +3,37 @@ use Carbon\Carbon;
 
 class Timex
 {
-  public static function now($locale = null)
+  private static function locale()
   {
-    return Carbon::now($locale)->toDateTimeString();
-  }
-
-  public static function iso_format($datetime, $locale = null)
-  {
-    if ($locale == null){
-      return Carbon::parse($datetime)->isoFormat('LLLL');
-    } else {
-      return Carbon::parse($datetime)->locale($locale)->isoFormat('LLLL');
+    switch (MODE) {
+      case 'DEV':
+        $ip = "182.232.197.124";
+        break;
+      
+      case 'DEV':
+        $ip = Utils::get_client_ip();
+        break;
     }
+    return Utils::get_location_from_ip($ip)->countryCode;
   }
 
-  public static function diff($datetime)
+  public static function now()
   {
-    return $datetime->diffForHumans();
+    return Carbon::now()->locale(self::locale());
+  }
+
+  public static function iso_format($datetime)
+  {
+    return 
+      Carbon::parse($datetime)
+      ->locale(self::locale())
+      ->isoFormat('LLLL');
+  }
+
+  public static function from_now($datetime)
+  { 
+    return 
+      Carbon::parse($datetime)->diffForHumans(self::now());
   }
 
   public static function add($datetime, $num, $type)

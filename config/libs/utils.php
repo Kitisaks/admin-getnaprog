@@ -41,16 +41,22 @@ class Utils
     return true;
   }
 
-  public static function get_location_from_ip($ip): string
+  public static function get_location_from_ip($ip)
   {
-    $ch = curl_init('http://ip-api.com/json/' . $ip);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $json = curl_exec($ch);
-    curl_close($ch);
-    // Decode JSON response
-    $address = json_decode($json, true);
-    // Country code output, field "country_code"
-    return $address;
+    if (self::isvalid_ip_address($ip)) {
+      $ch = curl_init('http://ip-api.com/json/' . $ip);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      $json = curl_exec($ch);
+      curl_close($ch);
+      // Decode JSON response
+      $address = json_decode($json);
+
+      // Country code output, field "country_code"
+      return $address;
+    } else {
+      return "Unknown";
+    }
+
   }
 
   public static function default_image($filename, $size = null): string

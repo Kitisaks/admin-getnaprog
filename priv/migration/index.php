@@ -15,6 +15,7 @@
     require_once __DIR__ . "/table/actions.php";
     require_once __DIR__ . "/table/attachments.php";
     require_once __DIR__ . "/table/notifications.php";
+    require_once __DIR__ . "/table/templates.php";
     //==== put more if want .. ====//
     ?>
   </h4>
