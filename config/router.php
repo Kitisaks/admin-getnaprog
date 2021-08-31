@@ -16,15 +16,15 @@ final class Router
     $this->route("/auth/signout", AuthView::class, "signout");
     $this->route("/auth/reset", AuthView::class, "reset");
     $this->route("/auth/add", AuthView::class, "add");
-
+    
     #- /home
     $this->route("/home", HomeView::class, "index");
 
     #- /project
     $this->route("/project", ProjectView::class, "index");
+    $this->route("/project/new", ProjectView::class, "new");
+    $this->route("/project/create", ProjectView::class, "create");
     $this->route("/project/:uuid", ProjectView::class, "show");
-    $this->route("/project/add/new", ProjectView::class, "new");
-    $this->route("/project/add/create", ProjectView::class, "create");
 
     #- /design
     $this->route("/design", DesignView::class, "index");
@@ -43,28 +43,27 @@ final class Router
     $request = $this->parse_uri($this->uri);
     $target = $this->parse_uri($target);
 
-    if ($request === $target) {
+    #- Bypass this first
+    if ($request === $target)
       return true;
-    } else {
-      $check = 0;
-      if (count($request) === count($target)) {
-        $sets = array_combine($target, $request);
-        foreach ($sets as $key => $value) {
-          if ($pos = strpos($key, ":") !== false) {
-            $key = substr($key, $pos);
-            $_REQUEST[$key] = $value;
-            $check += 1;
-          } else if ($key === $value) {
-            $check += 1;
+    if (count($target) === count($request)) {
+      $ck = 0;
+      $num = count($request);
+      for ($n = 0; $n < $num; $n++) {
+        if ($request[$n] === $target[$n]) {
+          $ck++;
+          if ($ck === $num)
+            return true;
+        } else if ($ps = strpos($target[$n], ":") !== false) {
+          $ck++;
+          if ($ck === $num) {
+            $_REQUEST[substr($target[$n], $ps)] = $request[$n];
+            return true;
           }
         }
       }
-      if ($check === count($request)) {
-        return true;
-      } else {
-        return false;
-      }
     }
+    return false;
   }
 
   private function parse_uri($uri)
@@ -75,15 +74,19 @@ final class Router
   /**
    * To Create * Do Not * add /example/:id and /example/test like this!
    * It will route to first item that found in this by top to bot
+   * Please reorder route like this 
+   * /example/test1
+   * /example/test2
+   * /example/:id
    */
-  private function route(string $uri,string $view,string $template)
+  private function route(string $uri, string $view, string $template): void
   {
     if ($this->set_param($uri)) {
       $this->endpoint($view, $template);
+      exit;
     } else if ($uri === "/error") {
       $this->endpoint($view, $template);
-    } else {
-      return null;
+      exit;
     }
   }
 
