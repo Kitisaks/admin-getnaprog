@@ -4,65 +4,93 @@ class AuthController
 {
   function __construct()
   {
+    Plug::alived();
+    $this->view = new View(__CLASS__);
     $this->repo = new Repo();
   }
 
-  #- login
-  public function login()
+  public function index($conn, $params)
   {
-    $user_mail = strtolower(trim($_POST["user_mail"]));
-    $password = md5(trim($_POST["password"]));
-
-    $results =
-      $this
-      ->repo
-      ->select("*")
-      ->from("users")
-      ->where("(username = '{$user_mail}' or email = '{$user_mail}') and password = '{$password}'")
-      ->one();
-
-    switch ($results) {
-      case false:
-        $_SESSION["errno"] = [
-          "status" => 0,
-          "message" => "Username or password incorrect!"
-        ];
-        header("location: /auth");
-        break;
-
-      case true:
-        $plug = new Plug();
-        $plug->assign_conn($results);
-
-        header("location: /home");
-        break;
-    }
-  }
-
-  public function signup()
-  {
-    $GLOBALS["agencies"] =
+    $agencies =
       $this
       ->repo
       ->select(["cname", "uuid"])
       ->from("agencies")
       ->order_by(["asc" => "cname"])
       ->all();
+
+    $this
+    ->view
+    ->assign("agencies", $agencies)
+    ->put_layout(false)
+    ->render("index.html");
   }
 
-  public function create()
+  #- login
+  public function login($conn, $params)
+  {
+    $user_mail = strtolower(trim($params["user_mail"]));
+    $password = md5(trim($params["password"]));
+
+    $agency =
+      $this
+      ->repo
+      ->select("id")
+      ->from("agencies")
+      ->where("uuid = '{$params['agency_uuid']}'")
+      ->one();
+  
+    $user =
+      $this
+      ->repo
+      ->select("*")
+      ->from("users")
+      ->where("(username = '{$user_mail}' or email = '{$user_mail}') and password = '{$password}' and agency_id = {$agency['id']}")
+      ->one();
+
+    if (empty($user)) {
+      $this
+      ->view
+      ->put_flash(false, "Your username or password is incorrect!")
+      ->redirect("/auth");
+    } else {
+      Plug::assign_conn($user);
+      $this
+      ->view
+      ->put_flash(true, "Welcome back {$user['name']}!")
+      ->redirect("/home");
+    }
+  }
+
+  public function signup($conn, $params)
+  {
+    $agencies =
+      $this
+      ->repo
+      ->select(["cname", "uuid"])
+      ->from("agencies")
+      ->order_by(["asc" => "cname"])
+      ->all();
+    
+    $this
+    ->view
+    ->assign("agencies", $agencies)
+    ->put_layout(false)
+    ->render("signup.html");
+  }
+
+  public function create($conn, $params)
   {
     $e = $this->check($_POST["username"], $_POST["email"]);
     switch ($e) {
       case true:
-        $_SESSION["errno"] = [
-          "status" => 0,
-          "message" => "Username or email already taken!"
-        ];
-        header("location: /auth/signup");
-        break;
+        $this
+        ->view
+        ->put_flash(false, "Username or email already taken!")
+        ->redirect("/auth/signup");
+        
       case false:
-        $this->init_register();
+        $this->init_register($params);
         break;
     }
   }
@@ -70,57 +98,59 @@ class AuthController
   #- check exist user in db
   private function check($username, $email)
   {
-    $check =
+    return 
       $this
       ->repo
       ->select(["username", "email"])
       ->from("users")
       ->where("username = '{$username}' or email = '{$email}'")
       ->one();
-    return $check;
   }
 
   #- start to register the form
-  private function init_register()
+  private function init_register($params)
   {
     $agency =
       $this
       ->repo
       ->select("id")
       ->from("agencies")
-      ->where("uuid = '{$_POST['agency_id']}'")
+      ->where("uuid = '{$params['agency_id']}'")
       ->one();
 
     $user = [
       "agency_id" => $agency["id"],
-      "name" => trim($_POST["name"]),
-      "username" => strtolower(trim($_POST["username"])),
-      "password" => md5(trim($_POST["password"])),
-      "email" => strtolower(trim($_POST["email"])),
-      "gender" => trim($_POST["gender"]),
-      "phone" => trim($_POST["phone"]),
-      "ip" => trim($_POST["ip"]),
+      "name" => trim($params["name"]),
+      "username" => strtolower(trim($params["username"])),
+      "password" => md5(trim($params["password"])),
+      "email" => strtolower(trim($params["email"])),
+      "gender" => trim($params["gender"]),
+      "phone" => trim($params["phone"]),
+      "ip" => trim($params["ip"]),
       "uuid" => GenUuid::uuid6()
     ];
 
     if ($this->repo->insert("users", $user)) {
-      $_SESSION["popup"] = ["status" => 1, "info" => "Already created your account."];
-      header("location: /auth");
+      $this
+      ->view
+      ->put_flash(true, "Already created your account.")
+      ->redirect("/auth");
     } else {
-      $_SESSION["popup"] = ["status" => 0, "error" => "Somethings went wrong."];
-      header("location: /auth/signup");
+      $this
+      ->view
+      ->put_flash(false, "Somethings went wrong.")
+      ->redirect("/auth/signup");
     }
   }
 
-  public function signout()
+  public function signout($conn, $params)
   {
-    session_unset();
-    session_destroy();
-    header("location: /auth");
-    exit;
+    session_unset($conn);
+    session_destroy($conn);
+    $this->view->redirect("/auth");
   }
 
-  public function reset()
+  public function reset($conn, $params)
   {
     exit("reset");
   }

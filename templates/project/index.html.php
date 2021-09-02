@@ -2,7 +2,7 @@
 
   <!-- Statics Analytics Section -->
   <div class="p-4">
-    <?php View::partial("project", "_statics") ?>
+    <?php View::partial("project", "_statics.html") ?>
   </div>
 
   <!-- For Unpublished -->

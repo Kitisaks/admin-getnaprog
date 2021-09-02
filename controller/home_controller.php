@@ -1,5 +1,6 @@
 <?php
-class DesignController
+
+class HomeController
 {
   function __construct()
   {
@@ -8,5 +9,8 @@ class DesignController
     $this->repo = new Repo();
   }
 
-
+  public function index()
+  {
+    $this->view->render("index.html");
+  }
 }

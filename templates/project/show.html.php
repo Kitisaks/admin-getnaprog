@@ -61,7 +61,7 @@
             </div>
             <!-- Content -->
             <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-              <?php View::partial("project", "_editor") ?>
+              <?php View::partial("project", "_editor.html") ?>
             </div>
             <!-- Cover photo -->
             <div class="border-t border-gray-200 px-4 py-5 sm:px-6">

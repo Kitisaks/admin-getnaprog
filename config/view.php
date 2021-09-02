@@ -2,64 +2,59 @@
 #- use to render view.
 class View
 {
-  function __construct()
+  function __construct($main)
   {
+    $this->main = str_replace("controller", "", strtolower($main));
     $this->layout = true;
     $this->path = $_SERVER["DOCUMENT_ROOT"];
   }
 
-  public function layout(bool $layout)
-  {
-    $this->layout = $layout;
-    return $this;
-  }
-
   private function require($page, $folder = "layout")
   {
-    require_once $this->path . "/templates/{$folder}/{$page}.html.php";
+    require_once $this->path . "/templates/{$folder}/{$page}.php";
   }
 
-  public function render($main, $pages)
+  public function render($pages)
   {
     if ($this->layout) {
       if (is_string($pages)) {
-        $this->require("header");
-        $this->require("_alert");
-        $this->require("_notice");
-        $this->require("_popup");
-        $this->require("_navbar");
-        $this->require($pages, $main);
-        $this->require("_footer");
-        $this->require("bottom");
+        $this->require("header.html");
+        $this->require("_alert.html");
+        $this->require("_notice.html");
+        $this->require("_popup.html");
+        $this->require("_navbar.html");
+        $this->require($pages, $this->main);
+        $this->require("_footer.html");
+        $this->require("bottom.html");
       } else if (is_array($pages)) {
-        $this->require("header");
-        $this->require("_alert");
-        $this->require("_notice");
-        $this->require("_popup");
-        $this->require("_navbar");
+        $this->require("header.html");
+        $this->require("_alert.html");
+        $this->require("_notice.html");
+        $this->require("_popup.html");
+        $this->require("_navbar.html");
         foreach ($pages as $page) {
-          $this->require($page, $main);
+          $this->require($page, $this->main);
         }
-        $this->require("_footer");
-        $this->require("bottom");
+        $this->require("_footer.html");
+        $this->require("bottom.html");
       }
     } else {
       if (is_string($pages)) {
-        $this->require("header");
-        $this->require("_alert");
-        $this->require("_notice");
-        $this->require("_popup");
-        $this->require($pages, $main);
-        $this->require("bottom");
+        $this->require("header.html");
+        $this->require("_alert.html");
+        $this->require("_notice.html");
+        $this->require("_popup.html");
+        $this->require($pages, $this->main);
+        $this->require("bottom.html");
       } else if (is_array($pages)) {
-        $this->require("header");
-        $this->require("_alert");
-        $this->require("_notice");
-        $this->require("_popup");
+        $this->require("header.html");
+        $this->require("_alert.html");
+        $this->require("_notice.html");
+        $this->require("_popup.html");
         foreach ($pages as $page) {
-          $this->require($page, $main);
+          $this->require($page, $this->main);
         }
-        $this->require("bottom");
+        $this->require("bottom.html");
       }
     }
   }
@@ -69,10 +64,38 @@ class View
     $path = $_SERVER["DOCUMENT_ROOT"];
     if (is_array($pages)) {
       foreach ($pages as $page) {
-        require_once $path . "/templates/{$main}/{$page}.html.php";
+        require_once $path . "/templates/{$main}/{$page}.php";
       }
     } else {
-      require_once $path . "/templates/{$main}/{$pages}.html.php";
+      require_once $path . "/templates/{$main}/{$pages}.php";
     }
+  }
+
+  public function put_layout(bool $layout)
+  {
+    $this->layout = $layout;
+    return $this;
+  }
+
+  public function assign($param, $value = null)
+  {
+    if (!is_null($value))
+      $GLOBALS[$param] = $value;
+    return $this;
+  }
+
+  public function put_flash($status = true, $value)
+  {
+    if ($status)
+      $_SESSION["popup"] = ["status" => 1, "info" => $value];
+    else 
+      $_SESSION["popup"] = ["status" => 0, "info" => $value];
+    return $this;
+  }
+
+  public function redirect($uri)
+  {
+    header("location: {$uri}");
+    exit;
   }
 }

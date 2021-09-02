@@ -3,14 +3,16 @@ class ProjectController
 {
   function __construct()
   {
+    Plug::permitted();
+    $this->view = new View(__CLASS__);
     $this->repo = new Repo();
   }
 
-  public function index()
+  public function index($conn)
   {
-    $agency_id = $_SESSION["conn"]["agency"]["id"];
+    $agency_id = $conn["agency"]["id"];
 
-    $GLOBALS["unpublished"] =
+    $unpublished =
       $this
       ->repo
       ->select([
@@ -36,7 +38,7 @@ class ProjectController
       ->limit(8)
       ->all();
 
-    $GLOBALS["published"] =
+    $published =
       $this
       ->repo
       ->select([
@@ -81,23 +83,29 @@ class ProjectController
     $total = intval($count_unpub["num"]) + intval($count_pub["num"]);
 
     if ($total != 0) {
-      $GLOBALS["statics"] = [
+      $statics = [
         "total" => $total,
         "percent_pub" => (intval($count_pub["num"]) / $total) * 100,
         "percent_unpub" => (intval($count_unpub["num"]) / $total) * 100
       ];
     } else {
-      $GLOBALS["statics"] = [
+      $statics = [
         "total" => 0,
         "percent_pub" => 0,
         "percent_unpub" => 0
       ];
     }
+
+    $this
+    ->view
+    ->assign("unpublished", $unpublished)
+    ->assign("published", $published)
+    ->assign("statics", $statics)
+    ->render("index.html");
   }
 
-  public function show()
+  public function show($conn, $params)
   {
-    global $page;
     $page = 
       $this
       ->repo
@@ -125,54 +133,69 @@ class ProjectController
         "users u" => "p.user_id = u.id",
         "attachments a" => "a.page_id = p.id"
       ])
-      ->where("p.uuid = '{$_REQUEST['uuid']}'")
+      ->where("p.agency_id = {$conn['agency']['id']} and p.uuid = '{$params['uuid']}'")
       ->one();
+
+    $this
+    ->view
+    ->assign("page", $page)
+    ->render("show.html");
   }
 
-  public function create()
+  public function new($conn, $params)
+  {
+    $this
+    ->view
+    ->render("new.html");
+  }
+
+  public function create($conn, $params)
   {
     #- Validate phone number
-    if (!Utils::validate_phone_number($_POST["user"]["phone"])) {
-      $_SESSION["popup"] = ["status" => 0, "error" => "Your phone number is not valid."];
-      header("location: /project/new");
-      exit;
+    if (!Utils::validate_phone_number($params["user"]["phone"])) {
+      $this
+      ->view
+      ->put_flash(false, "Your phone number is not valid.")
+      ->redirect("/project/new");
     }
 
-    $agency_id = $_SESSION["conn"]["agency"]["id"];
+    $agency_id = $conn["agency"]["id"];
 
     $user = [
       "agency_id" => $agency_id,
-      "uuid" => $_POST["user"]["uuid"],
+      "uuid" => $params["user"]["uuid"],
       "username" => RandUsername::generate(),
-      "name" => trim($_POST["user"]["name"]),
-      "password" => md5(trim($_POST["user"]["password"])),
-      "email" => strtolower(trim($_POST["user"]["email"])),
-      "phone" => $_POST["user"]["phone"]
+      "name" => trim($params["user"]["name"]),
+      "password" => md5(trim($params["user"]["password"])),
+      "email" => strtolower(trim($params["user"]["email"])),
+      "phone" => $params["user"]["phone"]
     ];
 
     if ($this->repo->insert("users", $user)) {
       $data_user = $this->repo->get_by("users", "uuid='{$user['uuid']}'");
     } else {
-      $_SESSION["popup"] = ["status" => 0, "error" => "Somethings went wrong."];
-      header("location: /project/new");
-      exit;
+      $this
+      ->view
+      ->put_flash(false, "Somethings went wrong.")
+      ->redirect("/project/new");
     }
 
     $page = [
       "agency_id" => $agency_id,
       "user_id" => $data_user["id"],
-      "uuid" => $_POST["page"]["uuid"],
-      "permalink" => strtolower(trim($_POST["page"]["permalink"])),
-      "meta_title" => trim($_POST["page"]["meta_title"]),
-      "meta_description" => trim($_POST["page"]["meta_description"])
+      "uuid" => $params["page"]["uuid"],
+      "permalink" => strtolower(trim($params["page"]["permalink"])),
+      "meta_title" => trim($params["page"]["meta_title"]),
+      "meta_description" => trim($params["page"]["meta_description"])
     ];
 
     if ($this->repo->insert("pages", $page)) {
       $data_page = $this->repo->get_by("pages", "uuid='{$page['uuid']}'");
     } else {
-      $_SESSION["popup"] = ["status" => 0, "error" => "Somethings went wrong."];
-      header("location: /project/new");
-      exit;
+      $this
+      ->view
+      ->put_flash(false, "Somethings went wrong.")
+      ->redirect("/project/new");
     }
 
     $notification = [
@@ -181,22 +204,23 @@ class ProjectController
       "page_id" => $data_page["id"]
     ];
 
-    if (isset($_POST["notification"]["line"]))
+    if (isset($params["notification"]["line"]))
       array_merge(
         $notification,
-        ["line" => ($_POST["notification"]["line"] == "on") ? 1 : 0]
+        ["line" => ($params["notification"]["line"] == "on") ? 1 : 0]
       );
 
     if (isset($_POST["notification"]["email"]))
       array_merge(
         $notification,
-        ["email" => ($_POST["notification"]["email"] == "on") ? 1 : 0]
+        ["email" => ($params["notification"]["email"] == "on") ? 1 : 0]
       );
 
     if (!$this->repo->insert("notifications", $notification)) {
-      $_SESSION["popup"] = ["status" => 0, "error" => "Somethings went wrong."];
-      header("location: /project/new");
-      exit;
+      $this
+      ->view
+      ->put_flash(false, "Somethings went wrong.")
+      ->redirect("/project/new");
     }
 
     if ($_FILES["attachment"]["name"]["favicon"] != "") {
@@ -210,9 +234,10 @@ class ProjectController
       ];
 
       if (!$this->repo->insert("attachments", $favicon)) {
-        $_SESSION["popup"] = ["status" => 0, "error" => "Somethings went wrong."];
-        header("location: /project/new");
-        exit;
+        $this
+        ->view
+        ->put_flash(false, "Somethings went wrong.")
+        ->redirect("/project/new");
       }
 
       $favicon =
@@ -235,9 +260,10 @@ class ProjectController
       ];
 
       if (!$this->repo->insert("attachments", $cover_image)) {
-        $_SESSION["popup"] = ["status" => 0, "error" => "Somethings went wrong."];
-        header("location: /project/new");
-        exit;
+        $this
+        ->view
+        ->put_flash(false, "Somethings went wrong.")
+        ->redirect("/project/new");
       }
 
       $cover_image =
@@ -249,8 +275,9 @@ class ProjectController
       Utils::upload_file_ftp($cover_image);
     }
 
-    $_SESSION["popup"] = ["status" => 1, "info" => "Already created your page."];
-    header("location: /project/{$data_page['uuid']}");
-    exit;
+    $this
+    ->view
+    ->put_flash(true, "Already created your page.")
+    ->redirect("/project/{$data_page['uuid']}");
   }
 }

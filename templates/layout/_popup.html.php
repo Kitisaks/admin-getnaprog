@@ -40,7 +40,7 @@
             </div>
             <div class="ml-3 w-0 flex-1 pt-0.5">
               <p class="text-sm font-medium text-red-900">
-                <?= $_SESSION["popup"]["error"] ?>
+                <?= $_SESSION["popup"]["info"] ?>
               </p>
             </div>
             <div class="ml-4 flex-shrink-0 flex">
