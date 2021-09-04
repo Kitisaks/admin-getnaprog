@@ -50,31 +50,11 @@ class Utils
       curl_close($ch);
       // Decode JSON response
       $address = json_decode($json);
-
       // Country code output, field "country_code"
       return $address;
     } else {
       return "Unknown";
     }
-
-  }
-
-  public static function default_image($attachment, $post_id, $size = null): string
-  {
-    $filename = "{$attachment['attachment_kind']}:{$attachment['attachment_title']}:{$post_id}:{$attachment['attachment_name']}";
-    $url = self::default_url($filename);
-    if($size != null) {
-      return "{$url}&size={$size}";
-    } else {
-      return $url;
-    }
-  }
-
-  private static function default_url($filename): string
-  {
-    $key = self::read_json_file($_SERVER["DOCUMENT_ROOT"] . "/priv/server/credentials.json")["api"]["drive"];
-    $host = $_SESSION["conn"]["agency"]["cname"];
-    return "https://db.getnaprog.com/api/v1/{$filename}?key={$key}&h={$host}";
   }
 
   public static function read_json_file(string $path): array
@@ -86,28 +66,7 @@ class Utils
       exit("Cannot read the file.");
     }
   }
-
-  public static function upload_file_ftp(array $obj, int $mode = FTP_BINARY): void
-  {
-    #- Prepare upload all attachment to drive
-    $agency_cname = $_SESSION["conn"]["agency"]["cname"];
-    $tmp_dir = $_SERVER["DOCUMENT_ROOT"] . "/priv/temp";
-    $id = $obj["{$obj['kind']}_id"];
-
-    $f_name = "{$obj['kind']}:{$obj['title']}:{$id}:{$obj['name']}";
-    $tmp_path = "{$tmp_dir}/{$f_name}";
-
-    #- Move file to temp directory
-    move_uploaded_file($obj["tmp_name"], $tmp_path);
-
-    $target = "/priv/drive/{$agency_cname}";
-
-    #- Upload with FTP
-    @FtpHandler::upload_file($tmp_dir, $target, $mode) or die("Cannot upload file {$obj['name']}");
-
-    FileHandler::delete_file("priv/temp/{$f_name}");
-  }
-
+  
   public static function permitted(int $user_id): bool
   {
     if ($_SESSION["conn"]["current_user"]["id"] === $user_id || $_SESSION["conn"]["current_user"]["role"] >= 3)

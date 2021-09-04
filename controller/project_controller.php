@@ -12,13 +12,14 @@ class ProjectController
   {
     $agency_id = $conn["agency"]["id"];
 
-    $unpublished =
+    $pages =
       $this
       ->repo
       ->select([
         "p.id as page_id",
         "p.permalink as page_permalink",
         "p.uuid as page_uuid",
+        "p.status as page_status",
         "p.meta_title as page_meta_title",
         "p.meta_description as page_meta_description",
         "p.inserted_at as page_inserted_at",
@@ -33,62 +34,38 @@ class ProjectController
         "users u" => "p.user_id = u.id",
         "attachments a" => "a.page_id = p.id"
       ])
-      ->where("p.agency_id = {$agency_id} and a.kind = 'page' and a.title = 'favicon' and p.status = 1")
+      ->where("p.agency_id = {$agency_id} and a.kind = 'page'")
       ->order_by(["desc" => "p.id"])
       ->limit(8)
       ->all();
 
-    $published =
-      $this
-      ->repo
-      ->select([
-        "p.id as page_id",
-        "p.permalink as page_permalink",
-        "p.uuid as page_uuid",
-        "p.meta_title as page_meta_title",
-        "p.meta_description as page_meta_description",
-        "p.inserted_at as page_inserted_at",
-        "u.name as user_name",
-        "u.role as user_role",
-        "a.name as attachment_name",
-        "a.kind as attachment_kind",
-        "a.title as attachment_title"
-      ])
-      ->from("pages p")
-      ->join("left", [
-        "users u" => "p.user_id = u.id",
-        "attachments a" => "a.page_id = p.id"
-      ])
-      ->where("p.agency_id = {$agency_id} and a.kind = 'page' and a.title = 'favicon' and p.status = 2")
-      ->order_by(["desc" => "p.id"])
-      ->limit(8)
-      ->all();
+    $attachments = AttachmentData::assigns($pages, "favicon");
 
-    $count_unpub =
-      $this
-      ->repo
-      ->distinct(true)
-      ->select("count(p.id) as num")
-      ->from("pages p")
-      ->where("p.agency_id = {$agency_id} and p.status = 1")
-      ->one();
+    $count_unpub = count(
+      array_filter(
+        $pages,
+        function ($page) {
+          return $page["page_status"] === 1;
+        }
+      )
+    );
 
-    $count_pub =
-      $this
-      ->repo
-      ->distinct(true)
-      ->select("count(p.id) as num")
-      ->from("pages p")
-      ->where("p.agency_id = {$agency_id} and p.status = 2")
-      ->one();
+    $count_pub = count(
+      array_filter(
+        $pages,
+        function ($page) {
+          return $page["page_status"] === 2;
+        }
+      )
+    );
 
-    $total = intval($count_unpub["num"]) + intval($count_pub["num"]);
+    $total = $count_unpub + $count_pub;
 
-    if ($total != 0) {
+    if ($total > 0) {
       $statics = [
         "total" => $total,
-        "percent_pub" => (intval($count_pub["num"]) / $total) * 100,
-        "percent_unpub" => (intval($count_unpub["num"]) / $total) * 100
+        "percent_pub" => ($count_pub / $total) * 100,
+        "percent_unpub" => ($count_unpub / $total) * 100
       ];
     } else {
       $statics = [
@@ -99,16 +76,16 @@ class ProjectController
     }
 
     $this
-    ->view
-    ->assign("unpublished", $unpublished)
-    ->assign("published", $published)
-    ->assign("statics", $statics)
-    ->render("index.html");
+      ->view
+      ->assign("attachments", $attachments)
+      ->assign("pages", $pages)
+      ->assign("statics", $statics)
+      ->render("index.html");
   }
 
   public function show($conn, $params)
   {
-    $page = 
+    $page =
       $this
       ->repo
       ->select([
@@ -138,17 +115,25 @@ class ProjectController
       ->where("p.agency_id = {$conn['agency']['id']} and p.uuid = '{$params['uuid']}'")
       ->one();
 
+    $cover_image = AttachmentData::assign($page, "cover_image");
+    $favicon = AttachmentData::assign($page, "favicon");
+
+    // $cover_image = AttachmentData::default_image($cover_image, 47);
+    // print_r($cover_image);
+    // exit;
     $this
-    ->view
-    ->assign("page", $page)
-    ->render("show.html");
+      ->view
+      ->assign("page", $page)
+      ->assign("cover_image", $cover_image)
+      ->assign("favicon", $favicon)
+      ->render("show.html");
   }
 
   public function new($conn, $params)
   {
     $this
-    ->view
-    ->render("new.html");
+      ->view
+      ->render("new.html");
   }
 
   public function create($conn, $params)
@@ -156,9 +141,9 @@ class ProjectController
     #- Validate phone number
     if (!Utils::validate_phone_number($params["user"]["phone"])) {
       $this
-      ->view
-      ->put_flash(false, "Your phone number is not valid.")
-      ->redirect("/project/new");
+        ->view
+        ->put_flash(false, "Your phone number is not valid.")
+        ->redirect("/project/new");
     }
 
     $agency_id = $conn["agency"]["id"];
@@ -177,9 +162,9 @@ class ProjectController
       $data_user = $this->repo->get_by("users", "uuid='{$user['uuid']}'");
     } else {
       $this
-      ->view
-      ->put_flash(false, "Somethings went wrong.")
-      ->redirect("/project/new");
+        ->view
+        ->put_flash(false, "Somethings went wrong.")
+        ->redirect("/project/new");
     }
 
     $page = [
@@ -195,9 +180,9 @@ class ProjectController
       $data_page = $this->repo->get_by("pages", "uuid='{$page['uuid']}'");
     } else {
       $this
-      ->view
-      ->put_flash(false, "Somethings went wrong.")
-      ->redirect("/project/new");
+        ->view
+        ->put_flash(false, "Somethings went wrong.")
+        ->redirect("/project/new");
     }
 
     $notification = [
@@ -220,9 +205,9 @@ class ProjectController
 
     if (!$this->repo->insert("notifications", $notification)) {
       $this
-      ->view
-      ->put_flash(false, "Somethings went wrong.")
-      ->redirect("/project/new");
+        ->view
+        ->put_flash(false, "Somethings went wrong.")
+        ->redirect("/project/new");
     }
 
     if ($_FILES["attachment"]["name"]["favicon"] != "") {
@@ -237,9 +222,9 @@ class ProjectController
 
       if (!$this->repo->insert("attachments", $favicon)) {
         $this
-        ->view
-        ->put_flash(false, "Somethings went wrong.")
-        ->redirect("/project/new");
+          ->view
+          ->put_flash(false, "Somethings went wrong.")
+          ->redirect("/project/new");
       }
 
       $favicon =
@@ -248,7 +233,7 @@ class ProjectController
           ["tmp_name" => $_FILES["attachment"]["tmp_name"]["favicon"]]
         );
 
-      Utils::upload_file_ftp($favicon);
+      AttachmentData::upload_file_ftp($favicon);
     }
 
     if ($_FILES["attachment"]["name"]["cover_image"] != "") {
@@ -263,9 +248,9 @@ class ProjectController
 
       if (!$this->repo->insert("attachments", $cover_image)) {
         $this
-        ->view
-        ->put_flash(false, "Somethings went wrong.")
-        ->redirect("/project/new");
+          ->view
+          ->put_flash(false, "Somethings went wrong.")
+          ->redirect("/project/new");
       }
 
       $cover_image =
@@ -274,12 +259,12 @@ class ProjectController
           ["tmp_name" => $_FILES["attachment"]["tmp_name"]["cover_image"]]
         );
 
-      Utils::upload_file_ftp($cover_image);
+        AttachmentData::upload_file_ftp($cover_image);
     }
 
     $this
-    ->view
-    ->put_flash(true, "Already created your page.")
-    ->redirect("/project/{$data_page['uuid']}");
+      ->view
+      ->put_flash(true, "Already created your page.")
+      ->redirect("/project/{$data_page['uuid']}");
   }
 }

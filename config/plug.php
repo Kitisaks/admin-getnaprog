@@ -10,9 +10,7 @@ class Plug
   private static function current_agency($current_user)
   {
     $repo = new Repo();
-    return
-      $repo
-      ->get("agencies", $current_user["agency_id"]);
+    return $repo->get("agencies", $current_user["agency_id"]);
   }
 
   public static function call($call)

@@ -34,33 +34,53 @@ class Repo
     return $this;
   }
 
+  private function do_select($params)
+  {
+    if (is_array($params)) {
+      $this->query .= join(",", $params);
+    } else if (is_string($params)) {
+      $this->query .= $params;
+    }
+  }
+
   public function select($params = "*")
   {
     if ($this->distinct()) {
-      if (is_array($params)) {
-        $this->query .= "select distinct " . join(",", $params);
-        return $this;
-      } else if (is_string($params)) {
-        $this->query .= "select distinct {$params}";
-        return $this;
+      $this->query .= "select distinct ";
+      $this->do_select($params);
+      return $this;
+    } else {
+      $this->query .= "select ";
+      $this->do_select($params);
+      return $this;
+    }
+  }
+
+  private function do_from($table)
+  {
+    if (is_array($table)) {
+      $c = 0;
+      foreach ($table as $t) {
+        $c++;
+        if ($c === count($table))
+          $this->query .= $t;
+        else
+          $this->query .= $t . ",";
       }
     } else {
-      if (is_array($params)) {
-        $this->query .= "select " . join(",", $params);
-        return $this;
-      } else if (is_string($params)) {
-        $this->query .= "select {$params}";
-        return $this;
-      }
+      $this->query .= $table;
     }
   }
 
   public function from($table)
   {
-    if (empty($this->query)) 
-      $this->query .= "select * from {$table}";
-    else 
-      $this->query .= " from {$table}";
+    if (empty($this->query)) {
+      $this->query .= "select * from ";
+      $this->do_from($table);
+    } else {
+      $this->query .= " from ";
+      $this->do_from($table);
+    }
     return $this;
   }
 
@@ -81,7 +101,6 @@ class Repo
   public function order_by(array $params)
   {
     $this->query .= " order by ";
-
     $round = 0;
     foreach ($params as $key => $value) {
       $round++;
@@ -90,7 +109,6 @@ class Repo
       else
         $this->query .= "{$value} {$key}";
     }
-
     return $this;
   }
 
