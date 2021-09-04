@@ -17,7 +17,7 @@ if (empty($_SESSION["_rainBID"]))
 session_regenerate_id(true);
 
 //== SET SECURITY ACTIVE WHEN ON PRODUCTION MODE ==//
-if (MODE == "PRO") {
+if (MODE === "PRO") {
   header("X-Frame-Options: SAMEORIGIN");
   header("X-XSS-Protection: 1; mode=block");
   header("X-Content-Type-Options: nosniff");
@@ -27,7 +27,7 @@ if (MODE == "PRO") {
   set_cache();
   ini_set("display_errors", 0);
   ini_set("log_errors", 1);
-} elseif (MODE == "DEV") {
+} else {
   header("X-Powered-By: RainBot 1.2");
   header("Server: RainBot");
   set_cache();

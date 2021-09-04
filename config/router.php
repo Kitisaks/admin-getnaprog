@@ -5,6 +5,7 @@ final class Router
   function __construct()
   {
     new Route("GET", "/", AuthController::class, "index");
+    
     #- /auth
     new Route("GET", "/auth", AuthController::class, "index");
     new Route("POST", "/auth/login", AuthController::class, "login");

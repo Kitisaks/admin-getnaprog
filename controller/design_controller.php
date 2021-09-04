@@ -8,5 +8,12 @@ class DesignController
     $this->repo = new Repo();
   }
 
+  public function index($conn, $params) 
+  {
+    $this
+    ->view
+    ->render("index.html");
+  }
+
 
 }

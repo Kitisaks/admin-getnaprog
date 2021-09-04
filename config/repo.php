@@ -3,6 +3,7 @@
 class Repo
 {
   private $query = "";
+  private $conn;
 
   function __construct()
   {
@@ -10,12 +11,13 @@ class Repo
       PDO::ATTR_EMULATE_PREPARES => false,
       PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
       PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+      PDO::ATTR_PERSISTENT => true
     ];
     $this->conn =
       new PDO(
-        "mysql:host=" . DB["HOST"] . ";dbname=" . DB["NAME"] . ";charset=utf8",
-        DB["USER"],
-        DB["PASSWORD"],
+        "mysql:host=" . DB["host"] . ";dbname=" . DB["name"] . ";charset=utf8",
+        DB["user"],
+        DB["password"],
         $attributes
       );
   }
@@ -26,14 +28,20 @@ class Repo
       $this->conn = null;
   }
 
-  public function select($params, string $opt = null)
+  public function distinct(bool $bool = false)
   {
-    if (isset($opt)) {
+    $this->distinct = $bool;
+    return $this;
+  }
+
+  public function select($params = "*")
+  {
+    if ($this->distinct()) {
       if (is_array($params)) {
-        $this->query .= "select {$opt}" . join(",", $params);
+        $this->query .= "select distinct " . join(",", $params);
         return $this;
       } else if (is_string($params)) {
-        $this->query .= "select {$opt} {$params}";
+        $this->query .= "select distinct {$params}";
         return $this;
       }
     } else {
@@ -45,6 +53,15 @@ class Repo
         return $this;
       }
     }
+  }
+
+  public function from($table)
+  {
+    if (empty($this->query)) 
+      $this->query .= "select * from {$table}";
+    else 
+      $this->query .= " from {$table}";
+    return $this;
   }
 
   public function where(string $clause)
@@ -61,18 +78,19 @@ class Repo
     return $this;
   }
 
-  public function from($table)
-  {
-    $this->query .= " from {$table}";
-    return $this;
-  }
-
   public function order_by(array $params)
   {
     $this->query .= " order by ";
+
+    $round = 0;
     foreach ($params as $key => $value) {
-      $this->query .= "{$value} {$key}";
+      $round++;
+      if ($round > 1)
+        $this->query .= ",{$value} {$key}";
+      else
+        $this->query .= "{$value} {$key}";
     }
+
     return $this;
   }
 
@@ -81,6 +99,16 @@ class Repo
     $this->query .= " limit {$number}";
     return $this;
   }
+
+  // public function preload(array $table)
+  // {
+  //   foreach ($table as $t) {
+  //     $this
+  //     ->select("*")
+  //     ->from($table)
+  //     ->where("id=");
+  //   }
+  // }
 
   #- Select one record
   public function one()
@@ -91,7 +119,7 @@ class Repo
         ->conn
         ->prepare($this->query);
       $stmt->execute();
-      $results = $stmt->fetch(PDO::FETCH_ASSOC);
+      $results = $stmt->fetch();
       $this->query = "";
       return $results;
     } catch (PDOException $e) {
@@ -108,7 +136,7 @@ class Repo
         ->conn
         ->prepare($this->query);
       $stmt->execute();
-      $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      $results = $stmt->fetchAll();
       $this->query = "";
       return $results;
     } catch (PDOException $e) {

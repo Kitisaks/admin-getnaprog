@@ -8,7 +8,7 @@ $fields = "
   page_id INT(10) UNSIGNED,
   uuid CHAR(50) NOT NULL,
   title VARCHAR(255) NULL,
-  content VARCHAR(255) NULL,
+  content TEXT NULL,
   address VARCHAR(255) NULL,
   city VARCHAR(50) NOT NULL,
   country VARCHAR(50) NULL,

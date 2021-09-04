@@ -59,8 +59,9 @@ class Utils
 
   }
 
-  public static function default_image($filename, $size = null): string
+  public static function default_image($attachment, $post_id, $size = null): string
   {
+    $filename = "{$attachment['attachment_kind']}:{$attachment['attachment_title']}:{$post_id}:{$attachment['attachment_name']}";
     $url = self::default_url($filename);
     if($size != null) {
       return "{$url}&size={$size}";
@@ -71,19 +72,18 @@ class Utils
 
   private static function default_url($filename): string
   {
-    $key = self::get_token()["drive"];
+    $key = self::read_json_file($_SERVER["DOCUMENT_ROOT"] . "/priv/server/credentials.json")["api"]["drive"];
     $host = $_SESSION["conn"]["agency"]["cname"];
     return "https://db.getnaprog.com/api/v1/{$filename}?key={$key}&h={$host}";
   }
 
-  private static function get_token(): array
+  public static function read_json_file(string $path): array
   {
-    $file = $_SERVER["DOCUMENT_ROOT"] . "/priv/server/credentials.json";
-    if (file_exists($file)) {
-      $token = file_get_contents($file);
-      return json_decode($token, true);
+    if (file_exists($path)) {
+      $file = file_get_contents($path);
+      return json_decode($file, true);
     } else {
-      exit("Cannot read key file.");
+      exit("Cannot read the file.");
     }
   }
 

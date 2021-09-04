@@ -1,0 +1,29 @@
+{
+  "name": "CMS MVC Web Apllication",
+  "author": "Kitisak (Fluke) Sapphaniran",
+  "version": "0.2.1",
+  "driver": {
+    "mysql": {
+      "production": {
+        "name": "getnapro_db",
+        "user": "getnapro_db",
+        "password": "@Fluke160941",
+        "host": "localhost"
+      },
+      "develope": {
+        "name": "getprog_db",
+        "user": "root",
+        "password": "@Fluke160941",
+        "host": "localhost"
+      }
+    }
+  },
+  "api": {
+    "drive": "Drive_BXQtPmpEv0gcFnei7CQvTxAcKTHyDkHviTTK8TRC",
+    "data": "Data_cY0Mac5wPW5ITTiih2bdePksW5qMYozhhHHdtnop"
+  },
+  "domain": {
+    "production": "https://admin.getnaprog.com/", 
+    "develope": "http://localhost/"
+  }
+}

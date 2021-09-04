@@ -1,7 +1,12 @@
 <?php
-
 class Route
 {
+  private $uri;
+  private $method;
+  private $request;
+  private $controller;
+  private $function;
+
   function __construct($method, $request, $controller, $function)
   {
     $this->uri = $_SERVER["REQUEST_URI"];
@@ -69,6 +74,7 @@ class Route
 
   private function endpoint()
   {
+    $this->launch();
     $function =  $this->function;
     $file_name = str_replace("controller", "", strtolower($this->controller));
     $path = $_SERVER["DOCUMENT_ROOT"] . "/controller/{$file_name}_controller.php";
@@ -90,6 +96,18 @@ class Route
       }
     }
     exit;
+  }
+
+  private function launch()
+  {
+    $config = Utils::read_json_file($_SERVER["DOCUMENT_ROOT"] . "/config/launch.json");
+    if (MODE === "DEV") {
+      define("DB", $config["driver"]["mysql"]["develope"]);
+      define("r", $config["domain"]["develope"]);
+    } else {
+      define("DB", $config["driver"]["mysql"]["production"]);
+      define("r", $config["domain"]["production"]);
+    }
   }
 
   private function api_setup()

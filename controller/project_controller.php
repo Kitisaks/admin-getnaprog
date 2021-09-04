@@ -33,7 +33,7 @@ class ProjectController
         "users u" => "p.user_id = u.id",
         "attachments a" => "a.page_id = p.id"
       ])
-      ->where("p.agency_id = {$agency_id} and a.kind = 'page' and a.title = 'cover_image' and p.status = 1")
+      ->where("p.agency_id = {$agency_id} and a.kind = 'page' and a.title = 'favicon' and p.status = 1")
       ->order_by(["desc" => "p.id"])
       ->limit(8)
       ->all();
@@ -59,7 +59,7 @@ class ProjectController
         "users u" => "p.user_id = u.id",
         "attachments a" => "a.page_id = p.id"
       ])
-      ->where("p.agency_id = {$agency_id} and a.kind = 'page' and a.title = 'cover_image' and p.status = 2")
+      ->where("p.agency_id = {$agency_id} and a.kind = 'page' and a.title = 'favicon' and p.status = 2")
       ->order_by(["desc" => "p.id"])
       ->limit(8)
       ->all();
@@ -67,7 +67,8 @@ class ProjectController
     $count_unpub =
       $this
       ->repo
-      ->select("count(p.id) as num", "distinct")
+      ->distinct(true)
+      ->select("count(p.id) as num")
       ->from("pages p")
       ->where("p.agency_id = {$agency_id} and p.status = 1")
       ->one();
@@ -75,7 +76,8 @@ class ProjectController
     $count_pub =
       $this
       ->repo
-      ->select("count(p.id) as num", "distinct")
+      ->distinct(true)
+      ->select("count(p.id) as num")
       ->from("pages p")
       ->where("p.agency_id = {$agency_id} and p.status = 2")
       ->one();

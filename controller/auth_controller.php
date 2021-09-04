@@ -4,13 +4,13 @@ class AuthController
 {
   function __construct()
   {
-    Plug::alived();
     $this->view = new View(__CLASS__);
     $this->repo = new Repo();
   }
 
   public function index($conn, $params)
   {
+    Plug::alived();
     $agencies =
       $this
       ->repo
@@ -39,11 +39,10 @@ class AuthController
       ->from("agencies")
       ->where("uuid = '{$params['agency_uuid']}'")
       ->one();
-  
+
     $user =
       $this
       ->repo
-      ->select("*")
       ->from("users")
       ->where("(username = '{$user_mail}' or email = '{$user_mail}') and password = '{$password}' and agency_id = {$agency['id']}")
       ->one();
@@ -145,9 +144,9 @@ class AuthController
 
   public function signout($conn, $params)
   {
-    session_unset($conn);
-    session_destroy($conn);
-    $this->view->redirect("/auth");
+    if (session_unset())
+      if (session_destroy())
+        $this->view->redirect("/auth");
   }
 
   public function reset($conn, $params)

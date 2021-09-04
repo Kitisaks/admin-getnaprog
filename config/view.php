@@ -2,6 +2,10 @@
 #- use to render view.
 class View
 {
+  private $main;
+  private $layout;
+  private $path;
+
   function __construct($main)
   {
     $this->main = str_replace("controller", "", strtolower($main));

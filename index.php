@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . "/config/config.php";
 require_once __DIR__ . "/config/libs.php";
 require_once __DIR__ . "/config/secure.php";
 require_once __DIR__ . "/config/plug.php";

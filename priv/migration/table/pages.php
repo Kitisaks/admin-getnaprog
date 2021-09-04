@@ -8,7 +8,7 @@ $fields = "
   permalink VARCHAR(100) NULL,
   title VARCHAR(140) NULL,
   description VARCHAR(255) NULL,
-  content VARCHAR(255) NULL,
+  content TEXT NULL,
   meta_title VARCHAR(255) NULL,
   meta_description VARCHAR(255) NULL,
   meta_keyword VARCHAR(255) NULL,
