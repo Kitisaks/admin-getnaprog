@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Kitisak Sapphaniran">
+    <meta name="csrf-token" content="<?= $_SESSION["_csrf_token"] ?>">
     <title>Reaml Admin -- Content Management System</title>
     <link rel="icon" href="<?= r ?>assets/statics/favicon.ico" type="image/x-icon">
     <link href="<?= r ?>assets/css/app.css" rel="stylesheet">

@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'a61b16da14272fa089216ad8a3d845dcb25920a7',
+        'reference' => 'b72d6303cc823b0a00c2e93085681390f24eed22',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'a61b16da14272fa089216ad8a3d845dcb25920a7',
+            'reference' => 'b72d6303cc823b0a00c2e93085681390f24eed22',
             'dev_requirement' => false,
         ),
         'brick/math' => array(
@@ -318,6 +318,15 @@
             'provided' => array(
                 0 => '2.3',
             ),
+        ),
+        'symfony/yaml' => array(
+            'pretty_version' => 'v5.3.6',
+            'version' => '5.3.6.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/yaml',
+            'aliases' => array(),
+            'reference' => '4500fe63dc9c6ffc32d3b1cb0448c329f9c814b7',
+            'dev_requirement' => false,
         ),
         'uptodown/random-username-generator' => array(
             'pretty_version' => '1.0.2',

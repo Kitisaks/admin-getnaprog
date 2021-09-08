@@ -10,6 +10,7 @@
       </p>
     </div>
     <form class="sign-in mt-8 space-y-6" action="/auth/login" method="POST">
+      <input type="hidden" name="_csrf_token" value="<?= $_SESSION["_csrf_token"] ?>">
       <input type="hidden" name="remember" value="true">
       <div class="rounded-md shadow-sm -space-y-px">
         <div>

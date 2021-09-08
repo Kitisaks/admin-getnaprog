@@ -10,8 +10,17 @@ class DesignController
 
   public function index($conn, $params) 
   {
+    $templates = 
+      $this
+      ->repo
+      ->from("templates")
+      ->where("agency_id = {$conn['agency']['id']}")
+      ->group_by("permalink")
+      ->all();
+
     $this
     ->view
+    ->assign("templates", $templates)
     ->render("index.html");
   }
 

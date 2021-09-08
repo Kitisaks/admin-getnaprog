@@ -41,45 +41,10 @@ class ProjectController
 
     $attachments = AttachmentData::assigns($pages, "favicon");
 
-    $count_unpub = count(
-      array_filter(
-        $pages,
-        function ($page) {
-          return $page["page_status"] === 1;
-        }
-      )
-    );
-
-    $count_pub = count(
-      array_filter(
-        $pages,
-        function ($page) {
-          return $page["page_status"] === 2;
-        }
-      )
-    );
-
-    $total = $count_unpub + $count_pub;
-
-    if ($total > 0) {
-      $statics = [
-        "total" => $total,
-        "percent_pub" => ($count_pub / $total) * 100,
-        "percent_unpub" => ($count_unpub / $total) * 100
-      ];
-    } else {
-      $statics = [
-        "total" => 0,
-        "percent_pub" => 0,
-        "percent_unpub" => 0
-      ];
-    }
-
     $this
       ->view
       ->assign("attachments", $attachments)
       ->assign("pages", $pages)
-      ->assign("statics", $statics)
       ->render("index.html");
   }
 
@@ -118,9 +83,6 @@ class ProjectController
     $cover_image = AttachmentData::assign($page, "cover_image");
     $favicon = AttachmentData::assign($page, "favicon");
 
-    // $cover_image = AttachmentData::default_image($cover_image, 47);
-    // print_r($cover_image);
-    // exit;
     $this
       ->view
       ->assign("page", $page)
@@ -259,7 +221,7 @@ class ProjectController
           ["tmp_name" => $_FILES["attachment"]["tmp_name"]["cover_image"]]
         );
 
-        AttachmentData::upload_file_ftp($cover_image);
+      AttachmentData::upload_file_ftp($cover_image);
     }
 
     $this

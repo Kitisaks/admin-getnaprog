@@ -20,12 +20,9 @@ class Repo
         DB["password"],
         $attributes
       );
-  }
 
-  function __destruct()
-  {
-    if (isset($this->conn))
-      $this->conn = null;
+    $this->conn->exec("set session sql_mode = traditional");
+    $this->conn->exec("set session innodb_strict_mode = on");
   }
 
   public function distinct(bool $bool = false)
@@ -90,6 +87,12 @@ class Repo
     return $this;
   }
 
+  public function group_by(string $fields)
+  {
+    $this->query .= " group by {$fields}";
+    return $this;
+  }
+
   public function join($position, array $params)
   {
     foreach ($params as $key => $value) {
@@ -139,6 +142,7 @@ class Repo
       $stmt->execute();
       $results = $stmt->fetch();
       $this->query = "";
+      $this->conn = null;
       return $results;
     } catch (PDOException $e) {
       exit($e->getMessage());
@@ -156,6 +160,7 @@ class Repo
       $stmt->execute();
       $results = $stmt->fetchAll();
       $this->query = "";
+      $this->conn = null;
       return $results;
     } catch (PDOException $e) {
       exit($e->getMessage());
@@ -202,6 +207,7 @@ class Repo
         ->conn
         ->prepare($sql)
         ->execute();
+      $this->conn = null;
       return $this->get($table, $data["id"]);
     } catch (PDOException $e) {
       exit($e->getMessage());
@@ -223,6 +229,7 @@ class Repo
         ->conn
         ->prepare($sql)
         ->execute($data);
+      $this->conn = null;
       return true;
     } catch (PDOException $e) {
       exit($e->getMessage());
@@ -237,6 +244,7 @@ class Repo
         ->conn
         ->prepare($sql)
         ->execute();
+      $this->conn = null;
       return true;
     } catch (PDOException $e) {
       exit($e->getMessage());

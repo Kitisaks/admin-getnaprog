@@ -3,6 +3,7 @@ $table = "pages";
 $fields = "
   id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   agency_id INT(10) UNSIGNED,
+  template_id INT(10) UNSIGNED,
   user_id INT(10) UNSIGNED,
   uuid CHAR(50) NOT NULL,
   permalink VARCHAR(100) NULL,

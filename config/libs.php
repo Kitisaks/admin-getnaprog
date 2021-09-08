@@ -12,4 +12,5 @@ require_once __DIR__ . "/libs/uuid.php";
 require_once __DIR__ . "/libs/flysystem.php";
 require_once __DIR__ . "/libs/randusername.php";
 require_once __DIR__ . "/libs/timex.php";
+require_once __DIR__ . "/libs/yaml.php";
 #############################################################

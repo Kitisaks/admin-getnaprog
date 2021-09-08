@@ -87,12 +87,17 @@ class Route
           break;
 
         case 'POST':
-          $module->$function(isset($_SESSION["conn"]) ? $_SESSION["conn"] : null, $_REQUEST);
+          if ($this->put_secure($_REQUEST)) {
+            $module->$function(isset($_SESSION["conn"]) ? $_SESSION["conn"] : null, $_REQUEST);
+          }
           break;
 
         default:
           $params = $this->api_setup();
-          $module->$function(isset($_SESSION["conn"]) ? $_SESSION["conn"] : null, $params);
+          if ($this->put_secure($params)) {
+            $module->$function(isset($_SESSION["conn"]) ? $_SESSION["conn"] : null, $params);
+          }
+          break;
       }
     }
     exit;
@@ -100,7 +105,11 @@ class Route
 
   private function launch()
   {
-    $config = Utils::read_json_file($_SERVER["DOCUMENT_ROOT"] . "/config/launch.json");
+    # Setup for render page
+    if (empty($_SESSION["_csrf_token"]))
+      $_SESSION["_csrf_token"] = bin2hex(random_bytes(32));
+
+    $config = YamlHandler::parsefile($_SERVER["DOCUMENT_ROOT"] . "/config/config.yml");
     if (MODE === "DEV") {
       define("DB", $config["driver"]["mysql"]["develope"]);
       define("r", $config["domain"]["develope"]);
@@ -108,6 +117,14 @@ class Route
       define("DB", $config["driver"]["mysql"]["production"]);
       define("r", $config["domain"]["production"]);
     }
+  }
+
+  private function put_secure($request)
+  {
+    if (isset($request["_csrf_token"]) && hash_equals($request["_csrf_token"], $_SESSION["_csrf_token"]))
+      return true;
+    else 
+      return false;
   }
 
   private function api_setup()

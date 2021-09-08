@@ -3,7 +3,7 @@ $(function () {
   //== Setup for csrf_token
   $.ajaxSetup({
     headers: {
-      'X-CSRF-TOKEN': $('head meta[name="csrf-token"]').attr('content')
+      'X-CSRF-Token': $('head meta[name="csrf-token"]').attr('content')
     }
   });
 

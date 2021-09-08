@@ -1,16 +1,27 @@
 <?php
 class Plug
 {
-  public static function assign_conn($current_user)
+  public static function assign_conn($user)
   {
-    $_SESSION["conn"]["current_user"] = $current_user;
-    $_SESSION["conn"]["agency"] = self::current_agency($current_user);
+    $_SESSION["conn"]["current_user"] = [
+      "id" => $user["id"],
+      "uuid" => $user["uuid"],
+      "name" => $user["name"],
+      "email" => $user["email"]
+    ];
+    $_SESSION["conn"]["agency"] = self::current_agency($user["agency_id"]);
   }
 
-  private static function current_agency($current_user)
+  private static function current_agency($agency_id)
   {
-    $repo = new Repo();
-    return $repo->get("agencies", $current_user["agency_id"]);
+    $agency = (new Repo())->get("agencies", $agency_id);
+    return [
+      "id" => $agency["id"],
+      "uuid" => $agency["uuid"],
+      "name" => $agency["name"],
+      "cname" => $agency["cname"],
+      "email" => $agency["email"]
+    ];
   }
 
   public static function call($call)

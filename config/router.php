@@ -20,8 +20,10 @@ final class Router
     #- /project
     new Route("GET", "/project", ProjectController::class, "index");
     new Route("GET", "/project/new", ProjectController::class, "new");
-    new Route("POST", "/project/create", ProjectController::class, "create");
+    
     new Route("GET", "/project/:uuid", ProjectController::class, "show");
+    new Route("POST", "/project/create", ProjectController::class, "create");
+
 
     #- /design
     new Route("GET", "/design", DesignController::class, "index");

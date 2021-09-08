@@ -12,6 +12,7 @@
   <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
     <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
       <form class="grid grid-cols-2 gap-4" action="/auth/add" method="POST">
+        <input type="hidden" name="_csrf_token" value="<?= $_SESSION["_csrf_token"] ?>">
         <input type="hidden" name="ip" value="<?= Utils::get_client_ip() ?>">
         
         <div class="col-span-2">

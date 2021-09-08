@@ -1,5 +1,4 @@
 <?php
-//== GENERATE TOKEN FOR USE IN HTTP REQUEST ==//
 if (empty($_SESSION["_rainBID"]))
   session_start([
     "name" => "_rainBID",
@@ -9,7 +8,7 @@ if (empty($_SESSION["_rainBID"]))
     "gc_maxlifetime" => 1440,
     "gc_probability" => 1,
     "gc_divisor" => 1,
-    "sid_length" => 64,
+    "sid_length" => 22,
     "cache_expire" => (MODE === "DEV") ? 0 : 24,
     "cache_limiter" => "private_no_expire",
     "save_path" => $_SERVER["DOCUMENT_ROOT"] . "/priv/server/sessions"
@@ -40,7 +39,6 @@ function set_cache()
 {
   $tsstring = gmdate('D, d M Y H:i:s ', time()) . 'GMT';
   $etag = md5($_SERVER["HTTP_ACCEPT_LANGUAGE"] . time());
-
   $if_modified_since = isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) ? $_SERVER['HTTP_IF_MODIFIED_SINCE'] : false;
   $if_none_match = isset($_SERVER['HTTP_IF_NONE_MATCH']) ? $_SERVER['HTTP_IF_NONE_MATCH'] : false;
   if ((($if_none_match && $if_none_match == $etag) || (!$if_none_match)) &&
