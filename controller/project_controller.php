@@ -1,33 +1,33 @@
 <?php
-class ProjectController
+class ProjectController extends Plug
 {
   function __construct()
   {
-    Plug::permitted();
+    parent::__construct();
+    Session::permitted();
     $this->view = new View(__CLASS__);
-    $this->repo = new Repo();
   }
 
-  public function index($conn)
+  public function index($conn, $params)
   {
     $agency_id = $conn["agency"]["id"];
-
-    $pages =
+        
+    $query =
       $this
       ->repo
       ->select([
-        "p.id as page_id",
-        "p.permalink as page_permalink",
-        "p.uuid as page_uuid",
-        "p.status as page_status",
-        "p.meta_title as page_meta_title",
-        "p.meta_description as page_meta_description",
-        "p.inserted_at as page_inserted_at",
-        "u.name as user_name",
-        "u.role as user_role",
-        "a.name as attachment_name",
-        "a.kind as attachment_kind",
-        "a.title as attachment_title"
+        "p.id as p_id",
+        "p.permalink as p_permalink",
+        "p.uuid as p_uuid",
+        "p.status as p_status",
+        "p.meta_title as p_meta_title",
+        "p.meta_description as p_meta_description",
+        "p.inserted_at as p_inserted_at",
+        "u.name as u_name",
+        "u.role as u_role",
+        "a.name as a_name",
+        "a.kind as a_kind",
+        "a.title as a_title"
       ])
       ->from("pages p")
       ->join("left", [
@@ -35,11 +35,11 @@ class ProjectController
         "attachments a" => "a.page_id = p.id"
       ])
       ->where("p.agency_id = {$agency_id} and a.kind = 'page'")
-      ->order_by(["desc" => "p.id"])
-      ->limit(8)
-      ->all();
+      ->order_by(["desc" => "p.id"]);
 
-    $attachments = AttachmentData::assigns($pages, "favicon");
+    $pages = $this->paginate($params, $query, "pages", 10);
+
+    $attachments = AttachmentData::attach_many($pages, "favicon");
 
     $this
       ->view
@@ -54,23 +54,23 @@ class ProjectController
       $this
       ->repo
       ->select([
-        "p.id as page_id",
-        "p.permalink as page_permalink",
-        "p.uuid as page_uuid",
-        "p.title as page_title",
-        "p.content as page_content",
-        "p.description as page_description",
-        "p.meta_title as page_meta_title",
-        "p.meta_description as page_meta_description",
-        "p.inserted_at as page_inserted_at",
-        "u.id as user_id",
-        "u.name as user_name",
-        "u.email as user_email",
-        "u.phone as user_phone",
-        "u.role as user_role",
-        "a.name as attachment_name",
-        "a.kind as attachment_kind",
-        "a.title as attachment_title"
+        "p.id as p_id",
+        "p.permalink as p_permalink",
+        "p.uuid as p_uuid",
+        "p.title as p_title",
+        "p.content as p_content",
+        "p.description as p_description",
+        "p.meta_title as p_meta_title",
+        "p.meta_description as p_meta_description",
+        "p.inserted_at as p_inserted_at",
+        "u.id as u_id",
+        "u.name as u_name",
+        "u.email as u_email",
+        "u.phone as u_phone",
+        "u.role as u_role",
+        "a.name as a_name",
+        "a.kind as a_kind",
+        "a.title as a_title"
       ])
       ->from("pages p")
       ->join("left", [
@@ -80,8 +80,8 @@ class ProjectController
       ->where("p.agency_id = {$conn['agency']['id']} and p.uuid = '{$params['uuid']}'")
       ->one();
 
-    $cover_image = AttachmentData::assign($page, "cover_image");
-    $favicon = AttachmentData::assign($page, "favicon");
+    $cover_image = AttachmentData::attach($page, "cover_image");
+    $favicon = AttachmentData::attach($page, "favicon");
 
     $this
       ->view

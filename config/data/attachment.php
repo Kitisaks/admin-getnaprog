@@ -37,15 +37,15 @@ class AttachmentData
       return false;
   }
 
-  public static function assign(array $obj, string $title)
+  public static function attach(array $obj, string $title)
   {
-    if ($obj["attachment_title"] === $title) {
+    if ($obj["a_title"] === $title) {
       $data = array_filter(
         [
-          "id" => $obj["page_id"],
-          "title" => $obj["attachment_title"],
-          "name" => $obj["attachment_name"],
-          "kind" => $obj["attachment_kind"],
+          "id" => $obj["p_id"],
+          "title" => $obj["a_title"],
+          "name" => $obj["a_name"],
+          "kind" => $obj["a_kind"],
         ],
         function ($d) {
           return $d !== null;
@@ -56,17 +56,17 @@ class AttachmentData
     }
   }
 
-  public static function assigns(array $obj, string $title)
+  public static function attach_many(array $obj, string $title)
   {
     $data = array_filter(
       array_map(
         function ($item) use ($title) {
-          if ($item["attachment_title"] === $title)
+          if ($item["a_title"] === $title)
             return [
-              "id" => $item["page_id"],
-              "title" => $item["attachment_title"],
-              "name" => $item["attachment_name"],
-              "kind" => $item["attachment_kind"],
+              "id" => $item["p_id"],
+              "title" => $item["a_title"],
+              "name" => $item["a_name"],
+              "kind" => $item["a_kind"],
             ];
         },
         $obj
@@ -81,7 +81,7 @@ class AttachmentData
 
   private static function default_url(string $filename): string
   {
-    $key = Utils::read_json_file($_SERVER["DOCUMENT_ROOT"] . "/config/launch.json")["api"]["drive"];
+    $key = YamlHandler::parsefile($_SERVER["DOCUMENT_ROOT"] . "/config/config.yml")["api"]["drive"];
     $host = $_SESSION["conn"]["agency"]["cname"];
     return "https://db.getnaprog.com/api/v1/{$filename}?key={$key}&h={$host}";
   }

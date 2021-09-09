@@ -1,9 +1,13 @@
 <?php
 #- all query db follow in here.
+
+use Ramsey\Uuid\Type\Integer;
+
 class Repo
 {
   private $query = "";
   private $conn;
+  private $distinct;
 
   function __construct()
   {
@@ -20,12 +24,11 @@ class Repo
         DB["password"],
         $attributes
       );
-
     $this->conn->exec("set session sql_mode = traditional");
-    $this->conn->exec("set session innodb_strict_mode = on");
+    $this->distinct = false;
   }
 
-  public function distinct(bool $bool = false)
+  public function distinct(bool $bool)
   {
     $this->distinct = $bool;
     return $this;
@@ -42,7 +45,7 @@ class Repo
 
   public function select($params = "*")
   {
-    if ($this->distinct()) {
+    if ($this->distinct) {
       $this->query .= "select distinct ";
       $this->do_select($params);
       return $this;
@@ -115,9 +118,12 @@ class Repo
     return $this;
   }
 
-  public function limit(int $number)
+  public function limit($number)
   {
-    $this->query .= " limit {$number}";
+    if (is_int($number))
+      $this->query .= " limit {$number}";
+    else if (is_array($number))
+      $this->query .= " limit {$number[0]},{$number[1]}";
     return $this;
   }
 
@@ -142,7 +148,6 @@ class Repo
       $stmt->execute();
       $results = $stmt->fetch();
       $this->query = "";
-      $this->conn = null;
       return $results;
     } catch (PDOException $e) {
       exit($e->getMessage());
@@ -160,7 +165,6 @@ class Repo
       $stmt->execute();
       $results = $stmt->fetchAll();
       $this->query = "";
-      $this->conn = null;
       return $results;
     } catch (PDOException $e) {
       exit($e->getMessage());
@@ -192,23 +196,20 @@ class Repo
   }
 
   #- update with specific
-  public function update($table, array $data, array $params)
+  public function update($table, int $id, array $params)
   {
-    foreach ($params as $key => $val) {
-      if (is_string($val))
-        $values[] = "{$key}='{$val}'";
-      else
-        $values[] = "{$key}={$val}";
+    foreach ($params as $k => $v) {
+      $binds[] = "{$k}=?";
+      $values[] = $v;
     }
-    $value = join(",", $values);
+    $bind = join(",", $binds);
     try {
-      $sql = "UPDATE {$table} SET {$value} WHERE id={$data['id']}";
+      $sql = "UPDATE {$table} SET {$bind} WHERE id={$id}";
       $this
         ->conn
         ->prepare($sql)
-        ->execute();
-      $this->conn = null;
-      return $this->get($table, $data["id"]);
+        ->execute($values);
+      return $this->get($table, $id);
     } catch (PDOException $e) {
       exit($e->getMessage());
     }
@@ -216,20 +217,19 @@ class Repo
 
   public function insert($table, array $params)
   {
-    foreach ($params as $key => $val) {
-      $keys[] = $key;
-      $binds[] = ":{$key}";
-      $data[":{$key}"] = $val;
+    foreach ($params as $k => $v) {
+      $binds[] = "?";
+      $keys[] = $k;
+      $values[] = $v;
     }
-    $col = join(",", $keys);
+    $key = join(",", $keys);
     $bind = join(",", $binds);
     try {
-      $sql = "INSERT INTO {$table} ({$col}) VALUES ({$bind})";
+      $sql = "INSERT INTO {$table} ({$key}) VALUES ({$bind})";
       $this
         ->conn
         ->prepare($sql)
-        ->execute($data);
-      $this->conn = null;
+        ->execute($values);
       return true;
     } catch (PDOException $e) {
       exit($e->getMessage());
@@ -239,12 +239,11 @@ class Repo
   public function delete($table, int $id)
   {
     try {
-      $sql = "DELETE FROM {$table} WHERE id={$id}";
+      $sql = "DELETE FROM {$table} WHERE id=?";
       $this
         ->conn
         ->prepare($sql)
-        ->execute();
-      $this->conn = null;
+        ->execute([$id]);
       return true;
     } catch (PDOException $e) {
       exit($e->getMessage());

@@ -102,4 +102,21 @@ class View
     header("location: {$uri}");
     exit;
   }
+
+  public function return(array $data, string $type = "default")
+  {
+    switch ($type) {
+      case "default":
+        print_r(
+          $data
+        );
+        break;
+      case "json":
+        print_r(
+          json_encode($data)
+        );
+        break;
+    }
+
+  }
 }

@@ -19,7 +19,12 @@ class Route
 
   private function parse_uri($uri)
   {
-    return explode("/", trim($uri, "/"));
+    if (strpos($uri, "?") !== false) {
+      $req = explode("/", trim(substr($uri, 0, strpos($uri, "?")), "/"));
+    } else {
+      $req = explode("/", trim($uri, "/"));
+    }
+    return $req;
   }
 
   private function set_param()

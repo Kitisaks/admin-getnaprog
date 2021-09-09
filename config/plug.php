@@ -1,47 +1,42 @@
 <?php
+
 class Plug
 {
-  public static function assign_conn($user)
+  function __construct()
   {
-    $_SESSION["conn"]["current_user"] = [
-      "id" => $user["id"],
-      "uuid" => $user["uuid"],
-      "name" => $user["name"],
-      "email" => $user["email"]
-    ];
-    $_SESSION["conn"]["agency"] = self::current_agency($user["agency_id"]);
+    $this->repo = new Repo();
   }
 
-  private static function current_agency($agency_id)
+  protected function paginate($params, $query, string $table, int $num_per_page = 30): array
   {
-    $agency = (new Repo())->get("agencies", $agency_id);
-    return [
-      "id" => $agency["id"],
-      "uuid" => $agency["uuid"],
-      "name" => $agency["name"],
-      "cname" => $agency["cname"],
-      "email" => $agency["email"]
-    ];
-  }
-
-  public static function call($call)
-  {
-    return strtolower(str_replace("View", "", $call));
-  }
-
-  public static function permitted()
-  {
-    if (empty($_SESSION["conn"])) {
-      header("location: /auth");
-      exit;
+    if (isset($params["p"]) && !is_null($params["p"])) {
+      $current_page = intval($params["p"]);
+      $num_current_page = ($current_page - 1) * $num_per_page;
+      $results =
+        $query
+        ->limit([$num_current_page, $num_current_page + $num_per_page])
+        ->all();
+    } else {
+      $current_page = 1;
+      $num_current_page = ($current_page - 1) * $num_per_page;
+      $results =
+        $query
+        ->limit([0, $num_per_page])
+        ->all();
     }
-  }
+    $total_of_page =
+      $this
+      ->repo
+      ->select("count(id) as num")
+      ->from($table)
+      ->one();
 
-  public static function alived()
-  {
-    if (isset($_SESSION["conn"])) {
-      header("location: /home");
-      exit;
-    }
+    $this
+      ->view
+      ->assign("current_page", $current_page)
+      ->assign("total_of_page", $total_of_page["num"])
+      ->assign("num_current_page", $num_current_page)
+      ->assign("num_next_page", $num_current_page + $num_per_page);
+    return $results;
   }
 }

@@ -27,7 +27,7 @@ class Timex
     return 
       Carbon::parse($datetime)
       ->locale(self::locale())
-      ->isoFormat('LLLL');
+      ->isoFormat('LLL');
   }
 
   public static function from_now($datetime)

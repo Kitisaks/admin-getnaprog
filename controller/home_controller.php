@@ -1,12 +1,11 @@
 <?php
 
-class HomeController
+class HomeController extends Plug
 {
   function __construct()
   {
-    Plug::permitted();
+    Session::permitted();
     $this->view = new View(__CLASS__);
-    $this->repo = new Repo();
   }
 
   public function index()

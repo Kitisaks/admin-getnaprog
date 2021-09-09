@@ -16,7 +16,7 @@ $fields = "
   status INT(5) NOT NULL DEFAULT 1,
   inserted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   
-  UNIQUE KEY (uuid)
+  UNIQUE KEY (uuid, permalink)
 ";
 
 print_r(query_sql("table", $table, $fields));

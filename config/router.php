@@ -27,6 +27,8 @@ final class Router
 
     #- /design
     new Route("GET", "/design", DesignController::class, "index");
+    new Route("GET", "/design/:id", DesignController::class, "show");
+    new Route("PATCH", "/design/:id", DesignController::class, "update");
 
     #- /tools
     new Route("GET", "/tools", ToolsController::class, "index");

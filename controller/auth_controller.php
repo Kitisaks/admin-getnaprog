@@ -1,16 +1,16 @@
 <?php
 
-class AuthController
+class AuthController extends Plug
 {
   function __construct()
   {
+    parent::__construct();
     $this->view = new View(__CLASS__);
-    $this->repo = new Repo();
   }
 
   public function index($conn, $params)
   {
-    Plug::alived();
+    Session::alived();
     $agencies =
       $this
       ->repo
@@ -53,7 +53,7 @@ class AuthController
       ->put_flash(false, "Your username or password is incorrect!")
       ->redirect("/auth");
     } else {
-      Plug::assign_conn($user);
+      Session::assign_conn($user);
       $this
       ->view
       ->put_flash(true, "Welcome back {$user['name']}!")

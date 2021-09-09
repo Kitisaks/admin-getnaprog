@@ -195,11 +195,12 @@ $(function () {
   });
   $('#tags').on('click', 'span button', function() {
     $(this).closest('#tags span').remove();
+    return false;
   });
 
-
-
-
-
+  $('body').on('focus', '#search-agency', function() {
+    $('body .search-agency').slideToggle('normal');
+    return false;
+  });
 
 });
