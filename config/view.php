@@ -103,7 +103,7 @@ class View
     exit;
   }
 
-  public function return(array $data, string $type = "default")
+  public function return(string $type = "default", array $data)
   {
     switch ($type) {
       case "default":

@@ -10,27 +10,8 @@ class DesignController extends Plug
 
   public function index($conn, $params)
   {
-    $query =
-      $this
-      ->repo
-      ->select([
-        "t.id as t_id",
-        "t.title as t_title",
-        "t.inserted_at as t_inserted_at",
-        "p.title as p_title",
-        "p.permalink as p_permalink",
-        "u.name as u_name",
-        "u.email as u_email",
-        "u.phone as u_phone"
-      ])
-      ->from("templates t")
-      ->join("left", [
-        "pages p" => "p.id = t.page_id",
-        "users u" => "u.id = t.user_id"
-      ]);
-
     if (isset($params["q"]) && !empty($params["q"])) {
-      $page_search =
+      $page =
         $this
         ->repo
         ->from("pages")
@@ -38,29 +19,60 @@ class DesignController extends Plug
         ->limit(1)
         ->one();
 
-      if (!$page_search || is_null($page_search)) {
-        $total_page = null;
+      if (!$page || is_null($page)) {
         $query = null;
       } else {
         $query =
-          $query
-          ->where("t.agency_id = {$conn['agency']['id']} and t.page_id = {$page_search['id']}")
+          $this
+          ->repo
+          ->select([
+            "t.id as t_id",
+            "t.title as t_title",
+            "t.inserted_at as t_inserted_at",
+            "p.title as p_title",
+            "p.permalink as p_permalink",
+            "u.name as u_name",
+            "u.email as u_email",
+            "u.phone as u_phone"
+          ])
+          ->from("templates t")
+          ->join("left", [
+            "pages p" => "p.id = t.page_id",
+            "users u" => "u.id = t.user_id"
+          ])
+          ->where("t.agency_id = {$conn['agency']['id']} and t.page_id = {$page['id']}")
           ->order_by(["asc" => "t.title"]);
         $this
           ->view
           ->assign(
             "page",
-            $this->repo->get("pages", $page_search['id'])
+            $page
           );
       }
     } else {
       $query =
-        $query
+        $this
+        ->repo
+        ->select([
+          "t.id as t_id",
+          "t.title as t_title",
+          "t.inserted_at as t_inserted_at",
+          "p.title as p_title",
+          "p.permalink as p_permalink",
+          "u.name as u_name",
+          "u.email as u_email",
+          "u.phone as u_phone"
+        ])
+        ->from("templates t")
+        ->join("left", [
+          "pages p" => "p.id = t.page_id",
+          "users u" => "u.id = t.user_id"
+        ])
         ->where("t.agency_id = {$conn['agency']['id']}")
         ->order_by(["desc" => "t.id"]);
     }
 
-    $templates = $this->paginate($params, $query, "templates", 2);
+    $templates = $this->paginate($params, $query, "templates");
 
     $pages =
       $this
@@ -118,10 +130,10 @@ class DesignController extends Plug
     if ($update)
       $this
         ->view
-        ->return(["status" => true, "info" => "Alredy update"], "json");
+        ->return("json", ["status" => true, "info" => "Already updated the template"]);
     else
       $this
         ->view
-        ->return(["status" => false, "info" => "Cannot Update"], "json");
+        ->return("json", ["status" => false, "info" => "Cannot update the template"]);
   }
 }

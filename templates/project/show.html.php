@@ -1,5 +1,5 @@
-<div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-4 min-h-screen">
-  <main class="pb-10">
+<main class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-4 min-h-screen">
+  <div class="pb-10">
     <!-- Page header -->
     <div class="max-w-3xl mx-auto px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
       <div class="flex items-center space-x-5">
@@ -218,5 +218,5 @@
         </div>
       </section>
     </div>
-  </main>
-</div>
+  </div>
+</main>

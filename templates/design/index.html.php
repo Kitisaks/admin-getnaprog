@@ -1,4 +1,4 @@
-<div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-4 min-h-screen">
+<main class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-4 min-h-screen">
 
   <!-- For Unpublished -->
     <div class="flex justify-between items-center">
@@ -47,6 +47,7 @@
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
+        <?php if (isset($GLOBALS["templates"]) && !empty($GLOBALS["templates"])) : ?>
           <?php foreach ($GLOBALS["templates"] as $result) : ?>
             <tr>
               <td class="px-3 py-4 whitespace-nowrap">
@@ -76,8 +77,15 @@
               </td>
             </tr>
           <?php endforeach ?>
+        <?php else : ?>
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap bg-gray-100">
+              <p class="text-sm font-medium text-gray-800">No content</p>
+            </td>
+          </tr>
+        <?php endif ?>
         </tbody>
       </table>
     </div>
     <?php View::partial("layout", "_pagination.html") ?>
-</div>
+</main>

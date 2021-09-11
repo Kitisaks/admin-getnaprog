@@ -37,7 +37,7 @@ class ProjectController extends Plug
       ->where("p.agency_id = {$agency_id} and a.kind = 'page'")
       ->order_by(["desc" => "p.id"]);
 
-    $pages = $this->paginate($params, $query, "pages", 10);
+    $pages = $this->paginate($params, $query, "pages");
 
     $attachments = AttachmentData::attach_many($pages, "favicon");
 

@@ -20,10 +20,10 @@ class AuthController extends Plug
       ->all();
 
     $this
-    ->view
-    ->assign("agencies", $agencies)
-    ->put_layout(false)
-    ->render("index.html");
+      ->view
+      ->assign("agencies", $agencies)
+      ->put_layout(false)
+      ->render("index.html");
   }
 
   #- login
@@ -35,7 +35,6 @@ class AuthController extends Plug
     $agency =
       $this
       ->repo
-      ->select("id")
       ->from("agencies")
       ->where("uuid = '{$params['agency_uuid']}'")
       ->one();
@@ -44,21 +43,38 @@ class AuthController extends Plug
       $this
       ->repo
       ->from("users")
-      ->where("(username = '{$user_mail}' or email = '{$user_mail}') and password = '{$password}' and agency_id = {$agency['id']}")
+      ->where("(username = '{$user_mail}' or email = '{$user_mail}') and password = '{$password}'")
       ->one();
 
     if (empty($user)) {
-      $this
+      $this->disallowed();
+    } else {
+      if ($user["role"] < 4) {
+        if ($user["agency_id"] === $agency["id"])
+          $this->allowed($user, $agency);
+        else
+          $this->disallowed();
+      } else {
+        $this->allowed($user, $agency);
+      }
+    }
+  }
+
+  private function disallowed()
+  {
+    $this
       ->view
       ->put_flash(false, "Your username or password is incorrect!")
       ->redirect("/auth");
-    } else {
-      Session::assign_conn($user);
-      $this
+  }
+
+  private function allowed($user, $agency)
+  {
+    Session::assign_conn($user, $agency);
+    $this
       ->view
       ->put_flash(true, "Welcome back {$user['name']}!")
       ->redirect("/home");
-    }
   }
 
   public function signup($conn, $params)
@@ -70,12 +86,12 @@ class AuthController extends Plug
       ->from("agencies")
       ->order_by(["asc" => "cname"])
       ->all();
-    
+
     $this
-    ->view
-    ->assign("agencies", $agencies)
-    ->put_layout(false)
-    ->render("signup.html");
+      ->view
+      ->assign("agencies", $agencies)
+      ->put_layout(false)
+      ->render("signup.html");
   }
 
   public function create($conn, $params)
@@ -84,10 +100,10 @@ class AuthController extends Plug
     switch ($e) {
       case true:
         $this
-        ->view
-        ->put_flash(false, "Username or email already taken!")
-        ->redirect("/auth/signup");
-        
+          ->view
+          ->put_flash(false, "Username or email already taken!")
+          ->redirect("/auth/signup");
+
       case false:
         $this->init_register($params);
         break;
@@ -97,7 +113,7 @@ class AuthController extends Plug
   #- check exist user in db
   private function check($username, $email)
   {
-    return 
+    return
       $this
       ->repo
       ->select(["username", "email"])
@@ -131,14 +147,14 @@ class AuthController extends Plug
 
     if ($this->repo->insert("users", $user)) {
       $this
-      ->view
-      ->put_flash(true, "Already created your account.")
-      ->redirect("/auth");
+        ->view
+        ->put_flash(true, "Already created your account.")
+        ->redirect("/auth");
     } else {
       $this
-      ->view
-      ->put_flash(false, "Somethings went wrong.")
-      ->redirect("/auth/signup");
+        ->view
+        ->put_flash(false, "Somethings went wrong.")
+        ->redirect("/auth/signup");
     }
   }
 

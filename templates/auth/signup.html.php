@@ -1,4 +1,4 @@
-<div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gray-900">
+<main class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gray-900">
   <div class="sm:mx-auto sm:w-full sm:max-w-md">
     <img class="mx-auto h-32 w-auto border-2 border-gray-600" src="<?= r ?>assets/statics/logo.svg" alt="Reaml-Logo">
     <h2 class="mt-6 text-center text-3xl font-extrabold text-white">
@@ -107,4 +107,4 @@
       </div>
     </div>
   </div>
-</div>
+</main>

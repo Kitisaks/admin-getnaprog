@@ -20,10 +20,22 @@
         "mac": "Cmd-S"
       },
       exec: function(editor) {
-        //Return response
+        // Return response
         function reqListener() {
           let response = JSON.parse(this.responseText);
-          alert(response.info);
+          if (response.status == true) {
+            let popup = document.getElementById('popup-success');
+            alertText(popup, response);
+          } else {
+            let popup = document.getElementById('popup-fail');
+            alertText(popup, response);
+          }
+        }
+        // Alert response in popup
+        function alertText(popup, response) {
+          let text = popup.querySelector('.popup-info');
+          popup.style.display = "block";
+          text.innerHTML = response.info;
         }
         var content = editor.session.getValue();
         var xhr = new XMLHttpRequest();
@@ -31,7 +43,7 @@
         xhr.addEventListener('load', reqListener);
         xhr.open('PATCH', '/design/<?= $GLOBALS["template"]["t_id"] ?>', true);
         //Send the proper header information along with the request
-        xhr.setRequestHeader('Content-type', 'application/javascript');
+        xhr.setRequestHeader('Content-type', 'application/json');
         xhr.send(params);
       }
     });

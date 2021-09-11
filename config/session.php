@@ -1,7 +1,7 @@
 <?php
 class Session
 {
-  public static function assign_conn($user)
+  public static function assign_conn($user, $agency)
   {
     $_SESSION["conn"]["current_user"] = [
       "id" => $user["id"],
@@ -10,13 +10,7 @@ class Session
       "email" => $user["email"],
       "role" => $user["role"]
     ];
-    $_SESSION["conn"]["agency"] = self::current_agency($user["agency_id"]);
-  }
-
-  private static function current_agency($agency_id)
-  {
-    $agency = (new Repo())->get("agencies", $agency_id);
-    return [
+    $_SESSION["conn"]["agency"] = [
       "id" => $agency["id"],
       "uuid" => $agency["uuid"],
       "name" => $agency["name"],

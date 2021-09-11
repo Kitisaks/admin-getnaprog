@@ -9,7 +9,7 @@
     <title>Reaml Admin -- Content Management System</title>
     <link rel="icon" href="<?= r ?>assets/statics/favicon.ico" type="image/x-icon">
     <link href="<?= r ?>assets/css/app.css" rel="stylesheet">
-    <script async src="<?= r ?>assets/js/jquery-3.6.0.min.js"></script>
+    <script defer src="<?= r ?>assets/js/jquery-3.6.0.min.js"></script>
     <script defer type="text/javascript" src="<?= r ?>assets/js/app.js"></script>
 </head>
 <body class="bg-gray-100 font-sans antialiased proportional-nums tracking-normal leading-normal list-inside align-middle">
