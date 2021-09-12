@@ -1,11 +1,13 @@
 <?php
+namespace App;
 #- all query db follow in here.
+use PDO;
+use PDOException;
 
-use Ramsey\Uuid\Type\Integer;
 
 class Repo
 {
-  private $query = "";
+  private $query = '';
   private $conn;
   private $distinct;
 
@@ -19,12 +21,12 @@ class Repo
     ];
     $this->conn =
       new PDO(
-        "mysql:host=" . DB["host"] . ";dbname=" . DB["name"] . ";charset=utf8",
-        DB["user"],
-        DB["password"],
+        'mysql:host=' . DB['host'] . ';dbname=' . DB['name'] . ';charset=utf8',
+        DB['user'],
+        DB['password'],
         $attributes
       );
-    $this->conn->exec("set session sql_mode = traditional");
+    $this->conn->exec('set session sql_mode = traditional');
     $this->distinct = false;
   }
 
@@ -37,20 +39,20 @@ class Repo
   private function do_select($params)
   {
     if (is_array($params)) {
-      $this->query .= join(",", $params);
+      $this->query .= join(',', $params);
     } else if (is_string($params)) {
       $this->query .= $params;
     }
   }
 
-  public function select($params = "*")
+  public function select($params = '*')
   {
     if ($this->distinct) {
-      $this->query .= "select distinct ";
+      $this->query .= 'select distinct ';
       $this->do_select($params);
       return $this;
     } else {
-      $this->query .= "select ";
+      $this->query .= 'select ';
       $this->do_select($params);
       return $this;
     }
@@ -65,7 +67,7 @@ class Repo
         if ($c === count($table))
           $this->query .= $t;
         else
-          $this->query .= $t . ",";
+          $this->query .= $t . ',';
       }
     } else {
       $this->query .= $table;
@@ -75,10 +77,10 @@ class Repo
   public function from($table)
   {
     if (empty($this->query)) {
-      $this->query .= "select * from ";
+      $this->query .= 'select * from ';
       $this->do_from($table);
     } else {
-      $this->query .= " from ";
+      $this->query .= ' from ';
       $this->do_from($table);
     }
     return $this;
@@ -106,7 +108,7 @@ class Repo
 
   public function order_by(array $params)
   {
-    $this->query .= " order by ";
+    $this->query .= ' order by ';
     $round = 0;
     foreach ($params as $key => $value) {
       $round++;
@@ -147,7 +149,7 @@ class Repo
         ->prepare($this->query);
       $stmt->execute();
       $results = $stmt->fetch();
-      $this->query = "";
+      $this->query = '';
       return $results;
     } catch (PDOException $e) {
       exit($e->getMessage());
@@ -164,7 +166,7 @@ class Repo
         ->prepare($this->query);
       $stmt->execute();
       $results = $stmt->fetchAll();
-      $this->query = "";
+      $this->query = '';
       return $results;
     } catch (PDOException $e) {
       exit($e->getMessage());
@@ -177,7 +179,7 @@ class Repo
   {
     return
       $this
-      ->select("*")
+      ->select('*')
       ->from($table)
       ->where("id={$id}")
       ->one();
@@ -188,10 +190,10 @@ class Repo
   {
     return
       $this
-      ->select("*")
+      ->select('*')
       ->from($table)
       ->where($clause)
-      ->order_by(["desc" => "id"])
+      ->order_by(['desc' => 'id'])
       ->one();
   }
 
@@ -202,7 +204,7 @@ class Repo
       $binds[] = "{$k}=?";
       $values[] = $v;
     }
-    $bind = join(",", $binds);
+    $bind = join(',', $binds);
     try {
       $sql = "UPDATE {$table} SET {$bind} WHERE id={$id}";
       $this
@@ -222,8 +224,8 @@ class Repo
       $keys[] = $k;
       $values[] = $v;
     }
-    $key = join(",", $keys);
-    $bind = join(",", $binds);
+    $key = join(',', $keys);
+    $bind = join(',', $binds);
     try {
       $sql = "INSERT INTO {$table} ({$key}) VALUES ({$bind})";
       $this

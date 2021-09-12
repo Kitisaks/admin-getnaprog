@@ -13,11 +13,11 @@
               <?= $GLOBALS["template"]["t_id"] ?>
             </span>
           </h1>
-          <p class="text-sm font-medium text-gray-500">Created <time><?= Timex::from_now($GLOBALS["template"]["t_inserted_at"]) ?></time></p>
+          <p class="text-sm font-medium text-gray-500">Created <time><?= App\Libs\Timex::from_now($GLOBALS["template"]["t_inserted_at"]) ?></time></p>
         </div>
       </div>
       <div class="mt-6 flex flex-col-reverse justify-stretch space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-reverse sm:space-y-0 sm:space-x-3 md:mt-0 md:flex-row md:space-x-3">
-        <?php if (Utils::permitted($GLOBALS["template"]["u_id"])) : ?>
+        <?php if (App\Libs\Utils::permitted($GLOBALS["template"]["u_id"])) : ?>
           <button title="Delete" type="button" class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -41,7 +41,7 @@
               </div>
 
               <!-- Content -->
-              <?php View::partial("design", "_code_editor.html") ?>
+              <?php App\View::partial("design", "_code_editor.html") ?>
             </div>
           </div>
           </form>
@@ -70,7 +70,7 @@
                       <span class="font-medium text-gray-900"><?= $GLOBALS["template"]["t_id"] ?></span>
                     </p>
                     <p class="text-sm text-gray-500">Created at :
-                      <span class="font-medium text-gray-900"><time><?= Timex::iso_format($GLOBALS["template"]["t_inserted_at"]) ?></time></span>
+                      <span class="font-medium text-gray-900"><time><?= App\Libs\Timex::iso_format($GLOBALS["template"]["t_inserted_at"]) ?></time></span>
                     </p>
                   </div>
                 </div>

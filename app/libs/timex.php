@@ -1,4 +1,7 @@
 <?php
+namespace App\Libs;
+
+require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 use Carbon\Carbon;
 
 class Timex
@@ -7,7 +10,7 @@ class Timex
   {
     switch (MODE) {
       case 'DEV':
-        $ip = "182.232.197.124";
+        $ip = '182.232.197.124';
         break;
       
       case 'DEV':

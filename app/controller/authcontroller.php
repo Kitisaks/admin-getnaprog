@@ -1,4 +1,10 @@
 <?php
+namespace App\Controller;
+
+use App\Libs\GenUuid;
+use App\Plug;
+use App\View;
+use App\Session;
 
 class AuthController extends Plug
 {

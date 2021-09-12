@@ -56,7 +56,7 @@
                     <p class="text-sm font-medium text-indigo-800 hover:text-indigo-900">
                       <?= $result["t_title"] ?>
                     </p>
-                    <p class="text-xs text-gray-500 mt-1"><?= Timex::iso_format($result["t_inserted_at"]) ?></p> 
+                    <p class="text-xs text-gray-500 mt-1"><?= App\Libs\Timex::iso_format($result["t_inserted_at"]) ?></p> 
                   </div>
                 </a>
               </td>
@@ -87,5 +87,5 @@
         </tbody>
       </table>
     </div>
-    <?php View::partial("layout", "_pagination.html") ?>
+    <?php App\View::partial("layout", "_pagination.html") ?>
 </main>

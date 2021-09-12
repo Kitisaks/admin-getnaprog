@@ -1,11 +1,9 @@
 <?php
-require_once __DIR__ . "/config/libs.php";
-require_once __DIR__ . "/config/secure.php";
-require_once __DIR__ . "/config/session.php";
-require_once __DIR__ . "/config/plug.php";
-require_once __DIR__ . "/config/repo.php";
-require_once __DIR__ . "/config/view.php";
-require_once __DIR__ . "/config/data.php";
-require_once __DIR__ . "/config/router.php";
+define('MODE', 'DEV');
 
-$app = new Router();
+require_once __DIR__ . '/app/secure.php';
+require_once __DIR__ . '/include/autoload.php';
+
+$app = new App\Router;
+$whoops = new App\Libs\Whoops;
+

@@ -1,8 +1,11 @@
 <?php
+namespace App\Libs;
+
+require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 use League\Csv\Reader;
 use League\Csv\Statement;
 use League\Csv\Writer;
-
+use SplTempFileObject;
 
 class Csv
 {

@@ -1,4 +1,7 @@
 <?php
+namespace App\Libs;
+
+require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 

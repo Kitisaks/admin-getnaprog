@@ -38,7 +38,7 @@
     <div class="space-y-6 sm:px-6 lg:px-0 lg:col-span-9">
       <form action="/project/create" method="POST" enctype="multipart/form-data" id="project-create-form">
         <input type="hidden" name="_csrf_token" value="<?= $_SESSION["_csrf_token"] ?>">
-        <?php View::partial("project", ["_new_page.html", "_new_customer.html", "_new_notification.html"]) ?>
+        <?php App\View::partial("project", ["_new_page.html", "_new_customer.html", "_new_notification.html"]) ?>
       </form>
     </div>
 

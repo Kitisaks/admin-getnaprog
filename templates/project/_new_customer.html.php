@@ -1,5 +1,5 @@
 <div id="customer" class="hidden show shadow sm:rounded-md sm:overflow-hidden">
-  <input type="hidden" name="user[uuid]" value="<?= GenUuid::uuid6() ?>">
+  <input type="hidden" name="user[uuid]" value="<?= App\Libs\GenUuid::uuid6() ?>">
   <div class="bg-white py-6 px-4 space-y-6 sm:p-6">
     <div>
       <h3 class="text-lg leading-6 font-medium text-gray-900">Customer Information</h3>

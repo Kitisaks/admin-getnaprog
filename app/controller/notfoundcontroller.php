@@ -1,4 +1,7 @@
 <?php
+namespace App\Controller;
+
+use App\View;
 
 class NotfoundController
 {

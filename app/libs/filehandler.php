@@ -1,4 +1,7 @@
 <?php
+namespace App\Libs;
+
+require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use League\Flysystem\Filesystem;
@@ -18,7 +21,7 @@ class FileHandler
   private static function adapter()
   {
     $adapter = new LocalFilesystemAdapter(
-      $_SERVER["DOCUMENT_ROOT"] . "/",
+      $_SERVER['DOCUMENT_ROOT'] . '/',
       // Customize how visibility is converted to unix permissions
       PortableVisibilityConverter::fromArray([
         'file' => [
@@ -37,16 +40,16 @@ class FileHandler
       LocalFilesystemAdapter::DISALLOW_LINKS
     );
 
-    return new Filesystem($adapter, ["visibility" => "public"]);
+    return new Filesystem($adapter, ['visibility' => 'public']);
   }
 
-  public static function write_file($path, $contents, $config = ["visibility" => "public"])
+  public static function write_file($path, $contents, $config = ['visibility' => 'public'])
   {
     try {
       self::adapter()->write($path, $contents, $config);
       return true;
     } catch (FilesystemException | UnableToWriteFile $exception) {
-      exit("Unable to write file: " . $exception);
+      exit('Unable to write file: ' . $exception);
     }
   }
 
@@ -56,7 +59,7 @@ class FileHandler
       $response = self::adapter()->read($path);
       return $response;
     } catch (FilesystemException | UnableToReadFile $exception) {
-      exit("Unable to read file: " . $exception);
+      exit('Unable to read file: ' . $exception);
     }
   }
 
@@ -66,7 +69,7 @@ class FileHandler
       self::adapter()->delete($path);
       return true;
     } catch (FilesystemException | UnableToDeleteFile $exception) {
-      exit("Unable to delete file: " . $exception);
+      exit('Unable to delete file: ' . $exception);
     }
   }
 
@@ -76,40 +79,40 @@ class FileHandler
       self::adapter()->deleteDirectory($path);
       return true;
     } catch (FilesystemException | UnableToDeleteDirectory $exception) {
-      exit("Unable to delete directory: " . $exception);
+      exit('Unable to delete directory: ' . $exception);
     }
   }
 
-  public static function create_dir($path, $config = ["visibility" => "public"])
+  public static function create_dir($path, $config = ['visibility' => 'public'])
   {
     try {
       self::adapter()->createDirectory($path, $config);
       return true;
     } catch (FilesystemException | UnableToCreateDirectory $exception) {
-      exit("Unable to create directory: " . $exception);
+      exit('Unable to create directory: ' . $exception);
     }
   }
 
-  public static function move_file($source, $destination, $config = ["visibility" => "public"])
+  public static function move_file($source, $destination, $config = ['visibility' => 'public'])
   {
     try {
       self::adapter()->move($source, $destination, $config);
       return true;
     } catch (FilesystemException | UnableToMoveFile $exception) {
-      exit("Unable to move file: " . $exception);
+      exit('Unable to move file: ' . $exception);
     }
   }
 
-  public static function copy_file($source, $destination, $config = ["visibility" => "public"])
+  public static function copy_file($source, $destination, $config = ['visibility' => 'public'])
   {
     try {
       self::adapter()->copy($source, $destination, $config);
     } catch (FilesystemException | UnableToCopyFile $exception) {
-      exit("Unable to copy file: " . $exception);
+      exit('Unable to copy file: ' . $exception);
     }
   }
 
-  public static function lists($path = "."): array
+  public static function lists($path = '.'): array
   {
     try {
       return
@@ -119,7 +122,7 @@ class FileHandler
         ->map(fn (StorageAttributes $attributes) => $attributes->path())
         ->toArray();
     } catch (FilesystemException | UnableToReadFile $exception) {
-      exit("Unable to listing directories: " . $exception);
+      exit('Unable to listing directories: ' . $exception);
     }
   }
 

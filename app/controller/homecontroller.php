@@ -1,4 +1,9 @@
 <?php
+namespace App\Controller;
+
+use App\Plug;
+use App\View;
+use App\Session;
 
 class HomeController extends Plug
 {

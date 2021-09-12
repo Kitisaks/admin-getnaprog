@@ -1,6 +1,10 @@
 <?php
+namespace App\Data;
+use App\Libs\YamlHandler;
+use App\Libs\FtpHandler;
+use App\Libs\FileHandler;
 
-class AttachmentData
+class Attachment
 {
   private static function do_image($image, $size)
   {
@@ -19,7 +23,7 @@ class AttachmentData
       $image = array_filter(
         $attachments,
         function ($attachment) use ($post_id) {
-          return $attachment["id"] === $post_id;
+          return $attachment['id'] === $post_id;
         }
       );
       $image = array_values($image)[0];
@@ -39,13 +43,13 @@ class AttachmentData
 
   public static function attach(array $obj, string $title)
   {
-    if ($obj["a_title"] === $title) {
+    if ($obj['a_title'] === $title) {
       $data = array_filter(
         [
-          "id" => $obj["p_id"],
-          "title" => $obj["a_title"],
-          "name" => $obj["a_name"],
-          "kind" => $obj["a_kind"],
+          'id' => $obj['p_id'],
+          'title' => $obj['a_title'],
+          'name' => $obj['a_name'],
+          'kind' => $obj['a_kind'],
         ],
         function ($d) {
           return $d !== null;
@@ -61,12 +65,12 @@ class AttachmentData
     $data = array_filter(
       array_map(
         function ($item) use ($title) {
-          if ($item["a_title"] === $title)
+          if ($item['a_title'] === $title)
             return [
-              "id" => $item["p_id"],
-              "title" => $item["a_title"],
-              "name" => $item["a_name"],
-              "kind" => $item["a_kind"],
+              'id' => $item['p_id'],
+              'title' => $item['a_title'],
+              'name' => $item['a_name'],
+              'kind' => $item['a_kind'],
             ];
         },
         $obj
@@ -81,23 +85,23 @@ class AttachmentData
 
   private static function default_url(string $filename): string
   {
-    $key = YamlHandler::parsefile($_SERVER["DOCUMENT_ROOT"] . "/config/config.yml")["api"]["drive"];
-    $host = $_SESSION["conn"]["agency"]["cname"];
-    return "https://db.getnaprog.com/api/v1/{$filename}?key={$key}&h={$host}";
+    $key = YamlHandler::parsefile($_SERVER['DOCUMENT_ROOT'] . '/config/config.yml')['api']['drive'];
+    $host = $_SESSION['conn']['agency']['cname'];
+    return 'https://db.getnaprog.com/api/v1/{$filename}?key={$key}&h={$host}';
   }
 
   public static function upload_file_ftp(array $obj, int $mode = FTP_BINARY): void
   {
     #- Prepare upload all attachment to drive
-    $agency_cname = $_SESSION["conn"]["agency"]["cname"];
-    $tmp_dir = $_SERVER["DOCUMENT_ROOT"] . "/priv/temp";
+    $agency_cname = $_SESSION['conn']['agency']['cname'];
+    $tmp_dir = $_SERVER['DOCUMENT_ROOT'] . '/priv/temp';
     $id = $obj["{$obj['kind']}_id"];
 
     $f_name = "{$obj['kind']}:{$obj['title']}:{$id}:{$obj['name']}";
     $tmp_path = "{$tmp_dir}/{$f_name}";
 
     #- Move file to temp directory
-    move_uploaded_file($obj["tmp_name"], $tmp_path);
+    move_uploaded_file($obj['tmp_name'], $tmp_path);
 
     $target = "/priv/drive/{$agency_cname}";
 

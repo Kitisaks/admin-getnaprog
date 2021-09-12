@@ -1,5 +1,7 @@
 <?php
+namespace App\Libs;
 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 #- use to declare the libraries for your app. // Static function
 class Utils
 {
@@ -53,7 +55,7 @@ class Utils
       // Country code output, field "country_code"
       return $address;
     } else {
-      return "Unknown";
+      return 'Unknown';
     }
   }
 
@@ -63,13 +65,13 @@ class Utils
       $file = file_get_contents($path);
       return json_decode($file, true);
     } else {
-      exit("Cannot read the file.");
+      exit('Cannot read the file.');
     }
   }
   
   public static function permitted(int $user_id): bool
   {
-    if ($_SESSION["conn"]["current_user"]["id"] === $user_id || $_SESSION["conn"]["current_user"]["role"] >= 3)
+    if ($_SESSION['conn']['current_user']['id'] === $user_id || $_SESSION['conn']['current_user']['role'] >= 3)
       return true;
     else
       return false;

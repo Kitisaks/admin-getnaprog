@@ -1,4 +1,16 @@
 <?php
+namespace App\Controller;
+
+use App\Plug;
+use App\View;
+use App\Session;
+
+use App\Data\Attachment;
+
+use App\Libs\RandUsername;
+use App\Libs\Utils;
+use App\Libs\FileHandler;
+
 class ProjectController extends Plug
 {
   function __construct()
@@ -39,7 +51,7 @@ class ProjectController extends Plug
 
     $pages = $this->paginate($params, $query, "pages");
 
-    $attachments = AttachmentData::attach_many($pages, "favicon");
+    $attachments = Attachment::attach_many($pages, "favicon");
 
     $this
       ->view
@@ -80,8 +92,8 @@ class ProjectController extends Plug
       ->where("p.agency_id = {$conn['agency']['id']} and p.uuid = '{$params['uuid']}'")
       ->one();
 
-    $cover_image = AttachmentData::attach($page, "cover_image");
-    $favicon = AttachmentData::attach($page, "favicon");
+    $cover_image = Attachment::attach($page, "cover_image");
+    $favicon = Attachment::attach($page, "favicon");
 
     $this
       ->view
@@ -195,7 +207,7 @@ class ProjectController extends Plug
           ["tmp_name" => $_FILES["attachment"]["tmp_name"]["favicon"]]
         );
 
-      AttachmentData::upload_file_ftp($favicon);
+      Attachment::upload_file_ftp($favicon);
     }
 
     if ($_FILES["attachment"]["name"]["cover_image"] != "") {
@@ -221,7 +233,7 @@ class ProjectController extends Plug
           ["tmp_name" => $_FILES["attachment"]["tmp_name"]["cover_image"]]
         );
 
-      AttachmentData::upload_file_ftp($cover_image);
+      Attachment::upload_file_ftp($cover_image);
     }
 
     $this

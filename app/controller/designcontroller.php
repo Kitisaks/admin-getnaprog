@@ -1,4 +1,10 @@
 <?php
+namespace App\Controller;
+
+use App\Plug;
+use App\View;
+use App\Session;
+
 class DesignController extends Plug
 {
   function __construct()
