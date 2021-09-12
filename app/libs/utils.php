@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Libs;
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
@@ -31,7 +32,7 @@ class Utils
     else if (isset($_SERVER['REMOTE_ADDR']))
       $ipaddress = $_SERVER['REMOTE_ADDR'];
     else
-      $ipaddress = 'UNKNOWN';
+      $ipaddress = 'Unknown';
     return $ipaddress;
   }
 
@@ -68,12 +69,21 @@ class Utils
       exit('Cannot read the file.');
     }
   }
-  
+
   public static function permitted(int $user_id): bool
   {
     if ($_SESSION['conn']['current_user']['id'] === $user_id || $_SESSION['conn']['current_user']['role'] >= 3)
       return true;
     else
       return false;
+  }
+
+  public static function base_url(): string
+  {
+    return  sprintf(
+      '%s://%s/',
+      isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http',
+      $_SERVER['SERVER_NAME']
+    );
   }
 }

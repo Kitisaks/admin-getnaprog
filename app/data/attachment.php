@@ -85,9 +85,9 @@ class Attachment
 
   private static function default_url(string $filename): string
   {
-    $key = YamlHandler::parsefile($_SERVER['DOCUMENT_ROOT'] . '/config/config.yml')['api']['drive'];
+    $key = YamlHandler::parsefile($_SERVER['DOCUMENT_ROOT'] . '/app/config.yml')['api']['drive'];
     $host = $_SESSION['conn']['agency']['cname'];
-    return 'https://db.getnaprog.com/api/v1/{$filename}?key={$key}&h={$host}';
+    return "https://db.getnaprog.com/api/v1/{$filename}?key={$key}&h={$host}";
   }
 
   public static function upload_file_ftp(array $obj, int $mode = FTP_BINARY): void

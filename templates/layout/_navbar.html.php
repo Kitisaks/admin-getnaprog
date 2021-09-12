@@ -15,15 +15,15 @@
           </button>
         </div>
         <div class="flex-shrink-0 flex items-center">
-          <img class="block lg:hidden h-8 w-auto" src="<?= r ?>assets/statics/logo.svg" alt="Reaml-Admin-Logo">
-          <img class="hidden lg:block h-8 w-auto" src="<?= r ?>assets/statics/logo.svg" alt="Reaml-Admin-Logo">
+          <img class="block lg:hidden h-8 w-auto" src="<?= BASE_URL ?>assets/statics/logo.svg" alt="Reaml-Admin-Logo">
+          <img class="hidden lg:block h-8 w-auto" src="<?= BASE_URL ?>assets/statics/logo.svg" alt="Reaml-Admin-Logo">
         </div>
         <div class="hidden md:ml-6 md:flex md:items-center md:space-x-4">
           <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-          <a href="/home" class="<?= ($_SERVER["REQUEST_URI"] === "/home") ? "bg-gray-900 text-white border" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> px-3 py-2 rounded-md text-sm font-medium" <?= ($_SERVER["REQUEST_URI"] === "/home") ? "aria-current='page'" : null ?>>
-            Dashboard
+          <a href="/content" class="<?= ($_SERVER["REQUEST_URI"] === "/content") ? "bg-gray-900 text-white border" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> px-3 py-2 rounded-md text-sm font-medium" <?= ($_SERVER["REQUEST_URI"] === "/content") ? "aria-current='page'" : null ?>>
+            Content
           </a>
-          <a href="#" class="<?= ($_SERVER["REQUEST_URI"] === "/team") ? "bg-gray-900 text-white border" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> px-3 py-2 rounded-md text-sm font-medium" <?= ($_SERVER["REQUEST_URI"] === "/team") ? "aria-current='page'" : null ?>>
+          <a href="/team" class="<?= ($_SERVER["REQUEST_URI"] === "/team") ? "bg-gray-900 text-white border" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> px-3 py-2 rounded-md text-sm font-medium" <?= ($_SERVER["REQUEST_URI"] === "/team") ? "aria-current='page'" : null ?>>
             Team
           </a>
           <a href="/project" class="<?= ($_SERVER["REQUEST_URI"] === "/project") ? "bg-gray-900 text-white border" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> px-3 py-2 rounded-md text-sm font-medium" <?= ($_SERVER["REQUEST_URI"] === "/project") ? "aria-current='page'" : null ?>>
@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="flex items-center">
-        <a target="_blank" href="<?= "https://" . $_SESSION["conn"]["agency"]["sub_domain"] . "." . $_SESSION["conn"]["agency"]["cname"] ?>" class="mr-4 text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+        <a target="_blank" href="<?= App\Data\Agency::base_url() ?>" class="mr-4 text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
           <?= ucfirst($_SESSION["conn"]["agency"]["cname"]) ?>
         </a>
         <div class="flex-shrink-0">
@@ -85,16 +85,16 @@
   <div id="mobile-menu" class="hidden" id="mobile-menu">
     <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
       <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" block px-3 py-2 rounded-md text-base font-medium-->
-      <a href="/home" class="<?= ($_SERVER["REQUEST_URI"] === "/home") ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> block px-3 py-2 rounded-md text-base font-medium" <?= ($_SERVER["REQUEST_URI"] === "/home") ? "aria-current='page'" : null ?>>
-        Dashboard
+      <a href="/content" class="<?= ($_SERVER["REQUEST_URI"] === "/content") ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> block px-3 py-2 rounded-md text-base font-medium" <?= ($_SERVER["REQUEST_URI"] === "/content") ? "aria-current='page'" : null ?>>
+        Content
       </a>
-      <a href="#" class="<?= ($_SERVER["REQUEST_URI"] === "/team") ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> block px-3 py-2 rounded-md text-base font-medium" <?= ($_SERVER["REQUEST_URI"] === "/team") ? "aria-current='page'" : null ?>>
+      <a href="/team" class="<?= ($_SERVER["REQUEST_URI"] === "/team") ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> block px-3 py-2 rounded-md text-base font-medium" <?= ($_SERVER["REQUEST_URI"] === "/team") ? "aria-current='page'" : null ?>>
         Team
       </a>
       <a href="/project" class="<?= ($_SERVER["REQUEST_URI"] === "/project") ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> block px-3 py-2 rounded-md text-base font-medium" <?= ($_SERVER["REQUEST_URI"] === "/project") ? "aria-current='page'" : null ?>>
         Projects
       </a>
-      <a href="#" class="<?= ($_SERVER["REQUEST_URI"] === "/design") ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> block px-3 py-2 rounded-md text-base font-medium" <?= ($_SERVER["REQUEST_URI"] === "/design") ? "aria-current='page'" : null ?>>
+      <a href="/design" class="<?= ($_SERVER["REQUEST_URI"] === "/design") ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> block px-3 py-2 rounded-md text-base font-medium" <?= ($_SERVER["REQUEST_URI"] === "/design") ? "aria-current='page'" : null ?>>
         Design
       </a>
     </div>

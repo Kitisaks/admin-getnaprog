@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 class Plug
@@ -41,7 +42,7 @@ class Plug
       ->view
       ->assign('current_page', $current_page)
       ->assign('total_of_page', $total_of_page['num'])
-      ->assign('num_current_page', $num_current_page)
+      ->assign('num_current_pages', $num_current_page)
       ->assign('num_next_page', $num_current_page + $num_per_page);
 
     return $results;

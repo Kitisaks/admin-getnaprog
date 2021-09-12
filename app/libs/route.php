@@ -113,17 +113,21 @@ class Route
 
   private function launch()
   {
+    # Setup for Error report
+    new \App\Libs\Whoops(MODE);
+
     # Setup for render page
     if (empty($_SESSION['_csrf_token']))
       $_SESSION['_csrf_token'] = bin2hex(random_bytes(32));
 
+    define('BASE_URL', \App\Libs\Utils::base_url());
+
     $config = YamlHandler::parsefile($_SERVER['DOCUMENT_ROOT'] . '/app/config.yml');
+
     if (MODE === 'DEV') {
       define('DB', $config['driver']['mysql']['develope']);
-      define('r', $config['domain']['develope']);
     } else {
       define('DB', $config['driver']['mysql']['production']);
-      define('r', $config['domain']['production']);
     }
   }
 

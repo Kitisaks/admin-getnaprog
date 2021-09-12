@@ -16,8 +16,5 @@ driver:
 api:
   drive: "Drive_BXQtPmpEv0gcFnei7CQvTxAcKTHyDkHviTTK8TRC"
   data: "Data_cY0Mac5wPW5ITTiih2bdePksW5qMYozhhHHdtnop"
-domain:
-  production: "https://admin.getnaprog.com/"
-  develope: "http://localhost/"
 
 

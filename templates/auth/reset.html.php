@@ -1,7 +1,7 @@
 <main class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-900">
   <div class="max-w-md w-full space-y-8">
     <div>
-      <img class="mx-auto h-26 w-auto border-2 border-gray-600" src="<?= r ?>assets/statics/logo.svg" alt="Reaml-Logo">
+      <img class="mx-auto h-26 w-auto border-2 border-gray-600" src="<?= BASE_URL ?>assets/statics/logo.svg" alt="Reaml-Logo">
       <h2 class="mt-6 text-center text-3xl font-extrabold text-white">
         Reaml Admin
       </h2>
@@ -10,7 +10,7 @@
       </p>
     </div>
     <form class="sign-in mt-8 space-y-6" action="/auth/login" method="POST">
-      <input type="hidden" name="ip" value="<?= Utils::get_client_ip() ?>">
+      <input type="hidden" name="ip" value="<?= App\Libs\Utils::get_client_ip() ?>">
       <input type="hidden" name="remember" value="true">
       <div class="rounded-md shadow-sm -space-y-px">
         <div>

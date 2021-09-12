@@ -1,7 +1,7 @@
 <main class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-900">
   <div class="max-w-md w-full space-y-8">
     <div>
-      <img class="mx-auto h-26 w-auto border-2 border-gray-600 animate-pulse" src="<?= r ?>assets/statics/logo.svg" alt="Reaml-Logo">
+      <img class="mx-auto h-26 w-auto border-2 border-gray-600 animate-pulse" src="<?= BASE_URL ?>assets/statics/logo.svg" alt="Reaml-Logo">
       <h2 class="mt-6 text-center text-3xl font-extrabold text-white">
         Reaml Admin
       </h2>

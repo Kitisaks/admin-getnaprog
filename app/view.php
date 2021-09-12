@@ -64,6 +64,20 @@ class View
     }
   }
 
+  public static function assets_include()
+  {
+    $base = $_SERVER['DOCUMENT_ROOT'];
+    $css = array_slice(scandir($base . '/assets/css/'), 2);
+    $js = array_slice(scandir($base . '/assets/js/'), 2);
+
+    foreach ($css as $i) {
+      echo '<link rel="stylesheet" type="text/css" href="' . BASE_URL . 'assets/css/' . $i . '">';
+    }
+    foreach ($js as $i) {
+      echo '<script type="text/javascript" src="' . BASE_URL . 'assets/js/' . $i . '"></script>';
+    }
+  }
+
   public static function partial($main, $pages)
   {
     $path = $_SERVER['DOCUMENT_ROOT'];
@@ -82,10 +96,9 @@ class View
     return $this;
   }
 
-  public function assign($param, $value = null)
+  public function assign(string $param, $value)
   {
-    if (!is_null($value))
-      $GLOBALS[$param] = $value;
+    $GLOBALS[$param] = $value;
     return $this;
   }
 
@@ -118,6 +131,5 @@ class View
         );
         break;
     }
-
   }
 }

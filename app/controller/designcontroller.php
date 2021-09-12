@@ -78,7 +78,7 @@ class DesignController extends Plug
         ->order_by(["desc" => "t.id"]);
     }
 
-    $templates = $this->paginate($params, $query, "templates");
+    $templates = $this->paginate($params, $query, "templates", 10);
 
     $pages =
       $this
@@ -90,6 +90,7 @@ class DesignController extends Plug
 
     $this
       ->view
+      ->assign("kuy", "kuykub")
       ->assign("templates", $templates)
       ->assign("pages", $pages)
       ->render("index.html");

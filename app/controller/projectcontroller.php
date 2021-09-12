@@ -5,7 +5,7 @@ use App\Plug;
 use App\View;
 use App\Session;
 
-use App\Data\Attachment;
+use App\Data;
 
 use App\Libs\RandUsername;
 use App\Libs\Utils;
@@ -49,9 +49,10 @@ class ProjectController extends Plug
       ->where("p.agency_id = {$agency_id} and a.kind = 'page'")
       ->order_by(["desc" => "p.id"]);
 
-    $pages = $this->paginate($params, $query, "pages");
+    $pages = $this->paginate($params, $query, "pages", 10);
 
-    $attachments = Attachment::attach_many($pages, "favicon");
+
+    $attachments = Data\Attachment::attach_many($pages, "favicon");
 
     $this
       ->view
@@ -73,6 +74,7 @@ class ProjectController extends Plug
         "p.content as p_content",
         "p.description as p_description",
         "p.meta_title as p_meta_title",
+        "p.meta_keyword as p_meta_keyword",
         "p.meta_description as p_meta_description",
         "p.inserted_at as p_inserted_at",
         "u.id as u_id",
@@ -92,8 +94,8 @@ class ProjectController extends Plug
       ->where("p.agency_id = {$conn['agency']['id']} and p.uuid = '{$params['uuid']}'")
       ->one();
 
-    $cover_image = Attachment::attach($page, "cover_image");
-    $favicon = Attachment::attach($page, "favicon");
+    $cover_image = Data\Attachment::attach($page, "cover_image");
+    $favicon = Data\Attachment::attach($page, "favicon");
 
     $this
       ->view
@@ -103,7 +105,7 @@ class ProjectController extends Plug
       ->render("show.html");
   }
 
-  public function new($conn, $params)
+  public function new()
   {
     $this
       ->view
@@ -207,7 +209,7 @@ class ProjectController extends Plug
           ["tmp_name" => $_FILES["attachment"]["tmp_name"]["favicon"]]
         );
 
-      Attachment::upload_file_ftp($favicon);
+      Data\Attachment::upload_file_ftp($favicon);
     }
 
     if ($_FILES["attachment"]["name"]["cover_image"] != "") {
@@ -233,7 +235,7 @@ class ProjectController extends Plug
           ["tmp_name" => $_FILES["attachment"]["tmp_name"]["cover_image"]]
         );
 
-      Attachment::upload_file_ftp($cover_image);
+      Data\Attachment::upload_file_ftp($cover_image);
     }
 
     $this

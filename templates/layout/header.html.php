@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="author" content="Kitisak Sapphaniran">
     <meta name="csrf-token" content="<?= $_SESSION["_csrf_token"] ?>">
     <title>Reaml Admin -- Content Management System</title>
-    <link rel="icon" href="<?= r ?>assets/statics/favicon.ico" type="image/x-icon">
-    <link href="<?= r ?>assets/css/app.css" rel="stylesheet">
-    <script defer src="<?= r ?>assets/js/jquery-3.6.0.min.js"></script>
-    <script defer type="text/javascript" src="<?= r ?>assets/js/app.js"></script>
+    <link rel="icon" href="<?= BASE_URL ?>assets/statics/favicon.ico" type="image/x-icon">
+    <?php App\View::assets_include() ?>
 </head>
 <body class="bg-gray-100 font-sans antialiased proportional-nums tracking-normal leading-normal list-inside align-middle">

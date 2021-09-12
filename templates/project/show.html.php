@@ -67,7 +67,7 @@
                   </button>
                 </div>
                 <div class="col-span-3 p-4 bg-gray-100">
-                  <?php if (isset($GLOBALS["cover_image"]) && $img = App\Data\Attachment::default_image($GLOBALS["cover_image"], "520x280")) : ?>
+                  <?php if ($img = App\Data\Attachment::default_image($GLOBALS["cover_image"], "520x280")) : ?>
                     <img class="rounded-sm ml-auto w-full h-full" src="<?= $img ?>" alt="<?= $GLOBALS["page"]["a_name"] ?>">
                   <?php else : ?>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 rounded-full text-gray-400 border" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -89,22 +89,14 @@
               <div>
                 <h2 class="text-sm leading-6 font-semibold text-gray-900">
                   Meta title :
-                  <?php if ($GLOBALS["page"]["p_title"] != "") : ?>
-                    <?= $GLOBALS["page"]["p_title"] ?>
-                  <?php else : ?>
-                    <input type="text" name="page[title]" placeholder="Shopping online" class="px-2 py-0.5 w-full text-md border-b border-gray-300">
-                  <?php endif ?>
+                    <input type="text" name="page[meta_title]" value="<?= $GLOBALS["page"]["p_meta_title"] ?>" placeholder="Shopping online" class="px-2 py-0.5 w-full text-md border-b border-gray-300">
                 </h2>
                 <h2 class="mt-2 text-sm leading-6 font-semibold text-gray-900">
                   Meta keywords :
-                  <?php if ($GLOBALS["page"]["p_title"] != "") : ?>
-                    <?= $GLOBALS["page"]["p_title"] ?>
-                  <?php else : ?>
                     <div id="tags" class="space-x-1">
-                      <input type="text" placeholder="tags, tags, tags..." class="px-2 py-0.5 text-md border-b border-gray-300">
-                      <input type="hidden" name="page[meta_keywords]">
+                      <input type="text" placeholder="tags, tags, tags..." value="<?= $GLOBALS["page"]["p_meta_keyword"] ?>" class="px-2 py-0.5 text-md border-b border-gray-300">
+                      <input type="hidden" name="page[meta_keyword]">
                     </div>
-                  <?php endif ?>
                 </h2>
                 <p class="mt-2 text-sm font-semibold text-gray-900">
                   Meta description :

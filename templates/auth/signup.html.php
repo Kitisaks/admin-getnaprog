@@ -1,6 +1,6 @@
 <main class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gray-900">
   <div class="sm:mx-auto sm:w-full sm:max-w-md">
-    <img class="mx-auto h-32 w-auto border-2 border-gray-600" src="<?= r ?>assets/statics/logo.svg" alt="Reaml-Logo">
+    <img class="mx-auto h-32 w-auto border-2 border-gray-600" src="<?= BASE_URL ?>assets/statics/logo.svg" alt="Reaml-Logo">
     <h2 class="mt-6 text-center text-3xl font-extrabold text-white">
       Sign-Up
     </h2>
@@ -13,7 +13,7 @@
     <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
       <form class="grid grid-cols-2 gap-4" action="/auth/add" method="POST">
         <input type="hidden" name="_csrf_token" value="<?= $_SESSION["_csrf_token"] ?>">
-        <input type="hidden" name="ip" value="<?= Utils::get_client_ip() ?>">
+        <input type="hidden" name="ip" value="<?= App\Libs\Utils::get_client_ip() ?>">
         
         <div class="col-span-2">
           <label for="agency_id" class="block text-sm font-medium text-gray-700">

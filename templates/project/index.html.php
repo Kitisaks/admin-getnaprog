@@ -33,7 +33,7 @@
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
-          <?php if (isset($GLOBALS["templates"]) && !empty($GLOBALS["templates"])) : ?>
+          <?php if (!empty($GLOBALS["pages"])) : ?>
             <?php foreach ($GLOBALS["pages"] as $result) : ?>
               <tr>
                 <td class="px-6 py-4 whitespace-nowrap">
@@ -41,7 +41,7 @@
                     <div class="flex items-start">
                       <div class="flex-shrink-0 h-10 w-10">
                         <a href="/project/<?= $result["p_uuid"] ?>">
-                          <?php if (isset($GLOBALS["attachments"]) && $img = App\Data\Attachment::default_images($GLOBALS["attachments"], $result["p_id"], "280x160")) : ?>
+                          <?php if ($img = App\Data\Attachment::default_images($GLOBALS["attachments"], $result["p_id"], "280x160")) : ?>
                             <img class="h-10 w-10 rounded-full" src="<?= $img ?>" alst="<?= $result["a_title"] . "_" . $result["a_name"] ?>">
                           <?php else : ?>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 rounded-full text-gray-400 border" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -63,7 +63,7 @@
                         </a>
                       </div>
                       <div class="ml-2 pt-1 text-gray-400 hover:text-indigo-600">
-                        <a href="#" target="_blank">
+                        <a href="<?= App\Data\Agency::base_url() . "/" . $result["p_permalink"] ?>" target="_blank">
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                           </svg>
@@ -103,7 +103,7 @@
             </tr>
           <?php endif ?>
         </tbody>
-      </table>
+      </table>  
     </div>
     <?php App\View::partial("layout", "_pagination.html") ?>
 </main>
