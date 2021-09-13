@@ -6,7 +6,7 @@ use Carbon\Carbon;
 
 class Timex
 {
-  private static function locale()
+  private static function _locale()
   {
     switch (MODE) {
       case 'DEV':
@@ -22,14 +22,14 @@ class Timex
 
   public static function now()
   {
-    return Carbon::now()->locale(self::locale());
+    return Carbon::now()->locale(self::_locale());
   }
 
   public static function iso_format($datetime)
   {
     return 
       Carbon::parse($datetime)
-      ->locale(self::locale())
+      ->locale(self::_locale())
       ->isoFormat('LLL');
   }
 

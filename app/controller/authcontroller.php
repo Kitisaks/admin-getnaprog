@@ -14,7 +14,7 @@ class AuthController extends Plug
     $this->view = new View(__CLASS__);
   }
 
-  public function index($conn, $params)
+  public function index()
   {
     Session::alived();
     $agencies =
@@ -33,7 +33,7 @@ class AuthController extends Plug
   }
 
   #- login
-  public function login($conn, $params)
+  public function login($conn , $params)
   {
     $user_mail = strtolower(trim($params["user_mail"]));
     $password = md5(trim($params["password"]));

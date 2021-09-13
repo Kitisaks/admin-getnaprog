@@ -1,14 +1,24 @@
 <?php
 namespace App\Libs;
 
+/**
+ * @Annotation 
+ * Route URI to specific link in according with HTTP method 
+ */
 class Route
 {
-  private $uri;
-  private $method;
-  private $request;
-  private $controller;
-  private $function;
+  public $uri;
+  public $method;
+  public $request;
+  public $controller;
+  public $function;
 
+  /**
+   * @param string $method The HTTP request method
+   * @param string $request The request URI to specify
+   * @param string $controller The Controller Class use for function and render 
+   * @param string $function The Method inside Controller Class for process 
+   */
   function __construct($method, $request, $controller, $function)
   {
     $this->uri = $_SERVER['REQUEST_URI'];
@@ -16,10 +26,10 @@ class Route
     $this->request = $request;
     $this->controller = $controller;
     $this->function = $function;
-    $this->route();
+    $this->_route();
   }
 
-  private function parse_uri($uri)
+  private function _parse_uri($uri)
   {
     if (strpos($uri, '?') !== false) {
       $req = explode('/', trim(substr($uri, 0, strpos($uri, '?')), '/'));
@@ -29,10 +39,10 @@ class Route
     return $req;
   }
 
-  private function set_param()
+  private function _set_param()
   {
-    $request = $this->parse_uri($this->uri);
-    $target = $this->parse_uri($this->request);
+    $request = $this->_parse_uri($this->uri);
+    $target = $this->_parse_uri($this->request);
 
     #- Bypass this first
     if ($this->method === $_SERVER['REQUEST_METHOD']) {
@@ -60,28 +70,20 @@ class Route
     return false;
   }
 
-  /**
-   * To Create * Do Not * add /example/:id and /example/test like this!
-   * It will route to first item that found in this by top to bot
-   * Please reorder route like this 
-   * /example/test1
-   * /example/test2
-   * /example/:id
-   */
-  private function route()
+  private function _route()
   {
-    if ($this->set_param($this->uri)) {
-      $this->endpoint();
+    if ($this->_set_param($this->uri)) {
+      $this->_endpoint();
       exit;
     } else if ($this->request === '/error') {
-      $this->endpoint();
+      $this->_endpoint();
       exit;
     }
   }
 
-  private function endpoint()
+  private function _endpoint()
   {
-    $this->launch();
+    $this->_launch();
     $function =  $this->function;
     $file = $_SERVER['DOCUMENT_ROOT'] . '/' . strtolower($this->controller) . '.php';
     $file = str_replace('\\', DIRECTORY_SEPARATOR, $file);
@@ -95,14 +97,14 @@ class Route
           break;
 
         case 'POST':
-          if ($this->put_secure($_REQUEST)) {
+          if ($this->_put_secure($_REQUEST)) {
             $module->{$function}(isset($_SESSION['conn']) ? $_SESSION['conn'] : null, $_REQUEST);
           }
           break;
 
         default:
-          $params = $this->api_setup();
-          if ($this->put_secure($params)) {
+          $params = $this->_api_setup();
+          if ($this->_put_secure($params)) {
             $module->{$function}(isset($_SESSION['conn']) ? $_SESSION['conn'] : null, $params);
           }
           break;
@@ -111,18 +113,26 @@ class Route
     exit;
   }
 
-  private function launch()
+  private function _prepare_config()
   {
+    $config = YamlHandler::parsefile($_SERVER['DOCUMENT_ROOT'] . '/app/config.yml');
+    define('MODE', $config['mode']);
+    define('BASE_URL', \App\Libs\Utils::base_url());
+    return $config;
+  }
+
+  private function _launch()
+  {
+    $config = $this->_prepare_config();
     # Setup for Error report
     new \App\Libs\Whoops(MODE);
+
+    # Setup for http header
+    new \App\Header(MODE);
 
     # Setup for render page
     if (empty($_SESSION['_csrf_token']))
       $_SESSION['_csrf_token'] = bin2hex(random_bytes(32));
-
-    define('BASE_URL', \App\Libs\Utils::base_url());
-
-    $config = YamlHandler::parsefile($_SERVER['DOCUMENT_ROOT'] . '/app/config.yml');
 
     if (MODE === 'DEV') {
       define('DB', $config['driver']['mysql']['develope']);
@@ -131,7 +141,7 @@ class Route
     }
   }
 
-  private function put_secure($request)
+  private function _put_secure($request)
   {
     if (isset($request['_csrf_token']) && hash_equals($request['_csrf_token'], $_SESSION['_csrf_token']))
       return true;
@@ -139,7 +149,7 @@ class Route
       return false;
   }
 
-  private function api_setup()
+  private function _api_setup()
   {
     header('Access-Control-Allow-Origin: *');
     header('Content-Type: application/json; charset=UTF-8');

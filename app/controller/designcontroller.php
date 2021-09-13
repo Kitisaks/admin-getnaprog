@@ -90,7 +90,6 @@ class DesignController extends Plug
 
     $this
       ->view
-      ->assign("kuy", "kuykub")
       ->assign("templates", $templates)
       ->assign("pages", $pages)
       ->render("index.html");

@@ -1,15 +1,17 @@
 <?php
+
 namespace App\Data;
+
 use App\Libs\YamlHandler;
 use App\Libs\FtpHandler;
 use App\Libs\FileHandler;
 
 class Attachment
 {
-  private static function do_image($image, $size)
+  private static function _do_image($image, $size)
   {
     $filename = "{$image['kind']}:{$image['title']}:{$image['id']}:{$image['name']}";
-    $url = self::default_url($filename);
+    $url = self::_default_url($filename);
     if ($size != null) {
       return "{$url}&size={$size}";
     } else {
@@ -22,12 +24,10 @@ class Attachment
     if (!is_null($attachments)) {
       $image = array_filter(
         $attachments,
-        function ($attachment) use ($post_id) {
-          return $attachment['id'] === $post_id;
-        }
+        fn ($attachment) => $attachment['id'] === $post_id
       );
       $image = array_values($image)[0];
-      return self::do_image($image, $size);
+      return self::_do_image($image, $size);
     } else {
       return false;
     }
@@ -36,7 +36,7 @@ class Attachment
   public static function default_image($attachment = null, $size = null): string
   {
     if (!is_null($attachment))
-      return self::do_image($attachment, $size);
+      return self::_do_image($attachment, $size);
     else
       return false;
   }
@@ -51,9 +51,7 @@ class Attachment
           'name' => $obj['a_name'],
           'kind' => $obj['a_kind'],
         ],
-        function ($d) {
-          return $d !== null;
-        }
+        fn ($d) => $d !== null
       );
       if ($data !== [])
         return $data;
@@ -64,26 +62,22 @@ class Attachment
   {
     $data = array_filter(
       array_map(
-        function ($item) use ($title) {
-          if ($item['a_title'] === $title)
-            return [
-              'id' => $item['p_id'],
-              'title' => $item['a_title'],
-              'name' => $item['a_name'],
-              'kind' => $item['a_kind'],
-            ];
-        },
+        fn ($item) => ($item['a_title'] === $title) ? [
+          'id' => $item['p_id'],
+          'title' => $item['a_title'],
+          'name' => $item['a_name'],
+          'kind' => $item['a_kind'],
+        ]
+          : null,
         $obj
       ),
-      function ($d) {
-        return $d !== null;
-      }
+      fn ($d) => $d !== null
     );
     if ($data !== [])
       return $data;
   }
 
-  private static function default_url(string $filename): string
+  private static function _default_url(string $filename): string
   {
     $key = YamlHandler::parsefile($_SERVER['DOCUMENT_ROOT'] . '/app/config.yml')['api']['drive'];
     $host = $_SESSION['conn']['agency']['cname'];

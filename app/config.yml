@@ -1,6 +1,7 @@
-name: "CMS MVC Web Application"
+title: "CMS MVC Web Application"
+description: "CMS MVC Web Application Framework"
 author: "Kitisak (Fluke) Sapphaniran"
-version: 0.2.1
+mode: "DEV"
 driver:
   mysql:
     production:

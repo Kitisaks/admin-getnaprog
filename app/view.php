@@ -3,16 +3,16 @@ namespace App;
 #- use to render view.
 class View
 {
-  private $main;
-  private $layout;
+  public $main;
+  private $_layout;
 
   function __construct($main)
   {
     $this->main = str_replace('controller', '', strtolower($main));
-    $this->layout = true;
+    $this->_layout = true;
   }
 
-  private function require($page, $folder = 'layout')
+  private function _require(string $page, string $folder = 'layout')
   {
     $path = $_SERVER['DOCUMENT_ROOT'] . "/templates/{$folder}/{$page}.php";
     $path = str_replace('app\\\\', DIRECTORY_SEPARATOR, $path);
@@ -21,45 +21,45 @@ class View
 
   public function render($pages)
   {
-    if ($this->layout) {
+    if ($this->_layout) {
       if (is_string($pages)) {
-        $this->require('header.html');
-        $this->require('_alert.html');
-        $this->require('_notice.html');
-        $this->require('_popup.html');
-        $this->require('_navbar.html');
-        $this->require($pages, $this->main);
-        $this->require('_footer.html');
-        $this->require('bottom.html');
+        $this->_require('header.html');
+        $this->_require('_alert.html');
+        $this->_require('_notice.html');
+        $this->_require('_popup.html');
+        $this->_require('_navbar.html');
+        $this->_require($pages, $this->main);
+        $this->_require('_footer.html');
+        $this->_require('bottom.html');
       } else if (is_array($pages)) {
-        $this->require('header.html');
-        $this->require('_alert.html');
-        $this->require('_notice.html');
-        $this->require('_popup.html');
-        $this->require('_navbar.html');
+        $this->_require('header.html');
+        $this->_require('_alert.html');
+        $this->_require('_notice.html');
+        $this->_require('_popup.html');
+        $this->_require('_navbar.html');
         foreach ($pages as $page) {
-          $this->require($page, $this->main);
+          $this->_require($page, $this->main);
         }
-        $this->require('_footer.html');
-        $this->require('bottom.html');
+        $this->_require('_footer.html');
+        $this->_require('bottom.html');
       }
     } else {
       if (is_string($pages)) {
-        $this->require('header.html');
-        $this->require('_alert.html');
-        $this->require('_notice.html');
-        $this->require('_popup.html');
-        $this->require($pages, $this->main);
-        $this->require('bottom.html');
+        $this->_require('header.html');
+        $this->_require('_alert.html');
+        $this->_require('_notice.html');
+        $this->_require('_popup.html');
+        $this->_require($pages, $this->main);
+        $this->_require('bottom.html');
       } else if (is_array($pages)) {
-        $this->require('header.html');
-        $this->require('_alert.html');
-        $this->require('_notice.html');
-        $this->require('_popup.html');
+        $this->_require('header.html');
+        $this->_require('_alert.html');
+        $this->_require('_notice.html');
+        $this->_require('_popup.html');
         foreach ($pages as $page) {
-          $this->require($page, $this->main);
+          $this->_require($page, $this->main);
         }
-        $this->require('bottom.html');
+        $this->_require('bottom.html');
       }
     }
   }
@@ -92,7 +92,7 @@ class View
 
   public function put_layout(bool $layout)
   {
-    $this->layout = $layout;
+    $this->_layout = $layout;
     return $this;
   }
 
@@ -102,7 +102,7 @@ class View
     return $this;
   }
 
-  public function put_flash($status = true, $value)
+  public function put_flash(bool $status = true, $value)
   {
     if ($status)
       $_SESSION['popup'] = ['status' => 1, 'info' => $value];
@@ -111,7 +111,7 @@ class View
     return $this;
   }
 
-  public function redirect($uri)
+  public function redirect(string $uri)
   {
     header("location: {$uri}");
     exit;
