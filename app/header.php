@@ -11,6 +11,7 @@ class Header
     $this->mode = $mode;
     $this->_set_cookie_session();
     $this->_set_header();
+    $this->_compression();
   }
 
   private function _set_cookie_session()
@@ -25,8 +26,8 @@ class Header
         'gc_probability' => 1,
         'gc_divisor' => 1,
         'sid_length' => 22,
-        'cache_expire' => ($this->mode === 'DEV') ? 0 : 24,
-        'cache_limiter' => 'private_no_expire',
+        'cache_expire' => ($this->mode === 'DEV') ? 1 : 120,
+        'cache_limiter' => 'private',
         'save_path' => $_SERVER['DOCUMENT_ROOT'] . '/priv/server/sessions'
       ]);
     session_regenerate_id(true);
@@ -53,6 +54,14 @@ class Header
       ini_set('display_startup_errors', 1);
       error_reporting(E_ALL);
     }
+  }
+
+  private function _compression()
+  {
+    if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip'))
+      ob_start('ob_gzhandler');
+    else
+      ob_start();
   }
 
   private function _set_cache()

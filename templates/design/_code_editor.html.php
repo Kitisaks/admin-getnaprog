@@ -22,6 +22,7 @@
       exec: function(editor) {
         // Return response
         function reqListener() {
+          console.log(this.responseText);
           let response = JSON.parse(this.responseText);
           if (response.status == true) {
             let popup = document.getElementById('popup-success');
@@ -39,11 +40,11 @@
         }
         var content = editor.session.getValue();
         var xhr = new XMLHttpRequest();
-        var params = 'content=' + content + '&_csrf_token=<?= $_SESSION["_csrf_token"] ?>&id=<?= $GLOBALS["template"]["t_id"] ?>';
+        var params = 'content=' + content + `&_csrf_token=<?= $_SESSION["_csrf_token"] ?>&id=<?= $GLOBALS["template"]["t_id"] ?>`;
         xhr.addEventListener('load', reqListener);
         xhr.open('PATCH', '/design/<?= $GLOBALS["template"]["t_id"] ?>', true);
         //Send the proper header information along with the request
-        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
         xhr.send(params);
       }
     });

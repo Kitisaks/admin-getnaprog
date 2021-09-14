@@ -26,12 +26,14 @@ final class Router
     new Route('GET', '/project/new', Controller\ProjectController::class, 'new');
     
     new Route('GET', '/project/:uuid', Controller\ProjectController::class, 'show');
+    new Route('DELETE', '/project/:uuid', Controller\ProjectController::class, 'delete');
     new Route('POST', '/project/create', Controller\ProjectController::class, 'create');
 
 
     #- /design
     new Route('GET', '/design', Controller\DesignController::class, 'index');
     new Route('GET', '/design/:id', Controller\DesignController::class, 'show');
+    new Route('DELETE', '/design/:id', Controller\DesignController::class, 'delete');
     new Route('PATCH', '/design/:id', Controller\DesignController::class, 'update');
 
     #- /tools

@@ -203,4 +203,25 @@ $(function () {
     return false;
   });
 
+  //== Delete_by_id
+  $('body .del-by-id').click(function (e) { 
+    e.preventDefault();
+    let id = $(this).attr('data-id');
+    let url = $(this).attr('url');
+    if (confirm('Are sure to delete?')) {
+      $.ajax({
+        url: url,
+        data: {'id': id},
+        type: 'DELETE',
+        success: function(response) {
+          window.location.replace(response.url);
+        },
+        error: function () {
+          alert('Something bad happened.');
+        }
+      });
+    }
+    return false;
+  });
+
 });

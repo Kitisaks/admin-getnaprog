@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Plug;
@@ -141,5 +142,18 @@ class DesignController extends Plug
       $this
         ->view
         ->return("json", ["status" => false, "info" => "Cannot update the template"]);
+  }
+
+  public function delete($conn, $params)
+  {
+    if ($this->repo->delete("templates", $params["id"])) {
+      $this
+        ->view
+        ->return("json", ["url" => "/design"]);
+    } else {
+      $this
+        ->view
+        ->return("json", ["url" => "/design/{$params['id']}"]);
+    }
   }
 }

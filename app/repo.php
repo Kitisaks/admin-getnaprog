@@ -18,10 +18,14 @@ class Repo
   function __construct()
   {
     $attributes = [
+      PDO::ATTR_DRIVER_NAME => 'mysql',
       PDO::ATTR_EMULATE_PREPARES => false,
       PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
       PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-      PDO::ATTR_PERSISTENT => true
+      PDO::ATTR_PERSISTENT => true,
+      PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY,
+      PDO::ATTR_TIMEOUT => 30,
+      PDO::MYSQL_ATTR_INIT_COMMAND => "set session sql_mode='traditional'"
     ];
     $this->_conn =
       new PDO(
@@ -30,7 +34,6 @@ class Repo
         DB['password'],
         $attributes
       );
-    $this->_conn->exec('set session sql_mode = traditional');
     $this->_distinct = false;
   }
 
@@ -163,7 +166,7 @@ class Repo
   /**
    * Doing many query with safe guard. If error raise it will auto rollback all changed.
    * @param array $callback Transaction function with anonymous function inside, e.g. transaction(fn(x) => 'query')
-   * @return true|exception If process committed it return True, Else if process rollback it raise exception.
+   * @return integer|true|exception If process committed it return changed ID, Else if process rollback it raise exception.
    */
   public function transaction(array $callback)
   {
@@ -171,7 +174,7 @@ class Repo
       $this->_conn->beginTransaction();
       $callback;
       $this->_conn->commit();
-      return true;
+      return $this->_conn->lastInsertId();
     } catch (PDOException $e) {
       $this->_conn->rollBack();
       exit($e->getMessage());
@@ -191,7 +194,8 @@ class Repo
         ->prepare($this->_query);
       $stmt->execute();
       $results = $stmt->fetch();
-      $this->_query = '';
+      $stmt->closeCursor();
+      $this->_query = null;
       return $results;
     } catch (PDOException $e) {
       exit($e->getMessage());
@@ -211,7 +215,8 @@ class Repo
         ->prepare($this->_query);
       $stmt->execute();
       $results = $stmt->fetchAll();
-      $this->_query = '';
+      $stmt->closeCursor();
+      $this->_query = null;
       return $results;
     } catch (PDOException $e) {
       exit($e->getMessage());
@@ -274,10 +279,12 @@ class Repo
     $bind = join(',', $binds);
     try {
       $sql = "UPDATE {$table} SET {$bind} WHERE id={$id}";
-      $this
-        ->_conn
-        ->prepare($sql)
-        ->execute($values);
+      $stmt =
+        $this
+          ->_conn
+          ->prepare($sql);
+      $stmt->execute($values);
+      $stmt->closeCursor();
       return $this->get($table, $id);
     } catch (PDOException $e) {
       exit($e->getMessage());
@@ -288,7 +295,7 @@ class Repo
    * Insert many records with new data in array form
    * @param string $table Specify table to query
    * @param array $params The [fieldname => values] in array form to insert
-   * @return true|exception If success return True. Else if error raise exception
+   * @return boolean|exception If success return True. Else if error raise exception
    */
   public function insert(string $table, array $params)
   {
@@ -301,11 +308,13 @@ class Repo
     $bind = join(',', $binds);
     try {
       $sql = "INSERT INTO {$table} ({$key}) VALUES ({$bind})";
-      $this
-        ->_conn
-        ->prepare($sql)
-        ->execute($values);
-      return true;
+      $stmt =
+        $this
+          ->_conn
+          ->prepare($sql);
+      $result = $stmt->execute($values);
+      $stmt->closeCursor();
+      return $result;
     } catch (PDOException $e) {
       exit($e->getMessage());
     }
@@ -315,17 +324,19 @@ class Repo
    * Insert many records with new data in array form
    * @param string $table Specify table to query
    * @param integer $id The value of fields to delete
-   * @return true|exception If success return True. Else if error raise exception
+   * @return boolean|exception If success return True. Else if error raise exception
    */
   public function delete(string $table, int $id)
   {
     try {
       $sql = "DELETE FROM {$table} WHERE id=?";
-      $this
-        ->_conn
-        ->prepare($sql)
-        ->execute([$id]);
-      return true;
+      $stmt =
+        $this
+          ->_conn
+          ->prepare($sql);
+      $result = $stmt->execute([$id]);
+      $stmt->closeCursor();
+      return $result;
     } catch (PDOException $e) {
       exit($e->getMessage());
     }

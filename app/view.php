@@ -71,10 +71,10 @@ class View
     $js = array_slice(scandir($base . '/assets/js/'), 2);
 
     foreach ($css as $i) {
-      echo '<link rel="stylesheet" type="text/css" href="' . BASE_URL . 'assets/css/' . $i . '">';
+      echo "\t" . '<link rel="stylesheet" type="text/css" href="' . BASE_URL . 'assets/css/' . $i . '">' . "\n";
     }
     foreach ($js as $i) {
-      echo '<script type="text/javascript" src="' . BASE_URL . 'assets/js/' . $i . '"></script>';
+      echo "\t" . '<script defer type="text/javascript" src="' . BASE_URL . 'assets/js/' . $i . '"></script>' . "\n";
     }
   }
 
@@ -111,7 +111,7 @@ class View
     return $this;
   }
 
-  public function redirect(string $uri)
+  public function redirect(string $uri = null)
   {
     header("location: {$uri}");
     exit;
@@ -131,5 +131,12 @@ class View
         );
         break;
     }
+    exit;
+  }
+
+  public function send_resp_code(int $code)
+  {
+    http_response_code($code);
+    exit;
   }
 }

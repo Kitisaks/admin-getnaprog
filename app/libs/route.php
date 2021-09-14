@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Libs;
 
 /**
@@ -84,33 +85,27 @@ class Route
   private function _endpoint()
   {
     $this->_launch();
-    $function =  $this->function;
-    $file = $_SERVER['DOCUMENT_ROOT'] . '/' . strtolower($this->controller) . '.php';
-    $file = str_replace('\\', DIRECTORY_SEPARATOR, $file);
-    
-    if (file_exists($file)) {
-      require_once $file;
-      $module = new $this->controller;
-      switch ($this->method) {
-        case 'GET':
-          $module->{$function}(isset($_SESSION['conn']) ? $_SESSION['conn'] : null, $_REQUEST);
-          break;
+    switch ($this->method) {
+      case 'GET':
+        (new $this->controller)
+          ->{$this->function}(isset($_SESSION['conn']) ? $_SESSION['conn'] : null, $_REQUEST);
+        break;
 
-        case 'POST':
-          if ($this->_put_secure($_REQUEST)) {
-            $module->{$function}(isset($_SESSION['conn']) ? $_SESSION['conn'] : null, $_REQUEST);
-          }
-          break;
+      case 'POST':
+        if ($this->_put_secure($_REQUEST)) {
+          (new $this->controller)
+            ->{$this->function}(isset($_SESSION['conn']) ? $_SESSION['conn'] : null, $_REQUEST);
+        }
+        break;
 
-        default:
-          $params = $this->_api_setup();
-          if ($this->_put_secure($params)) {
-            $module->{$function}(isset($_SESSION['conn']) ? $_SESSION['conn'] : null, $params);
-          }
-          break;
-      }
+      default:
+        $params = $this->_http_method_setup();
+        if ($this->_put_secure($params)) {
+          (new $this->controller)
+            ->{$this->function}(isset($_SESSION['conn']) ? $_SESSION['conn'] : null, $params);
+        }
+        break;
     }
-    exit;
   }
 
   private function _prepare_config()
@@ -124,16 +119,14 @@ class Route
   private function _launch()
   {
     $config = $this->_prepare_config();
-    # Setup for Error report
+    # Setup for error report
     new \App\Libs\Whoops(MODE);
-
-    # Setup for http header
+    # Setup for HTTP header
     new \App\Header(MODE);
-
-    # Setup for render page
+    # Setup for CSRF forgery
     if (empty($_SESSION['_csrf_token']))
       $_SESSION['_csrf_token'] = bin2hex(random_bytes(32));
-
+    # Setup for config of Mysql driver
     if (MODE === 'DEV') {
       define('DB', $config['driver']['mysql']['develope']);
     } else {
@@ -143,17 +136,20 @@ class Route
 
   private function _put_secure($request)
   {
+    $header = array_filter(getallheaders(), fn ($k) => $k === 'X-Csrf-Token', ARRAY_FILTER_USE_KEY);
     if (isset($request['_csrf_token']) && hash_equals($request['_csrf_token'], $_SESSION['_csrf_token']))
       return true;
-    else 
+    elseif (hash_equals($header['X-Csrf-Token'], $_SESSION['_csrf_token']))
+      return true;
+    else
       return false;
   }
 
-  private function _api_setup()
+  private function _http_method_setup()
   {
     header('Access-Control-Allow-Origin: *');
     header('Content-Type: application/json; charset=UTF-8');
-    header("Access-Control-Allow-Methods: '{$this->method}'");
+    header("Access-Control-Allow-Methods: {$this->method}");
     header('Access-Control-Max-Age: 3600');
     header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
     #- use for patch , when not include in $_GET and $_POST

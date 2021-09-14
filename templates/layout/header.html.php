@@ -10,6 +10,6 @@
     <meta name="csrf-token" content="<?= $_SESSION["_csrf_token"] ?>">
     <title>Reaml Admin -- Content Management System</title>
     <link rel="icon" href="<?= BASE_URL ?>assets/statics/favicon.ico" type="image/x-icon">
-    <?php App\View::assets_include() ?>
+<?php App\View::assets_include() ?>
 </head>
 <body class="bg-gray-100 font-sans antialiased proportional-nums tracking-normal leading-normal list-inside align-middle">
