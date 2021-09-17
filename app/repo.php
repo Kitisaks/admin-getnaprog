@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Exception;
 use PDO;
 use PDOException;
 
@@ -17,24 +18,37 @@ class Repo
 
   function __construct()
   {
-    $attributes = [
-      PDO::ATTR_DRIVER_NAME => 'mysql',
-      PDO::ATTR_EMULATE_PREPARES => false,
-      PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-      PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-      PDO::ATTR_PERSISTENT => true,
-      PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY,
-      PDO::ATTR_TIMEOUT => 30,
-      PDO::MYSQL_ATTR_INIT_COMMAND => "set session sql_mode='traditional'"
-    ];
-    $this->_conn =
-      new PDO(
-        'mysql:host=' . DB['host'] . ';dbname=' . DB['name'] . ';charset=utf8',
-        DB['user'],
-        DB['password'],
-        $attributes
-      );
-    $this->_distinct = false;
+    try {
+      $attributes = [
+        PDO::ATTR_DRIVER_NAME => 'mysql',
+        PDO::ATTR_EMULATE_PREPARES => false,
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_PERSISTENT => true,
+        PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY,
+        PDO::ATTR_TIMEOUT => 20,
+        PDO::MYSQL_ATTR_INIT_COMMAND => "SET SESSION sql_mode='traditional', NAMES utf8"
+      ];
+      $this->_conn =
+        new PDO(
+          'mysql:host=' . DB['host'] . ';dbname=' . DB['name'] . ';port=' . DB['port'] . ';charset=utf8',
+          DB['user'],
+          DB['password'],
+          $attributes
+        );
+      $this->_distinct = false;
+    } catch (PDOException $e) {
+      $this->_exception($e);
+    }
+  }
+
+  function __destruct()
+  {
+    try {
+      $this->_conn = null;
+    } catch (PDOException $e) {
+      $this->_exception($e);
+    }
   }
 
   /**
@@ -53,6 +67,23 @@ class Repo
     } else if (is_string($params)) {
       $this->_query .= $params;
     }
+  }
+
+  /**
+   * @param mixed $e PDOexception
+   */
+  private function _exception($except)
+  {
+    # Log and display error in the event that there is an issue connecting
+    $log_path = $_SERVER['DOCUMENT_ROOT'] . '/priv/logs/db_error.log';
+    file_put_contents(
+      $log_path, 
+      "Date: " . date('M j Y - G:i:s') . " ---- Error: " . $except->getMessage() . PHP_EOL, 
+      FILE_APPEND
+    );
+    throw new Exception(
+      "Could not process your query into database. The PDO exception was " . $except->getMessage()
+    );
   }
 
   /**
@@ -177,7 +208,7 @@ class Repo
       return $this->_conn->lastInsertId();
     } catch (PDOException $e) {
       $this->_conn->rollBack();
-      exit($e->getMessage());
+      $this->_exception($e);
     }
   }
 
@@ -198,7 +229,7 @@ class Repo
       $this->_query = null;
       return $results;
     } catch (PDOException $e) {
-      exit($e->getMessage());
+      $this->_exception($e);
     }
   }
 
@@ -219,7 +250,7 @@ class Repo
       $this->_query = null;
       return $results;
     } catch (PDOException $e) {
-      exit($e->getMessage());
+      $this->_exception($e);
     }
   }
 
@@ -281,13 +312,13 @@ class Repo
       $sql = "UPDATE {$table} SET {$bind} WHERE id={$id}";
       $stmt =
         $this
-          ->_conn
-          ->prepare($sql);
+        ->_conn
+        ->prepare($sql);
       $stmt->execute($values);
       $stmt->closeCursor();
       return $this->get($table, $id);
     } catch (PDOException $e) {
-      exit($e->getMessage());
+      $this->_exception($e);
     }
   }
 
@@ -310,13 +341,13 @@ class Repo
       $sql = "INSERT INTO {$table} ({$key}) VALUES ({$bind})";
       $stmt =
         $this
-          ->_conn
-          ->prepare($sql);
+        ->_conn
+        ->prepare($sql);
       $result = $stmt->execute($values);
       $stmt->closeCursor();
       return $result;
     } catch (PDOException $e) {
-      exit($e->getMessage());
+      $this->_exception($e);
     }
   }
 
@@ -332,13 +363,13 @@ class Repo
       $sql = "DELETE FROM {$table} WHERE id=?";
       $stmt =
         $this
-          ->_conn
-          ->prepare($sql);
+        ->_conn
+        ->prepare($sql);
       $result = $stmt->execute([$id]);
       $stmt->closeCursor();
       return $result;
     } catch (PDOException $e) {
-      exit($e->getMessage());
+      $this->_exception($e);
     }
   }
 }

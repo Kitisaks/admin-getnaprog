@@ -3,6 +3,15 @@
   HOME
   <br>
 
+  <?php
+  $i = 0.0000001555000000000;
+  $b = rtrim($i, 0);
+  function get_readable($num) {
+    $num = $num + 1;
+    return '0'.ltrim($num, 1);
+  }
+  print_r(get_readable($b));
+  ?>
 
   <br>
   <br>
