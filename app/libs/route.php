@@ -113,12 +113,17 @@ class Route
     $config = YamlHandler::parsefile($_SERVER['DOCUMENT_ROOT'] . '/app/config.yml');
     define('MODE', $config['mode']);
     define('BASE_URL', \App\Libs\Utils::base_url());
-    return $config;
+    # Setup for config of Mysql driver
+    if (MODE === 'DEV') {
+      define('DB', $config['driver']['mysql']['develope']);
+    } else {
+      define('DB', $config['driver']['mysql']['production']);
+    }
   }
 
   private function _launch()
   {
-    $config = $this->_prepare_config();
+    $this->_prepare_config();
     # Setup for error report
     new \App\Libs\Whoops(MODE);
     # Setup for HTTP header
@@ -126,12 +131,6 @@ class Route
     # Setup for CSRF forgery
     if (empty($_SESSION['_csrf_token']))
       $_SESSION['_csrf_token'] = bin2hex(random_bytes(32));
-    # Setup for config of Mysql driver
-    if (MODE === 'DEV') {
-      define('DB', $config['driver']['mysql']['develope']);
-    } else {
-      define('DB', $config['driver']['mysql']['production']);
-    }
   }
 
   private function _put_secure($request)
