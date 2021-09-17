@@ -12,6 +12,8 @@
         "uptodown/random-username-generator": "^1.0",
         "nesbot/carbon": "^2.51",
         "nicolab/php-ftp-client": "^1.6",
-        "symfony/yaml": "^5.3"
+        "symfony/yaml": "^5.3",
+        "liquid/liquid": "^1.4",
+        "matthiasmullie/minify": "^1.3"
     }
 }

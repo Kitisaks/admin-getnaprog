@@ -67,8 +67,13 @@ class View
   public static function assets_include()
   {
     $base = $_SERVER['DOCUMENT_ROOT'];
-    $css = array_slice(scandir($base . '/assets/css/'), 2);
-    $js = array_slice(scandir($base . '/assets/js/'), 2);
+    if (MODE == 'DEV')
+      $filepath = '/assets';
+    else
+      $filepath = 'priv/statics';
+
+    $css = array_slice(scandir($base . $filepath . '/css/'), 2);
+    $js = array_slice(scandir($base . $filepath . '/js/'), 2);
 
     foreach ($css as $i) {
       echo "\t" . '<link rel="stylesheet" type="text/css" href="' . BASE_URL . 'assets/css/' . $i . '">' . "\n";

@@ -57,8 +57,14 @@ class ComposerStaticInitf69c17cfcdbfb310caac84b23465f0a5
         array (
             'Psr\\Log\\' => 8,
         ),
+        'M' => 
+        array (
+            'MatthiasMullie\\PathConverter\\' => 29,
+            'MatthiasMullie\\Minify\\' => 22,
+        ),
         'L' => 
         array (
+            'Liquid\\' => 7,
             'League\\MimeTypeDetection\\' => 25,
             'League\\Flysystem\\' => 17,
             'League\\Csv\\' => 11,
@@ -163,6 +169,18 @@ class ComposerStaticInitf69c17cfcdbfb310caac84b23465f0a5
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
+        'MatthiasMullie\\PathConverter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/matthiasmullie/path-converter/src',
+        ),
+        'MatthiasMullie\\Minify\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/matthiasmullie/minify/src',
+        ),
+        'Liquid\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/liquid/liquid/src/Liquid',
         ),
         'League\\MimeTypeDetection\\' => 
         array (

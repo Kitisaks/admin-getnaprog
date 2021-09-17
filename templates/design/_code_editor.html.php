@@ -8,7 +8,7 @@
     // Code text editor
     let code_editor = ace.edit("code-editor");
     code_editor.setTheme("ace/theme/monokai");
-    code_editor.session.setMode("ace/mode/php");
+    code_editor.session.setMode("ace/mode/liquid");
     code_editor.session.setUseWrapMode(true);
     code_editor.session.mergeUndoDeltas = true;
     code_editor.session.setValue(`<?= $GLOBALS["template"]["t_content"] ?>`);

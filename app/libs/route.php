@@ -136,10 +136,15 @@ class Route
 
   private function _put_secure($request)
   {
-    $header = array_filter(getallheaders(), fn ($k) => $k === 'X-Csrf-Token', ARRAY_FILTER_USE_KEY);
+    $header = array_filter(
+        getallheaders(), 
+        fn ($k) => $k === 'X-Csrf-Token', 
+        ARRAY_FILTER_USE_KEY
+      );
+
     if (isset($request['_csrf_token']) && hash_equals($request['_csrf_token'], $_SESSION['_csrf_token']))
       return true;
-    elseif (hash_equals($header['X-Csrf-Token'], $_SESSION['_csrf_token']))
+    elseif (isset($request['_csrf_token']) && hash_equals($header['X-Csrf-Token'], $_SESSION['_csrf_token']))
       return true;
     else
       return false;
