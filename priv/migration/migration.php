@@ -11,8 +11,11 @@ if ($config['mode'] === 'DEV') {
   define('DB', $config['driver']['mysql']['production']);
 }
 
+$datetime = date("d/m/Y h:i:sa");
+
 function connect_db()
 {
+  global $datetime;
   try {
     return new PDO(
       'mysql:host=' . DB['host'] . ';dbname=' . DB['name'] . ';port=' . DB['port'] . ';charset=utf8',
@@ -21,21 +24,22 @@ function connect_db()
       [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
     );
   } catch (PDOException $e) {
-    return ($e->getMessage() . '<br>');
+    return ($datetime.": ".$e->getMessage() . PHP_EOL);
   }
 }
 
 function query_sql($cond, $params1, $params2)
 {
+  global $datetime;
   switch ($cond) {
     case "database":
       try {
         $sql = "CREATE DATABASE {$params1}";
         $conn = connect_db();
         $conn->exec($sql);
-        return ("Database {$params1} created successfully<br>");
+        return ("{$datetime}: Database {$params1} created successfully" . PHP_EOL);
       } catch (PDOException $e) {
-        return ($e->getMessage() . '<br>');
+        return ($datetime.": ".$e->getMessage() . PHP_EOL);
       }
       $conn = null;
       break;
@@ -45,9 +49,9 @@ function query_sql($cond, $params1, $params2)
         $sql = "CREATE TABLE {$params1} ({$params2})";
         $conn = connect_db();
         $conn->exec($sql);
-        return ("Table {$params1} created successfully<br>");
+        return ("{$datetime}: Table {$params1} created successfully" . PHP_EOL);
       } catch (PDOException $e) {
-        return ($e->getMessage() . '<br>');
+        return ($datetime.": ".$e->getMessage() . PHP_EOL);
       }
       $conn = null;
       break;

@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 #- use to render view.
 class View
@@ -111,7 +112,7 @@ class View
   {
     if ($status)
       $_SESSION['popup'] = ['status' => 1, 'info' => $value];
-    else 
+    else
       $_SESSION['popup'] = ['status' => 0, 'info' => $value];
     return $this;
   }
