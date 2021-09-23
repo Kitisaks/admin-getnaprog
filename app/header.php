@@ -6,31 +6,12 @@ class Header
 {
   public $mode;
 
-  function __construct($mode)
+  function __construct($mode = false)
   {
     $this->mode = $mode;
-    $this->_set_cookie_session();
     $this->_set_header();
+    $this->_set_cache();
     $this->_compression();
-  }
-
-  private function _set_cookie_session()
-  {
-    if (empty($_SESSION['_rainBID']))
-      session_start([
-        'name' => '_rainBID',
-        'cookie_httponly' => 1,
-        'use_only_cookies' => 1,
-        'cookie_secure' => 1,
-        'gc_maxlifetime' => 1440,
-        'gc_probability' => 1,
-        'gc_divisor' => 1,
-        'sid_length' => 22,
-        'cache_expire' => ($this->mode === 'DEV') ? 1 : 120,
-        'cache_limiter' => 'private',
-        'save_path' => $_SERVER['DOCUMENT_ROOT'] . '/priv/server/sessions'
-      ]);
-    session_regenerate_id(true);
   }
 
   private function _set_header()
@@ -43,13 +24,11 @@ class Header
       header('X-Powered-By: RainBot 1.2');
       header('Server: RainBot');
       header('Vary: User-Agent,Accept');
-      $this->_set_cache();
       ini_set('display_errors', 0);
       ini_set('log_errors', 1);
     } else {
       header('X-Powered-By: RainBot 1.2');
       header('Server: RainBot');
-      $this->_set_cache();
       ini_set('display_errors', 1);
       ini_set('display_startup_errors', 1);
       error_reporting(E_ALL);

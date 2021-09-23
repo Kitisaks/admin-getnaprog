@@ -22,7 +22,7 @@
       exec: function(editor) {
         // Return response
         function reqListener() {
-          console.log(this.responseText);
+          // console.log(this.responseText);
           let response = JSON.parse(this.responseText);
           if (response.status == true) {
             let popup = document.getElementById('popup-success');

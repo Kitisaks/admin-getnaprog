@@ -1,3 +1,6 @@
 /.vscode/
 /priv/server/sessions/
 /priv/logs/
+
+/priv/statics/js/
+/priv/statics/css/

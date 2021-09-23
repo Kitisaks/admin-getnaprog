@@ -56,8 +56,8 @@ $(function () {
 
   function readmore() {
     let str_limit = 360;
-    let readmore_txt = '...เพิ่มเติม';
-    let readless_txt = 'ย่อ';
+    let readmore_txt = '...more';
+    let readless_txt = 'less';
     $('body .add-readmore').each(function () {
       let str_all = $(this).text();
       if (str_all.length > str_limit) {
@@ -76,13 +76,13 @@ $(function () {
 
   //== pop up status
   $('body').on('click', '.popup-close', function () {
-    $('body .popup').fadeOut("normal");
+    $('body .popup').fadeOut('normal');
     return false;
   });
 
   //== close alert
   $('body').on('click', '#alert-cancel', function(){  
-    $('body #alert-del').fadeOut("normal");
+    $('body #alert-del').fadeOut('normal');
     return false;
   });
 
@@ -149,8 +149,8 @@ $(function () {
     let target_id = $(this).attr('data-id');
     //params for usez
     let size = $(this).attr('max-size');
-    let preview_img = $("body span[id='" + target_id + "']");
-    let preview_url = $("body p[id='" + target_id + "']");
+    let preview_img = $('body span[id="' + target_id + '"]');
+    let preview_url = $('body p[id="' + target_id + '"]');
     let file = $(this)[0].files[0];
     image_preview(file, size, preview_img, preview_url);
     return false;
@@ -160,8 +160,8 @@ $(function () {
     let target_id = $(this).attr('data-id');
     //params for use;
     let size = $(this).attr('max-size');
-    let preview_img = $("body div[id='" + target_id + "']");
-    let preview_url = $("body p[id='" + target_id + "']");
+    let preview_img = $('body div[id="' + target_id + '"]');
+    let preview_url = $('body p[id="' + target_id + '"]');
     let file = $(this)[0].files[0];
     image_preview(file, size, preview_img, preview_url);
     return false;
@@ -186,7 +186,7 @@ $(function () {
         </svg>
       </button>`
       );
-      this.value = "";
+      this.value = '';
     },
     keyup : function(ev) {
       // if: comma|enter (delimit more keyCodes with | pipe)
@@ -204,17 +204,18 @@ $(function () {
   });
 
   //== Delete_by_id
-  $('body .del-by-id').click(function (e) { 
+  $('body .del-by-id').click(function(e) { 
     e.preventDefault();
     let id = $(this).attr('data-id');
-    let url = $(this).attr('url');
     if (confirm('Are sure to delete?')) {
       $.ajax({
-        url: url,
-        data: {'id': id},
+        url: '/design/'+id,
         type: 'DELETE',
+        data: JSON.stringify({id: id}),
+        contentType: 'application/json',
+        processData: false,
         success: function(response) {
-          window.location.replace(response.url);
+          console.log(response);
         },
         error: function () {
           alert('Something bad happened.');

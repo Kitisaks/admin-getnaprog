@@ -69,18 +69,18 @@ class View
   {
     $base = $_SERVER['DOCUMENT_ROOT'];
     if (MODE == 'DEV')
-      $filepath = '/assets';
+      $filepath = 'assets/';
     else
-      $filepath = 'priv/statics';
+      $filepath = 'priv/statics/';
 
-    $css = array_slice(scandir($base . $filepath . '/css/'), 2);
-    $js = array_slice(scandir($base . $filepath . '/js/'), 2);
+    $css = array_slice(scandir($base . '/' . $filepath . 'css/'), 2);
+    $js = array_slice(scandir($base . '/' . $filepath . 'js/'), 2);
 
     foreach ($css as $i) {
-      echo "\t" . '<link rel="stylesheet" type="text/css" href="' . BASE_URL . 'assets/css/' . $i . '">' . "\n";
+      echo "\t" . '<link rel="stylesheet" type="text/css" href="' . BASE_URL . $filepath .'css/' . $i . '">' . "\n";
     }
     foreach ($js as $i) {
-      echo "\t" . '<script defer type="text/javascript" src="' . BASE_URL . 'assets/js/' . $i . '"></script>' . "\n";
+      echo "\t" . '<script defer type="text/javascript" src="' . BASE_URL . $filepath . 'js/' . $i . '"></script>' . "\n";
     }
   }
 
@@ -127,14 +127,10 @@ class View
   {
     switch ($type) {
       case 'default':
-        print_r(
-          $data
-        );
+        echo $data;
         break;
       case 'json':
-        print_r(
-          json_encode($data)
-        );
+        echo json_encode($data, JSON_THROW_ON_ERROR);
         break;
     }
     exit;

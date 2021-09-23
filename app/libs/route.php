@@ -87,6 +87,7 @@ class Route
     $this->_launch();
     switch ($this->method) {
       case 'GET':
+        new \App\Header(MODE);  
         (new $this->controller)
           ->{$this->function}(isset($_SESSION['conn']) ? $_SESSION['conn'] : null, $_REQUEST);
         break;
@@ -126,27 +127,24 @@ class Route
     $this->_prepare_config();
     # Setup for error report
     new \App\Libs\Whoops(MODE);
-    # Setup for HTTP header
-    new \App\Header(MODE);
-    # Setup for CSRF forgery
-    if (empty($_SESSION['_csrf_token']))
-      $_SESSION['_csrf_token'] = bin2hex(random_bytes(32));
+    # Setup for HTTP session
+    \App\Session::set_cookie_session();
   }
 
   private function _put_secure($request)
   {
     $header = array_filter(
         getallheaders(), 
-        fn ($k) => $k === 'X-Csrf-Token', 
+        fn($k) => $k === 'X-Csrf-Token', 
         ARRAY_FILTER_USE_KEY
       );
-
-    if (isset($request['_csrf_token']) && hash_equals($request['_csrf_token'], $_SESSION['_csrf_token']))
-      return true;
-    elseif (isset($request['_csrf_token']) && hash_equals($header['X-Csrf-Token'], $_SESSION['_csrf_token']))
-      return true;
-    else
-      return false;
+    if (isset($request['_csrf_token'])) {
+      if (hash_equals($request['_csrf_token'], $_SESSION['_csrf_token']))
+        return true;
+      if (isset($header['X-Csrf-Token']) && hash_equals($header['X-Csrf-Token'], $_SESSION['_csrf_token']))
+        return true;
+    }
+    return false;
   }
 
   private function _http_method_setup()
