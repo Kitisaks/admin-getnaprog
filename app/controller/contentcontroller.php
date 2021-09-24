@@ -5,7 +5,7 @@ use App\Plug;
 use App\View;
 use App\Session;
 
-class HomeController extends Plug
+class ContentController extends Plug
 {
   function __construct()
   {

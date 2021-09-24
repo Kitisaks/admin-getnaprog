@@ -8,7 +8,7 @@ final class Router
 {
   function __construct()
   {
-    new Route('GET', '/', Controller\AuthController::class, 'index');
+    new Route('GET', '/', Controller\AuthController::class, 'redirect');
     
     #- /auth
     new Route('GET', '/auth', Controller\AuthController::class, 'index');
@@ -19,7 +19,7 @@ final class Router
     new Route('POST', '/auth/add', Controller\AuthController::class, 'create');
     
     #- /home
-    new Route('GET', '/home', Controller\HomeController::class, 'index');
+    new Route('GET', '/content', Controller\ContentController::class, 'index');
 
     #- /project
     new Route('GET', '/project', Controller\ProjectController::class, 'index');

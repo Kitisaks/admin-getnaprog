@@ -215,7 +215,7 @@ $(function () {
         contentType: 'application/json',
         processData: false,
         success: function(response) {
-          console.log(response);
+          window.location.href = response.url;
         },
         error: function () {
           alert('Something bad happened.');

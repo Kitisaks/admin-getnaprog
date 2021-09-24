@@ -1,12 +1,12 @@
 title: "CMS MVC Web Application"
 description: "CMS MVC Web Application Framework"
 author: "Kitisak (Fluke) Sapphaniran"
-mode: "DEV"
+mode: "PRO"
 driver:
   mysql:
     production:
-      name: "getnapro_db"
-      user: "getnapro_db"
+      name: "getnaprg_database"
+      user: "getnaprg_database"
       password: "@Fluke160941"
       host: "localhost"
       port: 3306
@@ -16,8 +16,18 @@ driver:
       password: "@Fluke160941"
       host: "localhost"
       port: 3306
+  ftp:
+    hostname: "getnaprog.com"
+    username: "db@getnaprog.com"
+    password: "uY7k3.#yZNH48y"
+    mode: "passive"
+    ssl: "false"
+    port: 21
+    timeout: 30
 api:
   drive: "Drive_BXQtPmpEv0gcFnei7CQvTxAcKTHyDkHviTTK8TRC"
   data: "Data_cY0Mac5wPW5ITTiih2bdePksW5qMYozhhHHdtnop"
+
+
 
 

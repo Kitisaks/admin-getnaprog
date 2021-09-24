@@ -15,7 +15,6 @@ class Session
         'gc_probability' => 1,
         'gc_divisor' => 1,
         'sid_length' => 22,
-        'cache_expire' => (MODE === 'DEV') ? 1 : 120,
         'cache_limiter' => 'private',
         'save_path' => $_SERVER['DOCUMENT_ROOT'] . '/priv/server/sessions'
       ]);
@@ -61,7 +60,7 @@ class Session
   public static function alived()
   {
     if (isset($_SESSION['conn'])) {
-      header('location: /home');
+      header('location: /content');
       exit;
     }
   }

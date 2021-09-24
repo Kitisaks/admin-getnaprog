@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Libs\GenUuid;
@@ -12,6 +13,12 @@ class AuthController extends Plug
   {
     parent::__construct();
     $this->view = new View(__CLASS__);
+  }
+
+  public function redirect()
+  {
+    Session::alived();
+    Session::permitted();
   }
 
   public function index()
@@ -33,7 +40,7 @@ class AuthController extends Plug
   }
 
   #- login
-  public function login($conn , $params)
+  public function login($conn, $params)
   {
     $user_mail = strtolower(trim($params["user_mail"]));
     $password = md5(trim($params["password"]));
@@ -53,20 +60,20 @@ class AuthController extends Plug
       ->one();
 
     if (empty($user)) {
-      $this->disallowed();
+      $this->_disallowed();
     } else {
       if ($user["role"] < 4) {
         if ($user["agency_id"] === $agency["id"])
-          $this->allowed($user, $agency);
+          $this->_allowed($user, $agency);
         else
-          $this->disallowed();
+          $this->_disallowed();
       } else {
-        $this->allowed($user, $agency);
+        $this->_allowed($user, $agency);
       }
     }
   }
 
-  private function disallowed()
+  private function _disallowed()
   {
     $this
       ->view
@@ -74,13 +81,13 @@ class AuthController extends Plug
       ->redirect("/auth");
   }
 
-  private function allowed($user, $agency)
+  private function _allowed($user, $agency)
   {
     Session::assign_conn($user, $agency);
     $this
       ->view
       ->put_flash(true, "Welcome back {$user['name']}!")
-      ->redirect("/home");
+      ->redirect("/content");
   }
 
   public function signup($conn, $params)
@@ -102,7 +109,7 @@ class AuthController extends Plug
 
   public function create($conn, $params)
   {
-    $e = $this->check($_POST["username"], $_POST["email"]);
+    $e = $this->_check($_POST["username"], $_POST["email"]);
     switch ($e) {
       case true:
         $this
@@ -111,13 +118,13 @@ class AuthController extends Plug
           ->redirect("/auth/signup");
 
       case false:
-        $this->init_register($params);
+        $this->_init_register($params);
         break;
     }
   }
 
   #- check exist user in db
-  private function check($username, $email)
+  private function _check($username, $email)
   {
     return
       $this
@@ -129,7 +136,7 @@ class AuthController extends Plug
   }
 
   #- start to register the form
-  private function init_register($params)
+  private function _init_register($params)
   {
     $agency =
       $this

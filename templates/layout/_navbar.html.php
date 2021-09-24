@@ -23,14 +23,14 @@
           <a href="/content" class="<?= ($_SERVER["REQUEST_URI"] === "/content") ? "bg-gray-900 text-white border" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> px-3 py-2 rounded-md text-sm font-medium" <?= ($_SERVER["REQUEST_URI"] === "/content") ? "aria-current='page'" : null ?>>
             Content
           </a>
-          <a href="/team" class="<?= ($_SERVER["REQUEST_URI"] === "/team") ? "bg-gray-900 text-white border" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> px-3 py-2 rounded-md text-sm font-medium" <?= ($_SERVER["REQUEST_URI"] === "/team") ? "aria-current='page'" : null ?>>
-            Team
-          </a>
           <a href="/project" class="<?= ($_SERVER["REQUEST_URI"] === "/project") ? "bg-gray-900 text-white border" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> px-3 py-2 rounded-md text-sm font-medium" <?= ($_SERVER["REQUEST_URI"] === "/project") ? "aria-current='page'" : null ?>>
             Projects
           </a>
           <a href="/design" class="<?= ($_SERVER["REQUEST_URI"] === "/design") ? "bg-gray-900 text-white border" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> px-3 py-2 rounded-md text-sm font-medium" <?= ($_SERVER["REQUEST_URI"] === "/design") ? "aria-current='page'" : null ?>>
             Design
+          </a>
+          <a href="/team" class="<?= ($_SERVER["REQUEST_URI"] === "/team") ? "bg-gray-900 text-white border" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> px-3 py-2 rounded-md text-sm font-medium" <?= ($_SERVER["REQUEST_URI"] === "/team") ? "aria-current='page'" : null ?>>
+            Team
           </a>
         </div>
       </div>
@@ -88,14 +88,14 @@
       <a href="/content" class="<?= ($_SERVER["REQUEST_URI"] === "/content") ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> block px-3 py-2 rounded-md text-base font-medium" <?= ($_SERVER["REQUEST_URI"] === "/content") ? "aria-current='page'" : null ?>>
         Content
       </a>
-      <a href="/team" class="<?= ($_SERVER["REQUEST_URI"] === "/team") ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> block px-3 py-2 rounded-md text-base font-medium" <?= ($_SERVER["REQUEST_URI"] === "/team") ? "aria-current='page'" : null ?>>
-        Team
-      </a>
       <a href="/project" class="<?= ($_SERVER["REQUEST_URI"] === "/project") ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> block px-3 py-2 rounded-md text-base font-medium" <?= ($_SERVER["REQUEST_URI"] === "/project") ? "aria-current='page'" : null ?>>
         Projects
       </a>
       <a href="/design" class="<?= ($_SERVER["REQUEST_URI"] === "/design") ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> block px-3 py-2 rounded-md text-base font-medium" <?= ($_SERVER["REQUEST_URI"] === "/design") ? "aria-current='page'" : null ?>>
         Design
+      </a>
+      <a href="/team" class="<?= ($_SERVER["REQUEST_URI"] === "/team") ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white" ?> block px-3 py-2 rounded-md text-base font-medium" <?= ($_SERVER["REQUEST_URI"] === "/team") ? "aria-current='page'" : null ?>>
+        Team
       </a>
     </div>
     <div class="pb-3 border-t border-gray-700">

@@ -146,13 +146,15 @@ class DesignController extends Plug
 
   public function delete($conn, $params)
   {
-    if ($this->repo->delete("templates", $params["id"])) {
+    if ($this->repo->delete("templates", (int)$params["id"])) {
       $this
         ->view
+        ->put_flash(true, "Your post was deleted!")
         ->return("json", ["url" => "/design"]);
     } else {
       $this
         ->view
+        ->put_flash(false, "Your request was not allowed!")
         ->return("json", ["url" => "/design/{$params['id']}"]);
     }
   }

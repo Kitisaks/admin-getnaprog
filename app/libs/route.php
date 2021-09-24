@@ -112,9 +112,10 @@ class Route
   private function _prepare_config()
   {
     $config = YamlHandler::parsefile($_SERVER['DOCUMENT_ROOT'] . '/app/config.yml');
+    # Setup all config params
     define('MODE', $config['mode']);
     define('BASE_URL', \App\Libs\Utils::base_url());
-    # Setup for config of Mysql driver
+    define('FTP', $config['driver']['ftp']);
     if (MODE === 'DEV') {
       define('DB', $config['driver']['mysql']['develope']);
     } else {
@@ -131,19 +132,22 @@ class Route
     \App\Session::set_cookie_session();
   }
 
+  private function _get_header_csrf()
+  {
+    return array_filter(
+      getallheaders(), 
+      fn($k) => $k === 'X-Csrf-Token', 
+      ARRAY_FILTER_USE_KEY
+    );
+  }
+
   private function _put_secure($request)
   {
-    $header = array_filter(
-        getallheaders(), 
-        fn($k) => $k === 'X-Csrf-Token', 
-        ARRAY_FILTER_USE_KEY
-      );
-    if (isset($request['_csrf_token'])) {
-      if (hash_equals($request['_csrf_token'], $_SESSION['_csrf_token']))
-        return true;
-      if (isset($header['X-Csrf-Token']) && hash_equals($header['X-Csrf-Token'], $_SESSION['_csrf_token']))
-        return true;
-    }
+    $header = $this->_get_header_csrf();
+    if (isset($request['_csrf_token']) && hash_equals($request['_csrf_token'], $_SESSION['_csrf_token']))
+      return true;
+    elseif (isset($header['X-Csrf-Token']) && hash_equals($header['X-Csrf-Token'], $_SESSION['_csrf_token']))
+      return true;
     return false;
   }
 
@@ -154,8 +158,13 @@ class Route
     header("Access-Control-Allow-Methods: {$this->method}");
     header('Access-Control-Max-Age: 3600');
     header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
-    #- use for patch , when not include in $_GET and $_POST
-    parse_str(file_get_contents('php://input'), $params);
+    #- use for patch , when not include in $_GET and $_POST 
+    $input = file_get_contents('php://input');
+    if (Utils::is_json($input)) {
+      $params = json_decode($input, true);
+    } else {
+      parse_str($input, $params);
+    }
     return $params;
   }
 }

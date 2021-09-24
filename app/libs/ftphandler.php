@@ -6,24 +6,14 @@ use \FtpClient\FtpClient;
 
 class FtpHandler
 {
-  private static $_adapter = [
-    'hostname' => 'getnaprog.com',
-    'username' => 'db@getnaprog.com',
-    'password' => '@Fluke160941',
-    'mode' => 'passive', //passive or active
-    'ssl' => false,
-    'port' => 21,
-    'timeout' => 30
-  ];
-
   private static function _connect()
   {
     $ftp = new FtpClient();
-    $ftp->connect(self::$_adapter['hostname'], self::$_adapter['ssl'], self::$_adapter['port'], self::$_adapter['timeout']);
-    $ftp->login(self::$_adapter['username'], self::$_adapter['password']);
-    if (self::$_adapter['mode'] === 'passive')
+    $ftp->connect(FTP['hostname'], FTP['ssl'], FTP['port'], FTP['timeout']);
+    $ftp->login(FTP['username'], FTP['password']);
+    if (FTP['mode'] === 'passive')
       $ftp->pasv(true);
-    else if (self::$_adapter['mode'] === 'active')
+    else if (FTP['mode'] === 'active')
       $ftp->pasv(false);
     return $ftp;
   }
