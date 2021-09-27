@@ -2,7 +2,7 @@
 
 namespace App\Data;
 
-use 
+use
   App\Libs\YamlHandler,
   App\Libs\FtpHandler,
   App\Libs\FileHandler;
@@ -82,7 +82,7 @@ class Attachment
   {
     $key = YamlHandler::parsefile($_SERVER['DOCUMENT_ROOT'] . '/app/config.yml')['api']['drive'];
     $host = $_SESSION['conn']['agency']['cname'];
-    return "https://db.getnaprog.com/api/v1/{$filename}?key={$key}&h={$host}";
+    return 'https://' . FTP['domain'] . "/api/v1/{$filename}?key={$key}&h={$host}";
   }
 
   public static function upload_file_ftp(array $obj, int $mode = FTP_BINARY): void

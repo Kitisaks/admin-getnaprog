@@ -5,7 +5,7 @@
       <div class="flex items-center space-x-5">
         <div>
           <h1 class="text-2xl font-bold text-gray-900">
-            <?= ucfirst($GLOBALS["page"]["p_permalink"]) ?>
+            <?= ucfirst($GLOBALS["page"]["p_title"]) ?>
             <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-pink-100 text-pink-800">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
@@ -137,7 +137,7 @@
                     </p>
                     <p class="text-sm text-gray-500">URL :
                       <span class="font-medium text-gray-900 hover:text-indigo-600">
-                        <a href="mailto:<?= $GLOBALS["page"]["u_email"] ?>"><?= $GLOBALS["page"]["u_email"] ?></a>
+                        <a href="<?= App\Data\Agency::base_url($_SESSION["conn"]["agency"]) . $GLOBALS["page"]["p_permalink"] ?>" target="_blank"><?= ucfirst(App\Data\Agency::get_name($_SESSION["conn"]["agency"])) ?></a>
                       </span>
                     </p>
                     <p class="text-sm text-gray-500">Created at :

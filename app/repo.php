@@ -4,7 +4,7 @@ namespace App;
 
 use 
   Exception, 
-  PDO, 
+  PDO,
   PDOException;
 
 /**
@@ -53,6 +53,23 @@ class Repo
   }
 
   /**
+   * @param mixed $e PDOexception
+   */
+  private function _exception($except)
+  {
+    # Log and display error in the event that there is an issue connecting
+    $log_path = $_SERVER['DOCUMENT_ROOT'] . '/priv/logs/db_error.log';
+    file_put_contents(
+      $log_path, 
+      "Date: " . date('M j Y - G:i:s') . " ---- Error: " . $except->getMessage() . PHP_EOL, 
+      FILE_APPEND
+    );
+    throw new Exception(
+      "Could not process your query into database. The PDO exception was " . $except->getMessage()
+    );
+  }
+
+  /**
    * @param bool $bool Specific distinct select query
    */
   public function distinct(bool $bool)
@@ -68,23 +85,6 @@ class Repo
     } else if (is_string($params)) {
       $this->_query .= $params;
     }
-  }
-
-  /**
-   * @param mixed $e PDOexception
-   */
-  private function _exception($except)
-  {
-    # Log and display error in the event that there is an issue connecting
-    $log_path = $_SERVER['DOCUMENT_ROOT'] . '/priv/logs/db_error.log';
-    file_put_contents(
-      $log_path, 
-      "Date: " . date('M j Y - G:i:s') . " ---- Error: " . $except->getMessage() . PHP_EOL, 
-      FILE_APPEND
-    );
-    throw new Exception(
-      "Could not process your query into database. The PDO exception was " . $except->getMessage()
-    );
   }
 
   /**
@@ -283,12 +283,14 @@ class Repo
       $this
       ->select('*')
       ->from($table);
+
     foreach ($clause as $key => $val) {
       if (is_int($val))
         $result = $result->where("{$key}={$val}");
       else
         $result = $result->where("{$key}='{$val}'");
     }
+    
     return
       $result
       ->order_by(['desc' => 'id'])

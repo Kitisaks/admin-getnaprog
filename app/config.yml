@@ -17,8 +17,9 @@ driver:
       host: "localhost"
       port: 3306
   ftp:
+    domain: "ovh1.getnaprog.com"
     hostname: "getnaprog.com"
-    username: "db@getnaprog.com"
+    username: "ovh1@getnaprog.com"
     password: "uY7k3.#yZNH48y"
     mode: "passive"
     ssl: "false"

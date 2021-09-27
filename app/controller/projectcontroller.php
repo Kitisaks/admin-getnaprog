@@ -2,18 +2,18 @@
 namespace App\Controller;
 
 use 
-  App\Plug, 
+  App\Repo, 
   App\View, 
   App\Session,
   App\Data,
   App\Libs;
 
-class ProjectController extends Plug
+class ProjectController
 {
   public function __construct()
   {
-    parent::__construct();
     Session::permitted();
+    $this->repo = new Repo();
     $this->view = new View(__CLASS__);
   }
 
@@ -34,8 +34,7 @@ class ProjectController extends Plug
         "p.inserted_at as p_inserted_at",
         "u.name as u_name",
         "u.role as u_role",
-        "a.name as a_name",
-        "a.kind as a_kind",
+        "a.url as a_url",
         "a.title as a_title"
       ])
       ->from("pages p")
@@ -46,7 +45,7 @@ class ProjectController extends Plug
       ->where("p.agency_id = {$agency_id} and a.kind = 'page'")
       ->order_by(["desc" => "p.id"]);
 
-    $pages = $this->paginate($params, $query, "pages", 10);
+    $pages = $this->view->paginate($params, $query, "pages", 10);
 
 
     $attachments = Data\Attachment::attach_many($pages, "favicon");
@@ -79,9 +78,9 @@ class ProjectController extends Plug
         "u.email as u_email",
         "u.phone as u_phone",
         "u.role as u_role",
-        "a.name as a_name",
         "a.kind as a_kind",
-        "a.title as a_title"
+        "a.title as a_title",
+        "a.url as a_url"
       ])
       ->from("pages p")
       ->join("left", [
@@ -132,7 +131,7 @@ class ProjectController extends Plug
     ];
 
     if ($this->repo->insert("users", $user)) {
-      $data_user = $this->repo->get_by("users", "uuid='{$user['uuid']}'");
+      $data_user = $this->repo->get_by("users", ["uuid" => $user['uuid']]);
     } else {
       $this
         ->view
@@ -150,7 +149,7 @@ class ProjectController extends Plug
     ];
 
     if ($this->repo->insert("pages", $page)) {
-      $data_page = $this->repo->get_by("pages", "uuid='{$page['uuid']}'");
+      $data_page = $this->repo->get_by("pages", ["uuid" => $page['uuid']]);
     } else {
       $this
         ->view

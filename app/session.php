@@ -5,16 +5,16 @@ class Session
 {
   public static function set_cookie_session()
   {
-    if (empty($_SESSION['_rainBID']))
+    if (empty($_SESSION['__host']))
       session_start([
-        'name' => '_rainBID',
+        'name' => '__host',
         'cookie_httponly' => 1,
         'use_only_cookies' => 1,
         'cookie_secure' => 1,
         'gc_maxlifetime' => 1440,
         'gc_probability' => 1,
         'gc_divisor' => 1,
-        'sid_length' => 22,
+        'sid_length' => 128,
         'cache_limiter' => 'nocache',
         'save_path' => $_SERVER['DOCUMENT_ROOT'] . '/priv/server/sessions'
       ]);
@@ -39,8 +39,7 @@ class Session
       'name' => $agency['name'],
       'cname' => $agency['cname'],
       'email' => $agency['email'],
-      'domain' => $agency['domain'],
-      'sub_domain' => $agency['sub_domain']
+      'host' => $agency['host']
     ];
   }
 

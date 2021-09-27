@@ -3,16 +3,16 @@
 namespace App\Controller;
 
 use 
-  App\Plug, 
+  App\Repo, 
   App\View, 
   App\Session,
   App\Libs;
 
-class AuthController extends Plug
+class AuthController
 {
   public function __construct()
   {
-    parent::__construct();
+    $this->repo = new Repo();
     $this->view = new View(__CLASS__);
   }
 

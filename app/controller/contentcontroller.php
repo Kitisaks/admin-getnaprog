@@ -2,15 +2,16 @@
 namespace App\Controller;
 
 use 
-  App\Plug, 
+  App\Repo, 
   App\View, 
   App\Session;
 
-class ContentController extends Plug
+class ContentController
 {
   public function __construct()
   {
     Session::permitted();
+    $this->repo = new Repo();
     $this->view = new View(__CLASS__);
   }
 

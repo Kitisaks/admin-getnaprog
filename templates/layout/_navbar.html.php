@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="flex items-center">
-        <a target="_blank" href="<?= App\Data\Agency::base_url() ?>" class="mr-4 text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+        <a target="_blank" href="<?= App\Data\Agency::base_url($_SESSION["conn"]["agency"]) ?>" class="mr-4 text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
           <?= ucfirst($_SESSION["conn"]["agency"]["cname"]) ?>
         </a>
         <div class="flex-shrink-0">

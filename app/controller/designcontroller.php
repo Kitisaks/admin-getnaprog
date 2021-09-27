@@ -3,16 +3,16 @@
 namespace App\Controller;
 
 use 
-  App\Plug, 
+  App\Repo, 
   App\View, 
   App\Session;
 
-class DesignController extends Plug
+class DesignController
 {
   function __construct()
   {
-    parent::__construct();
     Session::permitted();
+    $this->repo = new Repo();
     $this->view = new View(__CLASS__);
   }
 
@@ -78,7 +78,7 @@ class DesignController extends Plug
         ->order_by(["desc" => "t.id"]);
     }
 
-    $templates = $this->paginate($params, $query, "templates", 10);
+    $templates = $this->view->paginate($params, $query, "templates", 10);
 
     $pages =
       $this

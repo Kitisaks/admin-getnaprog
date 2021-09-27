@@ -62,7 +62,7 @@
                     </a>
                   </div>
                   <div class="ml-2 pt-1 text-gray-400 hover:text-indigo-600">
-                    <a href="<?= App\Data\Agency::base_url() . "/" . $result["p_permalink"] ?>" target="_blank">
+                    <a href="<?= App\Data\Agency::base_url($_SESSION["conn"]["agency"]) . $result["p_permalink"] ?>" target="_blank">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
@@ -72,7 +72,7 @@
 
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">/<?= $result["p_permalink"] ?></div>
+                <div class="text-sm text-gray-900"><?= $result["p_permalink"] ?></div>
                 <div class="text-xs text-gray-500"><?= App\Libs\Timex::iso_format($result["p_inserted_at"]) ?></div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
