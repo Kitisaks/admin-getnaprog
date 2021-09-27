@@ -2,14 +2,15 @@
 
 namespace App\Controller;
 
-use App\Libs\GenUuid;
-use App\Plug;
-use App\View;
-use App\Session;
+use 
+  App\Plug, 
+  App\View, 
+  App\Session,
+  App\Libs;
 
 class AuthController extends Plug
 {
-  function __construct()
+  public function __construct()
   {
     parent::__construct();
     $this->view = new View(__CLASS__);
@@ -155,7 +156,7 @@ class AuthController extends Plug
       "gender" => trim($params["gender"]),
       "phone" => trim($params["phone"]),
       "ip" => trim($params["ip"]),
-      "uuid" => GenUuid::uuid6()
+      "uuid" => Libs\GenUuid::uuid6()
     ];
 
     if ($this->repo->insert("users", $user)) {

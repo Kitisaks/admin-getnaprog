@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Libs;
-
-require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 #- use to declare the libraries for your app. // Static function
 class Utils
 {

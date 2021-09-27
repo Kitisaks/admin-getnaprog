@@ -1,13 +1,14 @@
 <?php
 namespace App\Controller;
 
-use App\Plug;
-use App\View;
-use App\Session;
+use 
+  App\Plug, 
+  App\View, 
+  App\Session;
 
 class ContentController extends Plug
 {
-  function __construct()
+  public function __construct()
   {
     Session::permitted();
     $this->view = new View(__CLASS__);

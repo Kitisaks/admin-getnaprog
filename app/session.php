@@ -15,7 +15,7 @@ class Session
         'gc_probability' => 1,
         'gc_divisor' => 1,
         'sid_length' => 22,
-        'cache_limiter' => 'private',
+        'cache_limiter' => 'nocache',
         'save_path' => $_SERVER['DOCUMENT_ROOT'] . '/priv/server/sessions'
       ]);
     session_regenerate_id(true);

@@ -1,19 +1,16 @@
 <?php
 namespace App\Controller;
 
-use App\Plug;
-use App\View;
-use App\Session;
-
-use App\Data;
-
-use App\Libs\RandUsername;
-use App\Libs\Utils;
-use App\Libs\FileHandler;
+use 
+  App\Plug, 
+  App\View, 
+  App\Session,
+  App\Data,
+  App\Libs;
 
 class ProjectController extends Plug
 {
-  function __construct()
+  public function __construct()
   {
     parent::__construct();
     Session::permitted();
@@ -115,7 +112,7 @@ class ProjectController extends Plug
   public function create($conn, $params)
   {
     #- Validate phone number
-    if (!Utils::validate_phone_number($params["user"]["phone"])) {
+    if (!Libs\Utils::validate_phone_number($params["user"]["phone"])) {
       $this
         ->view
         ->put_flash(false, "Your phone number is not valid.")
@@ -127,7 +124,7 @@ class ProjectController extends Plug
     $user = [
       "agency_id" => $agency_id,
       "uuid" => $params["user"]["uuid"],
-      "username" => RandUsername::generate(),
+      "username" => Libs\RandUsername::generate(),
       "name" => trim($params["user"]["name"]),
       "password" => md5(trim($params["user"]["password"])),
       "email" => strtolower(trim($params["user"]["email"])),
@@ -193,7 +190,7 @@ class ProjectController extends Plug
         "name" => basename($_FILES["attachment"]["name"]["favicon"]),
         "kind" => "page",
         "title" => "favicon",
-        "type" => FileHandler::mime_content_type($_FILES["attachment"]["tmp_name"]["favicon"])
+        "type" => Libs\FileHandler::mime_content_type($_FILES["attachment"]["tmp_name"]["favicon"])
       ];
 
       if (!$this->repo->insert("attachments", $favicon)) {
@@ -219,7 +216,7 @@ class ProjectController extends Plug
         "name" => basename($_FILES["attachment"]["name"]["cover_image"]),
         "kind" => "page",
         "title" => "cover_image",
-        "type" => FileHandler::mime_content_type($_FILES["attachment"]["tmp_name"]["cover_image"])
+        "type" => Libs\FileHandler::mime_content_type($_FILES["attachment"]["tmp_name"]["cover_image"])
       ];
 
       if (!$this->repo->insert("attachments", $cover_image)) {

@@ -3,8 +3,9 @@ namespace App\Libs;
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
-use \Whoops\Run;
-use \Whoops\Handler\PrettyPageHandler;
+use 
+  \Whoops\Run, 
+  \Whoops\Handler\PrettyPageHandler;
 
 class Whoops
 {

@@ -2,9 +2,10 @@
 
 namespace App;
 
-use Exception;
-use PDO;
-use PDOException;
+use 
+  Exception, 
+  PDO, 
+  PDOException;
 
 /**
  * @Annotation 
@@ -16,7 +17,7 @@ class Repo
   private $_conn;
   private $_distinct;
 
-  function __construct()
+  public function __construct()
   {
     try {
       $attributes = [

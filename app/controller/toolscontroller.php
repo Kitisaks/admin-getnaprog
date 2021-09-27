@@ -5,7 +5,7 @@ use App\View;
 
 class ToolsController
 {
-  function __construct()
+  public function __construct()
   {
     $this->view = new View(__CLASS__);
   }

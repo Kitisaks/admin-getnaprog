@@ -4,7 +4,7 @@ namespace App;
 
 class Plug
 {
-  function __construct()
+  public function __construct()
   {
     $this->repo = new Repo();
   }

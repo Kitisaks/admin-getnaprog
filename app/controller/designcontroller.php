@@ -2,9 +2,10 @@
 
 namespace App\Controller;
 
-use App\Plug;
-use App\View;
-use App\Session;
+use 
+  App\Plug, 
+  App\View, 
+  App\Session;
 
 class DesignController extends Plug
 {
@@ -49,12 +50,10 @@ class DesignController extends Plug
           ])
           ->where("t.agency_id = {$conn['agency']['id']} and t.page_id = {$page['id']}")
           ->order_by(["asc" => "t.title"]);
+          
         $this
-          ->view
-          ->assign(
-            "page",
-            $page
-          );
+        ->view
+        ->assign("page",$page);
       }
     } else {
       $query =

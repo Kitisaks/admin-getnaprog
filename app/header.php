@@ -6,18 +6,17 @@ class Header
 {
   public $mode;
 
-  function __construct($mode = false)
+  public function __construct(string $mode = 'DEV')
   {
-    $this->mode = $mode;
-    $this->_set_header();
+    $this->_set_header($mode);
     $this->_set_cache();
     $this->_compression();
   }
 
-  private function _set_header()
+  private function _set_header(string $mode)
   {
     //== SET SECURITY ACTIVE WHEN ON PRODUCTION MODE ==//
-    if ($this->mode === 'PRO') {
+    if ($mode === 'PRO') {
       header('X-Frame-Options: SAMEORIGIN');
       header('X-XSS-Protection: 1; mode=block');
       header('X-Content-Type-Options: nosniff');

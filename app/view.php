@@ -7,7 +7,7 @@ class View
   public $main;
   private $_layout;
 
-  function __construct($main)
+  public function __construct($main)
   {
     $this->main = str_replace('controller', '', strtolower($main));
     $this->_layout = true;

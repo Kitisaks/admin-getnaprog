@@ -20,7 +20,7 @@ class Route
    * @param string $controller The Controller Class use for function and render 
    * @param string $function The Method inside Controller Class for process 
    */
-  function __construct($method, $request, $controller, $function)
+  public function __construct($method, $request, $controller, $function)
   {
     $this->uri = $_SERVER['REQUEST_URI'];
     $this->method = $method;
