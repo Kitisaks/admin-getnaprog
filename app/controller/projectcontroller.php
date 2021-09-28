@@ -1,12 +1,7 @@
 <?php
 namespace App\Controller;
 
-use 
-  App\Repo, 
-  App\View, 
-  App\Session,
-  App\Data,
-  App\Libs;
+use App\{Repo,View,Session,Data,Libs}; 
 
 class ProjectController
 {

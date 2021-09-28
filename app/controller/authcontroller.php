@@ -2,12 +2,7 @@
 
 namespace App\Controller;
 
-use 
-  App\Repo, 
-  App\View, 
-  App\Session,
-  App\Libs,
-  App\Data;
+use App\{Repo,View,Session,Data}; 
 
 class AuthController
 {

@@ -2,20 +2,23 @@
 namespace App\Libs;
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
-use
-  League\Flysystem\Local\LocalFilesystemAdapter,
-  League\Flysystem\UnixVisibility\PortableVisibilityConverter,
-  League\Flysystem\Filesystem,
-  League\Flysystem\FilesystemException,
-  League\Flysystem\UnableToWriteFile,
-  League\Flysystem\UnableToReadFile,
-  League\Flysystem\UnableToDeleteFile,
-  League\Flysystem\UnableToDeleteDirectory,
-  League\Flysystem\UnableToCreateDirectory,
-  League\Flysystem\UnableToMoveFile,
-  League\Flysystem\UnableToCopyFile,
-  League\MimeTypeDetection\FinfoMimeTypeDetector,
-  League\Flysystem\StorageAttributes;
+
+use League\Flysystem\{
+  Filesystem,
+  FilesystemException,
+  UnableToWriteFile,
+  UnableToReadFile,
+  UnableToDeleteFile,
+  UnableToDeleteDirectory,
+  UnableToCreateDirectory,
+  UnableToMoveFile,
+  UnableToCopyFile,
+  StorageAttributes,
+  Local\LocalFilesystemAdapter,
+  UnixVisibility\PortableVisibilityConverter
+};
+
+use League\MimeTypeDetection\FinfoMimeTypeDetector;
 
 class FileHandler
 {

@@ -2,9 +2,7 @@
 
 namespace App\Data;
 
-use 
-  App\Libs,
-  App\Repo;
+use App\{Repo,Libs};
 
 class User
 {

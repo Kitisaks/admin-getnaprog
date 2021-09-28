@@ -2,10 +2,7 @@
 
 namespace App\Data;
 
-use
-  App\Libs\YamlHandler,
-  App\Libs\FtpHandler,
-  App\Libs\FileHandler;
+use App\Libs\{YamlHandler,FtpHandler,FileHandler};
 
 class Attachment
 {

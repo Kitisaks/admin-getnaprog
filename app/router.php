@@ -1,14 +1,16 @@
 <?php
 namespace App;
 
-use 
-  App\Libs\Route,
-  App\Controller\AuthController, 
-  App\Controller\ContentController, 
-  App\Controller\DesignController,
-  App\Controller\NotfoundController, 
-  App\Controller\ProjectController, 
-  App\Controller\ToolsController;
+use App\Libs\Route;
+use App\Controller\{
+  AuthController,
+  ContentController, 
+  DesignController,
+  NotfoundController, 
+  ProjectController, 
+  ToolsController
+};
+
 
 final class Router
 {

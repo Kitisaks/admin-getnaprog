@@ -2,10 +2,7 @@
 
 namespace App\Controller;
 
-use 
-  App\Repo, 
-  App\View, 
-  App\Session;
+use App\{Repo,View,Session}; 
 
 class DesignController
 {
