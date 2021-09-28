@@ -11,11 +11,22 @@ if ($config['mode'] === 'DEV') {
   define('DB', $config['driver']['mysql']['production']);
 }
 
-$datetime = date("d/m/Y h:i:sa");
+function connect()
+{
+  try {
+    return new PDO(
+      'mysql:host=' . DB['host'] . ';port=' . DB['port'] . ';charset=utf8',
+      DB['user'],
+      DB['password'],
+      [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+    );
+  } catch (PDOException $e) {
+    return (date("h:i:s") . "---- " . $e->getMessage() . PHP_EOL);
+  }
+}
 
 function connect_db()
 {
-  global $datetime;
   try {
     return new PDO(
       'mysql:host=' . DB['host'] . ';dbname=' . DB['name'] . ';port=' . DB['port'] . ';charset=utf8',
@@ -24,36 +35,41 @@ function connect_db()
       [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
     );
   } catch (PDOException $e) {
-    return ($datetime.": ".$e->getMessage() . PHP_EOL);
+    return (date("h:i:s") . "---- " . $e->getMessage() . PHP_EOL);
   }
 }
 
-function query_sql($cond, $params1, $params2)
+$initial = 0;
+$total = count(glob(__DIR__ . '/database/*')) + count(glob(__DIR__ . '/table/*'));
+
+function query_sql($cond, $param1, $param2 = null)
 {
-  global $datetime;
+  global $initial,$total;
+  $initial++;
   switch ($cond) {
     case "database":
       try {
-        $sql = "CREATE DATABASE {$params1}";
-        $conn = connect_db();
+        $conn = connect();
+        $sql = "CREATE DATABASE {$param1}";
         $conn->exec($sql);
-        return ("{$datetime}: Database {$params1} created successfully" . PHP_EOL);
+        $done = (string)(round($initial/$total*100));
+        return ("{$done}%---- Database " . ucfirst($param1) . ' created successfully' . PHP_EOL);
       } catch (PDOException $e) {
-        return ($datetime.": ".$e->getMessage() . PHP_EOL);
+        return (date("h:i:s") . "---- " . $e->getMessage() . PHP_EOL);
       }
-      $conn = null;
       break;
 
     case "table":
       try {
-        $sql = "CREATE TABLE {$params1} ({$params2})";
         $conn = connect_db();
+        $sql = "CREATE TABLE {$param1} ({$param2})";
         $conn->exec($sql);
-        return ("{$datetime}: Table {$params1} created successfully" . PHP_EOL);
+        $done = (string)(round($initial/$total*100));
+        return ("{$done}%---- Table " . ucfirst($param1) . ' created successfully' . PHP_EOL);
       } catch (PDOException $e) {
-        return ($datetime.": ".$e->getMessage() . PHP_EOL);
+        return (date("h:i:s") . "---- " . $e->getMessage() . PHP_EOL);
       }
-      $conn = null;
       break;
   }
+  $conn = null;
 }

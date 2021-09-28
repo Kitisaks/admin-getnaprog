@@ -82,4 +82,9 @@ class Utils
     json_decode($string);
     return (json_last_error() == JSON_ERROR_NONE);
   }
+
+  public static function encrypt_sha256(string $pswd)
+  {
+    return hash_hmac("sha256", $pswd, PEPPER_KEY);
+  }
 }

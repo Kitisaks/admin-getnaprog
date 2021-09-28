@@ -33,7 +33,7 @@ class User
       "agency_id" => $agency["id"],
       "name" => trim($params["name"]),
       "username" => strtolower(trim($params["username"])),
-      "password" => hash_hmac("sha256", trim($params["password"]), PEPPER_KEY),
+      "password" => Libs\Utils::encrypt_sha256(trim($params["password"])),
       "email" => strtolower(trim($params["email"])),
       "gender" => trim($params["gender"]),
       "phone" => trim($params["phone"]),

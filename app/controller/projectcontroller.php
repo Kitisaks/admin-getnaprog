@@ -183,9 +183,13 @@ class ProjectController
         "page_id" => $data_page["id"],
         "name" => basename($_FILES["attachment"]["name"]["favicon"]),
         "kind" => "page",
-        "title" => "favicon",
+        "obj" => "favicon",
         "type" => Libs\FileHandler::mime_content_type($_FILES["attachment"]["tmp_name"]["favicon"])
       ];
+
+      $url = Data\Attachment::upload_file_ftp($favicon);
+
+      $favicon = array_push($favicon, ["url" => $url]);
 
       if (!$this->Repo->insert("attachments", $favicon)) {
         $this
@@ -200,7 +204,7 @@ class ProjectController
           ["tmp_name" => $_FILES["attachment"]["tmp_name"]["favicon"]]
         );
 
-      Data\Attachment::upload_file_ftp($favicon);
+      
     }
 
     if ($_FILES["attachment"]["name"]["cover_image"] != "") {

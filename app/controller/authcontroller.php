@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\{Repo,View,Session,Data}; 
+use App\{Repo,View,Session,Data,Libs}; 
 
 class AuthController
 {
@@ -42,7 +42,7 @@ class AuthController
   public function login($_, $params)
   {
     $user_mail = strtolower(trim($params["user_mail"]));
-    $password = hash_hmac("sha256", trim($params["password"]), PEPPER_KEY);
+    $password = Libs\Utils::encrypt_sha256(trim($params["password"]));
 
     $agency =
       $this

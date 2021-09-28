@@ -114,7 +114,7 @@ class Route
     $config = YamlHandler::parsefile($_SERVER['DOCUMENT_ROOT'] . '/app/config.yml');
     # Setup all config params
     define('MODE', $config['mode']);
-    define('BASE_URL', \App\Libs\Utils::base_url());
+    define('BASE_URL', Utils::base_url());
     define('FTP', $config['driver']['ftp']);
     define('PEPPER_KEY', $config['pepper_key']);
 
@@ -129,7 +129,7 @@ class Route
   {
     $this->_prepare_config();
     # Setup for error report
-    new \App\Libs\Whoops(MODE);
+    new Whoops(MODE);
     # Setup for HTTP session
     \App\Session::set_cookie_session();
   }

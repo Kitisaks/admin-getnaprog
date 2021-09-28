@@ -12,7 +12,7 @@ driver:
       host: "localhost"
       port: 3306
     develope: 
-      name: "getprog_db"
+      name: "getnaprg_database"
       user: "root"
       password: "@Fluke160941"
       host: "localhost"

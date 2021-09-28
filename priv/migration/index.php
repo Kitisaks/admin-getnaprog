@@ -2,7 +2,7 @@
 <?php
 #- Create databases
 require_once __DIR__ . "/migration.php";
-require_once __DIR__ . "/database/getprog_db.php";
+require_once __DIR__ . "/database/getnaprg_database.php";
 
 #- Create tables
 require_once __DIR__ . "/table/agencies.php";
