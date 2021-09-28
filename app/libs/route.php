@@ -116,6 +116,8 @@ class Route
     define('MODE', $config['mode']);
     define('BASE_URL', \App\Libs\Utils::base_url());
     define('FTP', $config['driver']['ftp']);
+    define('PEPPER_KEY', $config['pepper_key']);
+
     if (MODE === 'DEV') {
       define('DB', $config['driver']['mysql']['develope']);
     } else {

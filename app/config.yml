@@ -2,6 +2,7 @@ title: "CMS MVC Web Application"
 description: "CMS MVC Web Application Framework"
 author: "Kitisak (Fluke) Sapphaniran"
 mode: "DEV"
+pepper_key: "Zr8UiJQvWE"
 driver:
   mysql:
     production:

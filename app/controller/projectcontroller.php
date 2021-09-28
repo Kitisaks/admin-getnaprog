@@ -13,8 +13,8 @@ class ProjectController
   public function __construct()
   {
     Session::permitted();
-    $this->repo = new Repo();
-    $this->view = new View(__CLASS__);
+    $this->Repo = new Repo();
+    $this->View = new View(__CLASS__);
   }
 
   public function index($conn, $params)
@@ -23,7 +23,7 @@ class ProjectController
         
     $query =
       $this
-      ->repo
+      ->Repo
       ->select([
         "p.id as p_id",
         "p.permalink as p_permalink",
@@ -45,13 +45,13 @@ class ProjectController
       ->where("p.agency_id = {$agency_id} and a.kind = 'page'")
       ->order_by(["desc" => "p.id"]);
 
-    $pages = $this->view->paginate($params, $query, "pages", 10);
+    $pages = $this->View->paginate($params, $query, "pages", 10);
 
 
     $attachments = Data\Attachment::attach_many($pages, "favicon");
 
     $this
-      ->view
+      ->View
       ->assign("attachments", $attachments)
       ->assign("pages", $pages)
       ->render("index.html");
@@ -61,7 +61,7 @@ class ProjectController
   {
     $page =
       $this
-      ->repo
+      ->Repo
       ->select([
         "p.id as p_id",
         "p.permalink as p_permalink",
@@ -94,7 +94,7 @@ class ProjectController
     $favicon = Data\Attachment::attach($page, "favicon");
 
     $this
-      ->view
+      ->View
       ->assign("page", $page)
       ->assign("cover_image", $cover_image)
       ->assign("favicon", $favicon)
@@ -104,7 +104,7 @@ class ProjectController
   public function new()
   {
     $this
-      ->view
+      ->View
       ->render("new.html");
   }
 
@@ -113,7 +113,7 @@ class ProjectController
     #- Validate phone number
     if (!Libs\Utils::validate_phone_number($params["user"]["phone"])) {
       $this
-        ->view
+        ->View
         ->put_flash(false, "Your phone number is not valid.")
         ->redirect("/project/new");
     }
@@ -130,11 +130,11 @@ class ProjectController
       "phone" => $params["user"]["phone"]
     ];
 
-    if ($this->repo->insert("users", $user)) {
-      $data_user = $this->repo->get_by("users", ["uuid" => $user['uuid']]);
+    if ($this->Repo->insert("users", $user)) {
+      $data_user = $this->Repo->get_by("users", ["uuid" => $user['uuid']]);
     } else {
       $this
-        ->view
+        ->View
         ->put_flash(false, "Somethings went wrong.")
         ->redirect("/project/new");
     }
@@ -148,11 +148,11 @@ class ProjectController
       "meta_description" => trim($params["page"]["meta_description"])
     ];
 
-    if ($this->repo->insert("pages", $page)) {
-      $data_page = $this->repo->get_by("pages", ["uuid" => $page['uuid']]);
+    if ($this->Repo->insert("pages", $page)) {
+      $data_page = $this->Repo->get_by("pages", ["uuid" => $page['uuid']]);
     } else {
       $this
-        ->view
+        ->View
         ->put_flash(false, "Somethings went wrong.")
         ->redirect("/project/new");
     }
@@ -175,9 +175,9 @@ class ProjectController
         ["email" => ($params["notification"]["email"] == "on") ? 1 : 0]
       );
 
-    if (!$this->repo->insert("notifications", $notification)) {
+    if (!$this->Repo->insert("notifications", $notification)) {
       $this
-        ->view
+        ->View
         ->put_flash(false, "Somethings went wrong.")
         ->redirect("/project/new");
     }
@@ -192,9 +192,9 @@ class ProjectController
         "type" => Libs\FileHandler::mime_content_type($_FILES["attachment"]["tmp_name"]["favicon"])
       ];
 
-      if (!$this->repo->insert("attachments", $favicon)) {
+      if (!$this->Repo->insert("attachments", $favicon)) {
         $this
-          ->view
+          ->View
           ->put_flash(false, "Somethings went wrong.")
           ->redirect("/project/new");
       }
@@ -218,9 +218,9 @@ class ProjectController
         "type" => Libs\FileHandler::mime_content_type($_FILES["attachment"]["tmp_name"]["cover_image"])
       ];
 
-      if (!$this->repo->insert("attachments", $cover_image)) {
+      if (!$this->Repo->insert("attachments", $cover_image)) {
         $this
-          ->view
+          ->View
           ->put_flash(false, "Somethings went wrong.")
           ->redirect("/project/new");
       }
@@ -235,7 +235,7 @@ class ProjectController
     }
 
     $this
-      ->view
+      ->View
       ->put_flash(true, "Already created your page.")
       ->redirect("/project/{$data_page['uuid']}");
   }

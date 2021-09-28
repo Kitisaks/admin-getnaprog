@@ -7,13 +7,13 @@ class ToolsController
 {
   public function __construct()
   {
-    $this->view = new View(__CLASS__);
+    $this->View = new View(__CLASS__);
   }
 
   public function index()
   {
     $this
-      ->view
+      ->View
       ->put_layout(false)
       ->render('index.html');
   }
@@ -21,7 +21,7 @@ class ToolsController
   public function genuuid()
   {
     $this
-    ->view
+    ->View
     ->put_layout(false)
     ->render('genuuid.html');
   }

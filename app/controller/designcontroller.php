@@ -12,8 +12,8 @@ class DesignController
   function __construct()
   {
     Session::permitted();
-    $this->repo = new Repo();
-    $this->view = new View(__CLASS__);
+    $this->Repo = new Repo();
+    $this->View = new View(__CLASS__);
   }
 
   public function index($conn, $params)
@@ -21,7 +21,7 @@ class DesignController
     if (isset($params["q"]) && !empty($params["q"])) {
       $page =
         $this
-        ->repo
+        ->Repo
         ->from("pages")
         ->where("id like '%{$params['q']}%' or permalink like '%{$params['q']}%' or title like '%{$params['q']}%'")
         ->limit(1)
@@ -32,7 +32,7 @@ class DesignController
       } else {
         $query =
           $this
-          ->repo
+          ->Repo
           ->select([
             "t.id as t_id",
             "t.title as t_title",
@@ -52,13 +52,13 @@ class DesignController
           ->order_by(["asc" => "t.title"]);
           
         $this
-        ->view
+        ->View
         ->assign("page",$page);
       }
     } else {
       $query =
         $this
-        ->repo
+        ->Repo
         ->select([
           "t.id as t_id",
           "t.title as t_title",
@@ -78,18 +78,18 @@ class DesignController
         ->order_by(["desc" => "t.id"]);
     }
 
-    $templates = $this->view->paginate($params, $query, "templates", 10);
+    $templates = $this->View->paginate($params, $query, "templates", 10);
 
     $pages =
       $this
-      ->repo
+      ->Repo
       ->from("pages")
       ->where("agency_id = {$conn['agency']['id']}")
       ->order_by(["asc" => "title"])
       ->all();
 
     $this
-      ->view
+      ->View
       ->assign("templates", $templates)
       ->assign("pages", $pages)
       ->render("index.html");
@@ -99,7 +99,7 @@ class DesignController
   {
     $template =
       $this
-      ->repo
+      ->Repo
       ->select([
         "t.id as t_id",
         "t.title as t_title",
@@ -121,7 +121,7 @@ class DesignController
       ->one();
 
     $this
-      ->view
+      ->View
       ->assign("template", $template)
       ->render("show.html");
   }
@@ -130,29 +130,29 @@ class DesignController
   {
     $update =
       $this
-      ->repo
+      ->Repo
       ->update("templates", $params["id"], ["content" => $params["content"]]);
 
     if ($update)
       $this
-        ->view
+        ->View
         ->return("json", ["status" => true, "info" => "Already updated the template"]);
     else
       $this
-        ->view
+        ->View
         ->return("json", ["status" => false, "info" => "Cannot update the template"]);
   }
 
   public function delete($conn, $params)
   {
-    if ($this->repo->delete("templates", (int)$params["id"])) {
+    if ($this->Repo->delete("templates", (int)$params["id"])) {
       $this
-        ->view
+        ->View
         ->put_flash(true, "Your post was deleted!")
         ->return("json", ["url" => "/design"]);
     } else {
       $this
-        ->view
+        ->View
         ->put_flash(false, "Your request was not allowed!")
         ->return("json", ["url" => "/design/{$params['id']}"]);
     }

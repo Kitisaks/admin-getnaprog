@@ -6,14 +6,17 @@ use
   App\Repo, 
   App\View, 
   App\Session,
-  App\Libs;
+  App\Libs,
+  App\Data;
 
 class AuthController
 {
   public function __construct()
   {
-    $this->repo = new Repo();
-    $this->view = new View(__CLASS__);
+    $this->View = new View(__CLASS__);
+    $this->Repo = new Repo();
+
+    $this->DataUser = new Data\User;
   }
 
   public function redirect()
@@ -27,35 +30,35 @@ class AuthController
     Session::alived();
     $agencies =
       $this
-      ->repo
+      ->Repo
       ->select(["cname", "uuid"])
       ->from("agencies")
       ->order_by(["asc" => "cname"])
       ->all();
 
     $this
-      ->view
+      ->View
       ->assign("agencies", $agencies)
       ->put_layout(false)
       ->render("index.html");
   }
 
   #- login
-  public function login($conn, $params)
+  public function login($_, $params)
   {
     $user_mail = strtolower(trim($params["user_mail"]));
-    $password = md5(trim($params["password"]));
+    $password = hash_hmac("sha256", trim($params["password"]), PEPPER_KEY);
 
     $agency =
       $this
-      ->repo
+      ->Repo
       ->from("agencies")
       ->where("uuid = '{$params['agency_uuid']}'")
       ->one();
 
     $user =
       $this
-      ->repo
+      ->Repo
       ->from("users")
       ->where("(username = '{$user_mail}' or email = '{$user_mail}') and password = '{$password}'")
       ->one();
@@ -77,7 +80,7 @@ class AuthController
   private function _disallowed()
   {
     $this
-      ->view
+      ->View
       ->put_flash(false, "Your username or password is incorrect!")
       ->redirect("/auth");
   }
@@ -86,100 +89,70 @@ class AuthController
   {
     Session::assign_conn($user, $agency);
     $this
-      ->view
+      ->View
       ->put_flash(true, "Welcome back {$user['name']}!")
       ->redirect("/content");
   }
 
-  public function signup($conn, $params)
+  public function signup()
   {
     $agencies =
       $this
-      ->repo
+      ->Repo
       ->select(["cname", "uuid"])
       ->from("agencies")
       ->order_by(["asc" => "cname"])
       ->all();
 
     $this
-      ->view
+      ->View
       ->assign("agencies", $agencies)
       ->put_layout(false)
       ->render("signup.html");
   }
 
-  public function create($conn, $params)
+  public function create($_, $params)
   {
-    $e = $this->_check($_POST["username"], $_POST["email"]);
-    switch ($e) {
-      case true:
+    $user =       
+      $this
+      ->Repo
+      ->select(["username", "email"])
+      ->from("users")
+      ->where("username = '{$_POST['username']}' or email = '{$_POST['email']}'")
+      ->one();
+
+    switch ($user) {
+      case null:
+        if ($this->DataUser->create($params)) {
+          $this
+            ->View
+            ->put_flash(true, "Already created your account.")
+            ->redirect("/auth");
+        } else {
+          $this
+            ->View
+            ->put_flash(false, "Somethings went wrong.")
+            ->redirect("/auth/signup");
+        }
+        break;
+
+      case $user:
         $this
-          ->view
+          ->View
           ->put_flash(false, "Username or email already taken!")
           ->redirect("/auth/signup");
-
-      case false:
-        $this->_init_register($params);
         break;
     }
   }
 
-  #- check exist user in db
-  private function _check($username, $email)
-  {
-    return
-      $this
-      ->repo
-      ->select(["username", "email"])
-      ->from("users")
-      ->where("username = '{$username}' or email = '{$email}'")
-      ->one();
-  }
-
-  #- start to register the form
-  private function _init_register($params)
-  {
-    $agency =
-      $this
-      ->repo
-      ->select("id")
-      ->from("agencies")
-      ->where("uuid = '{$params['agency_id']}'")
-      ->one();
-
-    $user = [
-      "agency_id" => $agency["id"],
-      "name" => trim($params["name"]),
-      "username" => strtolower(trim($params["username"])),
-      "password" => md5(trim($params["password"])),
-      "email" => strtolower(trim($params["email"])),
-      "gender" => trim($params["gender"]),
-      "phone" => trim($params["phone"]),
-      "ip" => trim($params["ip"]),
-      "uuid" => Libs\GenUuid::uuid6()
-    ];
-
-    if ($this->repo->insert("users", $user)) {
-      $this
-        ->view
-        ->put_flash(true, "Already created your account.")
-        ->redirect("/auth");
-    } else {
-      $this
-        ->view
-        ->put_flash(false, "Somethings went wrong.")
-        ->redirect("/auth/signup");
-    }
-  }
-
-  public function signout($conn, $params)
+  public function signout()
   {
     if (session_unset())
       if (session_destroy())
-        $this->view->redirect("/auth");
+        $this->View->redirect("/auth");
   }
 
-  public function reset($conn, $params)
+  public function reset()
   {
     exit("reset");
   }
