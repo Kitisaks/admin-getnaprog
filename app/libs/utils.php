@@ -58,6 +58,18 @@ class Utils
     }
   }
 
+  public static function get_url($url) 
+  {
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $json = curl_exec($ch);
+    curl_close($ch);
+    // Decode JSON response
+    $body = json_decode($json);
+    // Country code output, field "country_code"
+    return $body;
+  }
+
   public static function read_json_file(string $path): array
   {
     if (file_exists($path)) {
@@ -71,9 +83,10 @@ class Utils
   public static function base_url(): string
   {
     return  sprintf(
-      '%s://%s/',
+      '%s://%s:%u/',
       isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http',
-      $_SERVER['SERVER_NAME']
+      $_SERVER['SERVER_NAME'],
+      $_SERVER['SERVER_PORT'],
     );
   }
 
@@ -87,4 +100,29 @@ class Utils
   {
     return hash_hmac("sha256", $pswd, PEPPER_KEY);
   }
+
+  /**
+   * Function that groups an array of associative arrays by some key.
+   * 
+   * @param {String} $key Property to sort by.
+   * @param {Array} $array Array that stores multiple associative arrays.
+   */
+  public static function array_group_by($key, $array)
+  {
+    $result = array();
+    foreach ($array as $val) {
+      if (array_key_exists($key, $val)) {
+        $result[$val[$key]][] = $val;
+      } else {
+        $result[""][] = $val;
+      }
+    }
+    return $result;
+  }
+
+  public static function scandir(string $pathdir)
+  {
+    return array_slice(scandir($pathdir), 2);
+  }
+
 }

@@ -8,12 +8,12 @@ class Header
 
   public function __construct(string $mode = 'DEV')
   {
-    $this->_set_header($mode);
-    $this->_set_cache();
+    $this->set_header($mode);
+    $this->set_cache();
     $this->_compression();
   }
 
-  private function _set_header(string $mode)
+  public function set_header(string $mode)
   {
     //== SET SECURITY ACTIVE WHEN ON PRODUCTION MODE ==//
     if ($mode === 'PRO') {
@@ -42,7 +42,7 @@ class Header
       ob_start();
   }
 
-  private function _set_cache()
+  public function set_cache()
   {
     $tsstring = gmdate('D, d M Y H:i:s ', time()) . 'GMT';
     $etag = md5($_SERVER["HTTP_ACCEPT_LANGUAGE"] . time());

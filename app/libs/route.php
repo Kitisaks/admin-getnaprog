@@ -73,10 +73,11 @@ class Route
 
   private function _route()
   {
+    // check if statics file exists
     if ($this->_set_param($this->uri)) {
       $this->_endpoint();
       exit;
-    } else if ($this->request === '/error') {
+    } else if ($this->request === '/404') {
       $this->_endpoint();
       exit;
     }
@@ -117,7 +118,11 @@ class Route
     define('BASE_URL', Utils::base_url());
     define('FTP', $config['driver']['ftp']);
     define('PEPPER_KEY', $config['pepper_key']);
-
+    define('SITE', [
+      'title' => $config['title'],
+      'description' => $config['description'],
+      'author' => $config['author']
+    ]);
     if (MODE === 'DEV') {
       define('DB', $config['driver']['mysql']['develope']);
     } else {

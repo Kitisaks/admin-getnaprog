@@ -2,8 +2,8 @@
 
 namespace App;
 
-use 
-  Exception, 
+use
+  Exception,
   PDO,
   PDOException;
 
@@ -60,8 +60,8 @@ class Repo
     # Log and display error in the event that there is an issue connecting
     $log_path = $_SERVER['DOCUMENT_ROOT'] . '/priv/logs/db_error.log';
     file_put_contents(
-      $log_path, 
-      "Date: " . date('M j Y - G:i:s') . " ---- Error: " . $except->getMessage() . PHP_EOL, 
+      $log_path,
+      "Date: " . date('M j Y - G:i:s') . " ---- Error: " . $except->getMessage() . PHP_EOL,
       FILE_APPEND
     );
     throw new Exception(
@@ -290,7 +290,7 @@ class Repo
       else
         $result = $result->where("{$key}='{$val}'");
     }
-    
+
     return
       $result
       ->order_by(['desc' => 'id'])

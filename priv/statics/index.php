@@ -1,5 +1,6 @@
 <?php
 require_once '../../vendor/autoload.php';
+
 use MatthiasMullie\Minify;
 
 $dir = '../../assets';
@@ -17,7 +18,7 @@ function get_file(string $type)
   );
 }
 
-echo '=========== Deploy assets ==========='.PHP_EOL;
+echo '=========== Deploy assets ===========' . PHP_EOL;
 $js = get_file('js');
 $css = get_file('css');
 echo 'JS to digest :';
@@ -26,7 +27,7 @@ echo 'CSS to digest :';
 print_r($css);
 
 # Minify for css files
-for ($i=0;$i<=count($css)-1;$i++) {
+for ($i = 0; $i <= count($css) - 1; $i++) {
   if ($i == 0) {
     $minifier_css = new Minify\CSS($css[$i]);
   } else {
@@ -34,7 +35,7 @@ for ($i=0;$i<=count($css)-1;$i++) {
   }
 }
 # Minify for js files
-for ($i=0;$i<=count($js)-1;$i++) {
+for ($i = 0; $i <= count($js) - 1; $i++) {
   if ($i == 0) {
     $minifier_js = new Minify\JS($js[$i]);
   } else {
@@ -48,7 +49,6 @@ foreach (glob(__DIR__ . '/css/*') as $old) {
     echo 'deleted old CSS files => ' . $old . PHP_EOL;
     unlink($old);
   }
-    
 }
 foreach (glob(__DIR__ . '/js/*') as $old) {
   if (is_file($old)) {
@@ -63,5 +63,5 @@ $f_js = __DIR__ . '/js' . '/js_' . uniqid() . '.js';
 $minifier_css->minify($f_css);
 $minifier_js->minify($f_js);
 
-echo 'digested => ' . (string)(count($css) + count($js)) .' files'.PHP_EOL;
-echo '=========== Successful ==========='.PHP_EOL;
+echo 'digested => ' . (string)(count($css) + count($js)) . ' files' . PHP_EOL;
+echo '=========== Successful ===========' . PHP_EOL;

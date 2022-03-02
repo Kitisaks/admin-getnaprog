@@ -1,5 +1,9 @@
 # **MVC TEMPLATE DEV**
 
+## ==== **Running** ====
+
+#### php --server localhost:8080 index.php
+
 ## ==== **Deployment** ====
 
 #### 1. Change 'MODE' to 'PRO' in _`config/config.php`_

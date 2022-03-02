@@ -3,19 +3,19 @@ namespace App\Controller;
 
 use App\View;
 
-class NotfoundController
+class ErrorController
 {
   public function __construct()
   {
     $this->View = new View(__CLASS__);
   }
 
-  public function index()
+  public function notfound_404()
   {
     $this
     ->View
     ->put_layout(false)
-    ->render("index.html");
+    ->render("404.html");
   }
 
 }

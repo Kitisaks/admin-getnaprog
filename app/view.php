@@ -16,55 +16,42 @@ class View
     $this->_layout = true;
   }
 
+  private function _replace_app_space($folder, $page)
+  {
+    return str_replace(
+      '//',
+      '/',
+      str_replace(
+        'app\\\\',
+        DIRECTORY_SEPARATOR,
+        $_SERVER['DOCUMENT_ROOT'] . "/templates/{$folder}/{$page}.php"
+      )
+    );
+  }
+
   private function _require(string $page, string $folder = 'layout')
   {
-    $path = $_SERVER['DOCUMENT_ROOT'] . "/templates/{$folder}/{$page}.php";
-    $path = str_replace('app\\\\', DIRECTORY_SEPARATOR, $path);
-    require_once $path;
+    require $this->_replace_app_space($folder, $page);
+  }
+
+  private function _get_content(string $page, string $folder = 'layout')
+  {
+    $file = file_get_contents($this->_replace_app_space($folder, $page)); 
+    ob_start();
+    eval('?>'.$file.'<?php ');
+    $html = ob_get_contents();
+    ob_end_clean();
+    return $html;
   }
 
   public function render($pages)
   {
     if ($this->_layout) {
-      if (is_string($pages)) {
-        $this->_require('header.html');
-        $this->_require('_alert.html');
-        $this->_require('_notice.html');
-        $this->_require('_popup.html');
-        $this->_require('_navbar.html');
-        $this->_require($pages, $this->main);
-        $this->_require('_footer.html');
-        $this->_require('bottom.html');
-      } else if (is_array($pages)) {
-        $this->_require('header.html');
-        $this->_require('_alert.html');
-        $this->_require('_notice.html');
-        $this->_require('_popup.html');
-        $this->_require('_navbar.html');
-        foreach ($pages as $page) {
-          $this->_require($page, $this->main);
-        }
-        $this->_require('_footer.html');
-        $this->_require('bottom.html');
-      }
+      $this
+        ->assign('@inner_content@', $this->_get_content($pages, $this->main))
+        ->_require('app.html', 'layout');
     } else {
-      if (is_string($pages)) {
-        $this->_require('header.html');
-        $this->_require('_alert.html');
-        $this->_require('_notice.html');
-        $this->_require('_popup.html');
-        $this->_require($pages, $this->main);
-        $this->_require('bottom.html');
-      } else if (is_array($pages)) {
-        $this->_require('header.html');
-        $this->_require('_alert.html');
-        $this->_require('_notice.html');
-        $this->_require('_popup.html');
-        foreach ($pages as $page) {
-          $this->_require($page, $this->main);
-        }
-        $this->_require('bottom.html');
-      }
+      $this->_require($pages, $this->main);
     }
   }
 
@@ -76,26 +63,26 @@ class View
     else
       $filepath = 'priv/statics/';
 
-    $css = array_slice(scandir($base . '/' . $filepath . 'css/'), 2);
-    $js = array_slice(scandir($base . '/' . $filepath . 'js/'), 2);
+    $css = array_filter(array_slice(scandir($base . '/' . $filepath . 'css/'), 2), fn ($i) => str_ends_with($i, '.css'));
+    $js = array_filter(array_slice(scandir($base . '/' . $filepath . 'js/'), 2), fn ($i) => str_ends_with($i, '.js'));
 
     foreach ($css as $i) {
-      echo "\t" . '<link rel="stylesheet" type="text/css" href="' . BASE_URL . $filepath .'css/' . $i . '">' . "\n";
+      echo "\t" . '<link rel="stylesheet" type="text/css" href="' . '/' . $filepath . 'css/' . $i . '">' . "\n";
     }
     foreach ($js as $i) {
-      echo "\t" . '<script defer type="text/javascript" src="' . BASE_URL . $filepath . 'js/' . $i . '"></script>' . "\n";
+      echo "\t" . '<script defer type="text/javascript" src="' . '/' . $filepath . 'js/' . $i . '"></script>' . "\n";
     }
   }
 
-  public static function partial($main, $pages)
+  public static function partial($view, $pages)
   {
-    $path = $_SERVER['DOCUMENT_ROOT'];
+    $view = str_replace('view', '', strtolower($view));
     if (is_array($pages)) {
       foreach ($pages as $page) {
-        require_once $path . "/templates/{$main}/{$page}.php";
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/templates/{$view}/{$page}.php";
       }
     } else {
-      require_once $path . "/templates/{$main}/{$pages}.php";
+      require_once $_SERVER['DOCUMENT_ROOT'] . "/templates/{$view}/{$pages}.php";
     }
   }
 
@@ -111,31 +98,9 @@ class View
     return $this;
   }
 
-  public function put_flash(bool $status = true, $value)
-  {
-    if ($status)
-      $_SESSION['popup'] = ['status' => 1, 'info' => $value];
-    else
-      $_SESSION['popup'] = ['status' => 0, 'info' => $value];
-    return $this;
-  }
-
   public function redirect(string $uri = null)
   {
     header("location: {$uri}");
-    exit;
-  }
-
-  public function return(string $type = 'default', array $data)
-  {
-    switch ($type) {
-      case 'default':
-        echo $data;
-        break;
-      case 'json':
-        echo json_encode($data, JSON_THROW_ON_ERROR);
-        break;
-    }
     exit;
   }
 

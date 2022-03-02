@@ -1,7 +1,8 @@
 #!/bin/bash
 set +x
 
-cd priv/statics/ && php -r "require_once 'index.php';"
+cd priv/statics/ && sudo php -r "require_once 'index.php';"
+
 
 # if which xdg-open > /dev/null
 # then

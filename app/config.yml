@@ -1,35 +1,31 @@
-title: "CMS MVC Web Application"
-description: "CMS MVC Web Application Framework"
-author: "Kitisak (Fluke) Sapphaniran"
+title: "MVC fast and light weight"
+description: "MVC fast and light weight"
+author: "webmaster"
 mode: "DEV"
-pepper_key: "Zr8UiJQvWE"
+pepper_key: "l5PdN23NtafWhsi" # OPTIONAL: Random pepper key
 driver:
   mysql:
     production:
-      name: "getnaprg_database"
-      user: "getnaprg_database"
-      password: "@Fluke160941"
+      name: "prod_db"
+      user: "root"
+      password: "123ZXCasd!@#"
       host: "localhost"
       port: 3306
     develope: 
-      name: "getnaprg_database"
+      name: "pg"
       user: "root"
-      password: "@Fluke160941"
+      password: "123ZXCasd!@#"
       host: "localhost"
       port: 3306
   ftp:
-    domain: "ovh1.getnaprog.com"
-    hostname: "getnaprog.com"
-    username: "ovh1@getnaprog.com"
-    password: "uY7k3.#yZNH48y"
+    domain: "mydomain"
+    hostname: "myhostname"
+    username: "myusername"
+    password: "password"
     mode: "passive"
     ssl: "false"
     port: 21
     timeout: 30
-api:
-  drive: "Drive_BXQtPmpEv0gcFnei7CQvTxAcKTHyDkHviTTK8TRC"
-  data: "Data_cY0Mac5wPW5ITTiih2bdePksW5qMYozhhHHdtnop"
-
 
 
 
