@@ -1,4 +1,4 @@
-<div class="bg-white min-h-full flex flex-col lg:relative">
+<div class="bg-white min-h-screen flex flex-col lg:relative">
   <div class="flex-grow flex flex-col">
     <main class="flex-grow flex flex-col bg-white">
       <div class="flex-grow mx-auto max-w-7xl w-full flex flex-col px-4 sm:px-6 lg:px-8">
@@ -31,6 +31,6 @@
     </footer>
   </div>
   <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-    <img class="absolute inset-0 h-full w-full object-cover" src="https://images.unsplash.com/photo-1470847355775-e0e3c35a9a2c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1825&q=80" alt="">
+    <img class="absolute inset-0 h-full w-full object-cover" src="https://source.unsplash.com/random/?city,night" alt="">
   </div>
 </div>

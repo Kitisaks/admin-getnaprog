@@ -9,23 +9,13 @@
     <meta name="author" content="<?= SITE["author"] ?? "DEVED-FRAMEWORK" ?>">
     <meta name="csrf_token" content="<?= $_SESSION["_csrf_token"] ?>">
     <title><?= SITE["title"] ?></title>
-    <link rel="icon" href="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600">
+    <link rel="icon" href="/assets/statics/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <?= App\View::assets_include() ?>
 </head>
+
 <body>
-    <?= App\View::partial(LayoutView::class, "_header.html") ?>
-    <div class="py-10">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-12 lg:gap-8">
-            <?= App\View::partial(LayoutView::class, "_sidebar.html") ?>
-
-            <main class="lg:col-span-9 xl:col-span-6">
-                <?= $GLOBALS["@inner_content@"] ?>
-            </main>
-
-            <?= App\View::partial(LayoutView::class, "_aside.html") ?>
-        </div>
-    </div>
-    
+  <?= $GLOBALS["@inner_content@"] ?>
 </body>
+
 </html>

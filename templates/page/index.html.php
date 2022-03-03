@@ -1,30 +1,160 @@
-<div class="fixed inset-0 z-10 overflow-y-auto p-4 sm:p-6 md:p-20 bg-contain bg-center" style="background-image:url('https://source.unsplash.com/random/?city,night'); background-position: center -80px;" role="dialog" aria-modal="true">
-  <div class="text-lg max-w-prose mx-auto p-4 rounded-lg shadow bg-white">
-    <div class="text-center">
-      <span class="block text-base text-indigo-600 font-semibold tracking-wide uppercase">WELCOME TO</span>
-      <h1 href="#" class="mt-2 block text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">Super Fast MVC</h1>
-      <div class="mt-8 text-xl text-gray-500 leading-8">facebook: 
-        <a class="cursor-pointer hover:underline" href="https://www.facebook.com/Chart.mystery" target="_blank">fluke kitisak</a></div>
-    </div>
+<div class="px-4 sm:px-0">
+  <div class="sm:hidden">
+    <label for="question-tabs" class="sr-only">Select a tab</label>
+    <select id="question-tabs" class="block w-full rounded-md border-gray-300 text-base font-medium text-gray-900 shadow-sm focus:border-rose-500 focus:ring-rose-500">
+      <option selected>Recent</option>
+
+      <option>Most Liked</option>
+
+      <option>Most Answers</option>
+    </select>
   </div>
-  <div class="fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity" aria-hidden="true"></div>
+  <div class="hidden sm:block">
+    <nav class="relative z-0 rounded-lg shadow flex divide-x divide-gray-200" aria-label="Tabs">
+      <!-- Current: "text-gray-900", Default: "text-gray-500 hover:text-gray-700" -->
+      <a href="#" aria-current="page" class="text-gray-900 rounded-l-lg group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-6 text-sm font-medium text-center hover:bg-gray-50 focus:z-10">
+        <span>Recent</span>
+        <span aria-hidden="true" class="bg-rose-500 absolute inset-x-0 bottom-0 h-0.5"></span>
+      </a>
 
-  <div class="mx-auto max-w-xl transform rounded-xl bg-white p-2 shadow-2xl ring-1 ring-black ring-opacity-5 transition-all hidden">
-    <input type="text" class="w-full rounded-md border-0 bg-gray-100 px-4 py-2.5 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm" placeholder="Search..." role="combobox" aria-expanded="false" aria-controls="options">
+      <a href="#" class="text-gray-500 hover:text-gray-700 group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-6 text-sm font-medium text-center hover:bg-gray-50 focus:z-10">
+        <span>Most Liked</span>
+        <span aria-hidden="true" class="bg-transparent absolute inset-x-0 bottom-0 h-0.5"></span>
+      </a>
 
-    <ul class="-mb-2 max-h-72 scroll-py-2 overflow-y-auto py-2 text-sm text-gray-800" id="options" role="listbox">
-      <li class="cursor-default select-none rounded-md px-4 py-2" id="option-1" role="option" tabindex="-1">Leslie Alexander</li>
-      <li class="cursor-default select-none rounded-md px-4 py-2" id="option-2" role="option" tabindex="-1">Michael Foster</li>
-      <li class="cursor-default select-none rounded-md px-4 py-2" id="option-3" role="option" tabindex="-1">Dries Vincent</li>
-      <li class="cursor-default select-none rounded-md px-4 py-2" id="option-4" role="option" tabindex="-1">Lindsay Walton</li>
-      <li class="cursor-default select-none rounded-md px-4 py-2" id="option-5" role="option" tabindex="-1">Courtney Henry</li>
-    </ul>
-
-    <div class="py-14 px-4 text-center sm:px-14">
-      <svg class="mx-auto h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-      </svg>
-      <p class="mt-4 text-sm text-gray-900">No people found using that search term.</p>
-    </div>
+      <a href="#" class="text-gray-500 hover:text-gray-700 rounded-r-lg group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-6 text-sm font-medium text-center hover:bg-gray-50 focus:z-10">
+        <span>Most Answers</span>
+        <span aria-hidden="true" class="bg-transparent absolute inset-x-0 bottom-0 h-0.5"></span>
+      </a>
+    </nav>
   </div>
+</div>
+<div class="mt-4">
+  <h1 class="sr-only">Recent questions</h1>
+  <ul role="list" class="space-y-4">
+    <li class="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">
+      <article aria-labelledby="question-title-81614">
+        <div>
+          <div class="flex space-x-3">
+            <div class="flex-shrink-0">
+              <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+            </div>
+            <div class="min-w-0 flex-1">
+              <p class="text-sm font-medium text-gray-900">
+                <a href="#" class="hover:underline">Dries Vincent</a>
+              </p>
+              <p class="text-sm text-gray-500">
+                <a href="#" class="hover:underline">
+                  <time datetime="2020-12-09T11:43:00">December 9 at 11:43 AM</time>
+                </a>
+              </p>
+            </div>
+            <div class="flex-shrink-0 self-center flex">
+              <div class="relative inline-block text-left">
+                <div>
+                  <button type="button" class="-m-2 p-2 rounded-full flex items-center text-gray-400 hover:text-gray-600" id="options-menu-0-button" aria-expanded="false" aria-haspopup="true">
+                    <span class="sr-only">Open options</span>
+                    <!-- Heroicon name: solid/dots-vertical -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                    </svg>
+                  </button>
+                </div>
+
+                <!--
+                  Dropdown menu, show/hide based on menu state.
+
+                  Entering: "transition ease-out duration-100"
+                    From: "transform opacity-0 scale-95"
+                    To: "transform opacity-100 scale-100"
+                  Leaving: "transition ease-in duration-75"
+                    From: "transform opacity-100 scale-100"
+                    To: "transform opacity-0 scale-95"
+                -->
+                <div class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu-0-button" tabindex="-1">
+                  <div class="py-1" role="none">
+                    <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+                    <a href="#" class="text-gray-700 flex px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-0-item-0">
+                      <!-- Heroicon name: solid/star -->
+                      <svg class="mr-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                      <span>Add to favorites</span>
+                    </a>
+                    <a href="#" class="text-gray-700 flex px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-0-item-1">
+                      <!-- Heroicon name: solid/code -->
+                      <svg class="mr-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                      </svg>
+                      <span>Embed</span>
+                    </a>
+                    <a href="#" class="text-gray-700 flex px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-0-item-2">
+                      <!-- Heroicon name: solid/flag -->
+                      <svg class="mr-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd" />
+                      </svg>
+                      <span>Report content</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h2 id="question-title-81614" class="mt-4 text-base font-medium text-gray-900">What would you have done differently if you ran Jurassic Park?</h2>
+        </div>
+        <div class="mt-2 text-sm text-gray-700 space-y-4">
+          <p>Jurassic Park was an incredible idea and a magnificent feat of engineering, but poor protocols and a disregard for human safety killed what could have otherwise been one of the best businesses of our generation.</p>
+          <p>Ultimately, I think that if you wanted to run the park successfully and keep visitors safe, the most important thing to prioritize would be&hellip;</p>
+        </div>
+        <div class="mt-6 flex justify-between space-x-8">
+          <div class="flex space-x-6">
+            <span class="inline-flex items-center text-sm">
+              <button type="button" class="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
+                <!-- Heroicon name: solid/thumb-up -->
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                </svg>
+                <span class="font-medium text-gray-900">29</span>
+                <span class="sr-only">likes</span>
+              </button>
+            </span>
+            <span class="inline-flex items-center text-sm">
+              <button type="button" class="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
+                <!-- Heroicon name: solid/chat-alt -->
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd" />
+                </svg>
+                <span class="font-medium text-gray-900">11</span>
+                <span class="sr-only">replies</span>
+              </button>
+            </span>
+            <span class="inline-flex items-center text-sm">
+              <button type="button" class="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
+                <!-- Heroicon name: solid/eye -->
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                  <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                </svg>
+                <span class="font-medium text-gray-900">2.7k</span>
+                <span class="sr-only">views</span>
+              </button>
+            </span>
+          </div>
+          <div class="flex text-sm">
+            <span class="inline-flex items-center text-sm">
+              <button type="button" class="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
+                <!-- Heroicon name: solid/share -->
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+                </svg>
+                <span class="font-medium text-gray-900">Share</span>
+              </button>
+            </span>
+          </div>
+        </div>
+      </article>
+    </li>
+
+    <!-- More questions... -->
+  </ul>
 </div>

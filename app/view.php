@@ -7,13 +7,15 @@ use App\Repo;
 class View
 {
   public $main;
+  private $_root_layout;
   private $_layout;
 
   public function __construct($main)
   {
     $this->repo = new Repo();
     $this->main = str_replace('controller', '', strtolower($main));
-    $this->_layout = true;
+    $this->_root_layout = true;
+    $this->_layout = 'app.html';
   }
 
   private function _replace_app_space($folder, $page)
@@ -46,10 +48,10 @@ class View
 
   public function render($pages)
   {
-    if ($this->_layout) {
+    if ($this->_root_layout) {
       $this
         ->assign('@inner_content@', $this->_get_content($pages, $this->main))
-        ->_require('app.html', 'layout');
+        ->_require($this->_layout, 'layout');
     } else {
       $this->_require($pages, $this->main);
     }
@@ -86,7 +88,13 @@ class View
     }
   }
 
-  public function put_layout(bool $layout)
+  public function put_root_layout(bool $layout)
+  {
+    $this->_root_layout = $layout;
+    return $this;
+  }
+
+  public function put_layout(string $layout)
   {
     $this->_layout = $layout;
     return $this;

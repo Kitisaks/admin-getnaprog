@@ -32,6 +32,9 @@ $(function () {
 
 
   // Your code here...
+  $('body').on('click', '#test', () => {
+    alert("ok")
+  })
 
   //
 });

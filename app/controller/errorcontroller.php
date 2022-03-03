@@ -14,7 +14,7 @@ class ErrorController
   {
     $this
     ->View
-    ->put_layout(false)
+    ->put_layout("external.html")
     ->render("404.html");
   }
 
