@@ -1,5 +1,9 @@
 # **MVC TEMPLATE DEV**
 
+## ==== **Initialize** ====
+
+#### composer install 
+
 ## ==== **Running** ====
 
 #### php --server localhost:8080 index.php
